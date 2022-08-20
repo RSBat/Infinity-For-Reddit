@@ -45,6 +45,7 @@ android {
 
     lint {
         disable 'MissingTranslation', 'NonConstantResourceId'
+        baseline file("lint-baseline.xml")
     }
 
     bundle {
