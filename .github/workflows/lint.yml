@@ -1,0 +1,26 @@
+name: Lint
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  lintDebug:
+    name: Lint Debug
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      - name: Run Lint Debug
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: lintDebug
