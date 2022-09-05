@@ -29,6 +29,10 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        benchmark {
+            initWith buildTypes.minifiedRelease
+            signingConfig signingConfigs.debug
+        }
         debug {
             applicationIdSuffix '.dev'
             versionNameSuffix ' (DEBUG)'
