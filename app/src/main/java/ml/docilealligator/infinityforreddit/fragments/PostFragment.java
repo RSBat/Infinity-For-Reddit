@@ -82,6 +82,8 @@ import ml.docilealligator.infinityforreddit.adapters.Paging3LoadingStateAdapter;
 import ml.docilealligator.infinityforreddit.adapters.PostRecyclerViewAdapter;
 import ml.docilealligator.infinityforreddit.asynctasks.LoadSubredditIcon;
 import ml.docilealligator.infinityforreddit.asynctasks.LoadUserData;
+import ml.docilealligator.infinityforreddit.customtheme.CustomThemeFactory;
+import ml.docilealligator.infinityforreddit.customtheme.CustomThemeLayoutInflater;
 import ml.docilealligator.infinityforreddit.bottomsheetfragments.FABMoreOptionsBottomSheetFragment;
 import ml.docilealligator.infinityforreddit.customtheme.CustomThemeWrapper;
 import ml.docilealligator.infinityforreddit.customviews.CustomToroContainer;
@@ -311,10 +313,15 @@ public class PostFragment extends Fragment implements FragmentCommunicator {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_post, container, false);
-
         ((Infinity) activity.getApplication()).getAppComponent().inject(this);
+
+        // Inflate the layout for this fragment
+        LayoutInflater themedInflater = inflater.cloneInContext(requireContext());// activity);
+        themedInflater.setFactory2(new CustomThemeFactory(activity.getDelegate(), mCustomThemeWrapper));
+//         View rootView = new CustomThemeLayoutInflater(activity, mCustomThemeWrapper)
+//                 .inflate(R.layout.fragment_post, container, false);
+        View rootView = themedInflater.inflate(R.layout.fragment_post, container, false);
+//        LayoutInflater.from(activity);
 
         unbinder = ButterKnife.bind(this, rootView);
 
@@ -1655,8 +1662,8 @@ public class PostFragment extends Fragment implements FragmentCommunicator {
 
     @Override
     public void applyTheme() {
-        mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(mCustomThemeWrapper.getCircularProgressBarBackground());
-        mSwipeRefreshLayout.setColorSchemeColors(mCustomThemeWrapper.getColorAccent());
+//        mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(mCustomThemeWrapper.getCircularProgressBarBackground());
+//        mSwipeRefreshLayout.setColorSchemeColors(mCustomThemeWrapper.getColorAccent());
         mFetchPostInfoTextView.setTextColor(mCustomThemeWrapper.getSecondaryTextColor());
         if (activity.typeface != null) {
             mFetchPostInfoTextView.setTypeface(activity.typeface);
