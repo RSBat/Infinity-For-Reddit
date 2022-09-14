@@ -10,4 +10,5 @@
     <color name="roundedBottomSheetPrimaryNavigationBarColor">#000000</color>
     <color name="primaryTextColor">#000000</color>
     <color name="dividerColor">#E0E0E0</color>
+    <color name="postTitleTextColor">@color/primaryTextColor</color>
 </resources>

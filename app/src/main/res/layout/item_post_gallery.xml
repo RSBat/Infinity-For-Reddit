@@ -63,6 +63,7 @@
         android:paddingBottom="16dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
+        android:textColor="@color/postTitleTextColor"
         android:textSize="?attr/title_font_18"
         android:fontFamily="?attr/title_font_family"
         android:visibility="gone" />

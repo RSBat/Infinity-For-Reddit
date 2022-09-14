@@ -82,6 +82,7 @@ import ml.docilealligator.infinityforreddit.apis.GfycatAPI;
 import ml.docilealligator.infinityforreddit.apis.RedgifsAPI;
 import ml.docilealligator.infinityforreddit.apis.StreamableAPI;
 import ml.docilealligator.infinityforreddit.bottomsheetfragments.ShareLinkBottomSheetFragment;
+import ml.docilealligator.infinityforreddit.customtheme.CustomThemeFactory;
 import ml.docilealligator.infinityforreddit.customtheme.CustomThemeWrapper;
 import ml.docilealligator.infinityforreddit.customviews.AspectRatioGifImageView;
 import ml.docilealligator.infinityforreddit.customviews.SwipeLockInterface;
@@ -466,39 +467,41 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext()).cloneInContext(parent.getContext());
+        inflater.setFactory2(new CustomThemeFactory(mActivity.getDelegate(), mActivity.customThemeWrapper));
         if (viewType == VIEW_TYPE_POST_CARD_VIDEO_AUTOPLAY_TYPE) {
             if (mDataSavingMode) {
-                return new PostWithPreviewTypeViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post_with_preview, parent, false));
+                return new PostWithPreviewTypeViewHolder(inflater.inflate(R.layout.item_post_with_preview, parent, false));
             }
-            return new PostVideoAutoplayViewHolder(LayoutInflater.from(parent.getContext()).inflate(mLegacyAutoplayVideoControllerUI ? R.layout.item_post_video_type_autoplay_legacy_controller : R.layout.item_post_video_type_autoplay, parent, false));
+            return new PostVideoAutoplayViewHolder(inflater.inflate(mLegacyAutoplayVideoControllerUI ? R.layout.item_post_video_type_autoplay_legacy_controller : R.layout.item_post_video_type_autoplay, parent, false));
         } else if (viewType == VIEW_TYPE_POST_CARD_WITH_PREVIEW_TYPE) {
-            return new PostWithPreviewTypeViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post_with_preview, parent, false));
+            return new PostWithPreviewTypeViewHolder(inflater.inflate(R.layout.item_post_with_preview, parent, false));
         } else if (viewType == VIEW_TYPE_POST_CARD_GALLERY_TYPE) {
             return new PostGalleryTypeViewHolder(ItemPostGalleryTypeBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         } else if (viewType == VIEW_TYPE_POST_CARD_TEXT_TYPE) {
-            return new PostTextTypeViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post_text, parent, false));
+            return new PostTextTypeViewHolder(inflater.inflate(R.layout.item_post_text, parent, false));
         } else if (viewType == VIEW_TYPE_POST_COMPACT) {
             if (mShowThumbnailOnTheRightInCompactLayout) {
-                return new PostCompactRightThumbnailViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post_compact_right_thumbnail, parent, false));
+                return new PostCompactRightThumbnailViewHolder(inflater.inflate(R.layout.item_post_compact_right_thumbnail, parent, false));
             } else {
-                return new PostCompactLeftThumbnailViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post_compact, parent, false));
+                return new PostCompactLeftThumbnailViewHolder(inflater.inflate(R.layout.item_post_compact, parent, false));
             }
         } else if (viewType == VIEW_TYPE_POST_GALLERY) {
-            return new PostGalleryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post_gallery, parent, false));
+            return new PostGalleryViewHolder(inflater.inflate(R.layout.item_post_gallery, parent, false));
         } else if (viewType == VIEW_TYPE_POST_GALLERY_GALLERY_TYPE) {
             return new PostGalleryGalleryTypeViewHolder(ItemPostGalleryGalleryTypeBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         } else if (viewType == VIEW_TYPE_POST_CARD_2_VIDEO_AUTOPLAY_TYPE) {
             if (mDataSavingMode) {
-                return new PostCard2WithPreviewViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post_card_2_with_preview, parent, false));
+                return new PostCard2WithPreviewViewHolder(inflater.inflate(R.layout.item_post_card_2_with_preview, parent, false));
             }
-            return new PostCard2VideoAutoplayViewHolder(LayoutInflater.from(parent.getContext()).inflate(mLegacyAutoplayVideoControllerUI ? R.layout.item_post_card_2_video_autoplay_legacy_controller : R.layout.item_post_card_2_video_autoplay, parent, false));
+            return new PostCard2VideoAutoplayViewHolder(inflater.inflate(mLegacyAutoplayVideoControllerUI ? R.layout.item_post_card_2_video_autoplay_legacy_controller : R.layout.item_post_card_2_video_autoplay, parent, false));
         } else if (viewType == VIEW_TYPE_POST_CARD_2_WITH_PREVIEW_TYPE) {
-            return new PostCard2WithPreviewViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post_card_2_with_preview, parent, false));
+            return new PostCard2WithPreviewViewHolder(inflater.inflate(R.layout.item_post_card_2_with_preview, parent, false));
         } else if (viewType == VIEW_TYPE_POST_CARD_2_GALLERY_TYPE) {
             return new PostCard2GalleryTypeViewHolder(ItemPostCard2GalleryTypeBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         } else {
             //VIEW_TYPE_POST_CARD_2_TEXT_TYPE
-            return new PostCard2TextTypeViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post_card_2_text, parent, false));
+            return new PostCard2TextTypeViewHolder(inflater.inflate(R.layout.item_post_card_2_text, parent, false));
         }
     }
 
@@ -2289,7 +2292,7 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
             subredditTextView.setTextColor(mSubredditColor);
             userTextView.setTextColor(mUsernameColor);
             postTimeTextView.setTextColor(mSecondaryTextColor);
-            titleTextView.setTextColor(mPostTitleColor);
+//            titleTextView.setTextColor(mPostTitleColor);
             stickiedPostImageView.setColorFilter(mStickiedPostIconTint, PorterDuff.Mode.SRC_IN);
             typeTextView.setBackgroundColor(mPostTypeBackgroundColor);
             typeTextView.setBorderColor(mPostTypeBackgroundColor);

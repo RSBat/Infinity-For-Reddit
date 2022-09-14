@@ -82,7 +82,7 @@
             android:fontFamily="?attr/title_font_family"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:textColor="?attr/primaryTextColor"
+            android:textColor="@color/postTitleTextColor"
             android:textSize="?attr/title_font_18"
             app:layout_constraintBottom_toTopOf="@id/flow_layout_item_post_compact"
             app:layout_constraintEnd_toStartOf="@id/barrier2"

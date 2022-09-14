@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import ml.docilealligator.infinityforreddit.BuildConfig;
+import ml.docilealligator.infinityforreddit.R;
 
 public class CustomThemeFactory implements LayoutInflater.Factory2 {
     @NonNull
@@ -39,6 +41,11 @@ public class CustomThemeFactory implements LayoutInflater.Factory2 {
                 break;
         }
 
+        if (view instanceof TextView) {
+            TextView textView = (TextView) view;
+            applyTextColor(textView, attrs);
+        }
+
         return view;
     }
 
@@ -48,6 +55,15 @@ public class CustomThemeFactory implements LayoutInflater.Factory2 {
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(mCustomThemeWrapper.getCircularProgressBarBackground());
         swipeRefreshLayout.setColorSchemeColors(mCustomThemeWrapper.getColorAccent());
         return swipeRefreshLayout;
+    }
+
+    private void applyTextColor(@NonNull TextView textView, @NonNull AttributeSet attrs) {
+        int res = attrs.getAttributeResourceValue("http://schemas.android.com/apk/res/android", "textColor", -1);
+        switch (res) {
+            case R.color.postTitleTextColor:
+                textView.setTextColor(mCustomThemeWrapper.getPostTitleColor());
+                break;
+        }
     }
 
     @Nullable
