@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import ml.docilealligator.infinityforreddit.BuildConfig;
+
 public class CustomThemeFactory implements LayoutInflater.Factory2 {
     @NonNull
     private final AppCompatDelegate mDelegate;
@@ -30,19 +32,22 @@ public class CustomThemeFactory implements LayoutInflater.Factory2 {
         View view = mDelegate.createView(parent, name, context, attrs);
         switch (name) {
             case "androidx.swiperefreshlayout.widget.SwipeRefreshLayout":
-                view = new SwipeRefreshLayout(context, attrs);
+                if (BuildConfig.DEBUG && view != null) {
+                    throw new IllegalStateException("View " + name + " got inflated by the delegate");
+                }
+                view = createSwipeRefreshLayout(context, attrs);
                 break;
         }
 
-        if (view instanceof SwipeRefreshLayout) {
-            Log.d("CTF", "SRL");
-            ((SwipeRefreshLayout) view).setProgressBackgroundColorSchemeColor(mCustomThemeWrapper.getCircularProgressBarBackground());
-            ((SwipeRefreshLayout) view).setColorSchemeColors(mCustomThemeWrapper.getColorAccent());
-        }
-        if (view == null) {
-            Log.d("CTF", "null");
-        }
         return view;
+    }
+
+    @NonNull
+    private SwipeRefreshLayout createSwipeRefreshLayout(@NonNull Context context, @NonNull AttributeSet attrs) {
+        SwipeRefreshLayout swipeRefreshLayout = new SwipeRefreshLayout(context, attrs);
+        swipeRefreshLayout.setProgressBackgroundColorSchemeColor(mCustomThemeWrapper.getCircularProgressBarBackground());
+        swipeRefreshLayout.setColorSchemeColors(mCustomThemeWrapper.getColorAccent());
+        return swipeRefreshLayout;
     }
 
     @Nullable
