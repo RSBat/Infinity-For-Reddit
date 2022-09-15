@@ -138,60 +138,60 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
         }
     };
 
-    private BaseActivity mActivity;
-    private PostFragment mFragment;
-    private SharedPreferences mSharedPreferences;
-    private SharedPreferences mCurrentAccountSharedPreferences;
-    private Executor mExecutor;
-    private Retrofit mOauthRetrofit;
-    private Retrofit mGfycatRetrofit;
-    private Retrofit mRedgifsRetrofit;
-    private Retrofit mStreamableRetrofit;
-    private String mAccessToken;
-    private RequestManager mGlide;
+    private final BaseActivity mActivity;
+    private final PostFragment mFragment;
+    private final SharedPreferences mSharedPreferences;
+    private final SharedPreferences mCurrentAccountSharedPreferences;
+    private final Executor mExecutor;
+    private final Retrofit mOauthRetrofit;
+    private final Retrofit mGfycatRetrofit;
+    private final Retrofit mRedgifsRetrofit;
+    private final Retrofit mStreamableRetrofit;
+    private final String mAccessToken;
+    private final RequestManager mGlide;
     private int mMaxResolution;
-    private SaveMemoryCenterInisdeDownsampleStrategy mSaveMemoryCenterInsideDownsampleStrategy;
-    private Locale mLocale;
+    private final SaveMemoryCenterInisdeDownsampleStrategy mSaveMemoryCenterInsideDownsampleStrategy;
+    private final Locale mLocale;
     private boolean canStartActivity = true;
-    private int mPostType;
+    private final int mPostType;
     private int mPostLayout;
     private int mDefaultLinkPostLayout;
-    private int mColorAccent;
-    private int mCardViewBackgroundColor;
-    private int mReadPostCardViewBackgroundColor;
-    private int mPrimaryTextColor;
-    private int mSecondaryTextColor;
-    private int mPostTitleColor;
-    private int mPostContentColor;
-    private int mReadPostTitleColor;
-    private int mReadPostContentColor;
-    private int mStickiedPostIconTint;
-    private int mPostTypeBackgroundColor;
-    private int mPostTypeTextColor;
-    private int mSubredditColor;
-    private int mUsernameColor;
-    private int mSpoilerBackgroundColor;
-    private int mSpoilerTextColor;
-    private int mFlairBackgroundColor;
-    private int mFlairTextColor;
-    private int mAwardsBackgroundColor;
-    private int mAwardsTextColor;
-    private int mNSFWBackgroundColor;
-    private int mNSFWTextColor;
-    private int mArchivedIconTint;
-    private int mLockedIconTint;
-    private int mCrosspostIconTint;
-    private int mMediaIndicatorIconTint;
-    private int mMediaIndicatorBackgroundColor;
-    private int mNoPreviewPostTypeBackgroundColor;
-    private int mNoPreviewPostTypeIconTint;
-    private int mUpvotedColor;
-    private int mDownvotedColor;
-    private int mVoteAndReplyUnavailableVoteButtonColor;
-    private int mPostIconAndInfoColor;
-    private int mDividerColor;
-    private float mScale;
-    private boolean mDisplaySubredditName;
+    private final int mColorAccent;
+    private final int mCardViewBackgroundColor;
+    private final int mReadPostCardViewBackgroundColor;
+    private final int mPrimaryTextColor;
+    private final int mSecondaryTextColor;
+    private final int mPostTitleColor;
+    private final int mPostContentColor;
+    private final int mReadPostTitleColor;
+    private final int mReadPostContentColor;
+    private final int mStickiedPostIconTint;
+    private final int mPostTypeBackgroundColor;
+    private final int mPostTypeTextColor;
+    private final int mSubredditColor;
+    private final int mUsernameColor;
+    private final int mSpoilerBackgroundColor;
+    private final int mSpoilerTextColor;
+    private final int mFlairBackgroundColor;
+    private final int mFlairTextColor;
+    private final int mAwardsBackgroundColor;
+    private final int mAwardsTextColor;
+    private final int mNSFWBackgroundColor;
+    private final int mNSFWTextColor;
+    private final int mArchivedIconTint;
+    private final int mLockedIconTint;
+    private final int mCrosspostIconTint;
+    private final int mMediaIndicatorIconTint;
+    private final int mMediaIndicatorBackgroundColor;
+    private final int mNoPreviewPostTypeBackgroundColor;
+    private final int mNoPreviewPostTypeIconTint;
+    private final int mUpvotedColor;
+    private final int mDownvotedColor;
+    private final int mVoteAndReplyUnavailableVoteButtonColor;
+    private final int mPostIconAndInfoColor;
+    private final int mDividerColor;
+    private final float mScale;
+    private final boolean mDisplaySubredditName;
     private boolean mVoteButtonsOnTheRight;
     private boolean mNeedBlurNsfw;
     private boolean mDoNotBlurNsfwInNsfwSubreddits;
@@ -206,32 +206,32 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
     private boolean mShowThumbnailOnTheRightInCompactLayout;
     private double mStartAutoplayVisibleAreaOffset;
     private boolean mMuteNSFWVideo;
-    private boolean mAutomaticallyTryRedgifs;
+    private final boolean mAutomaticallyTryRedgifs;
     private boolean mLongPressToHideToolbarInCompactLayout;
     private boolean mCompactLayoutToolbarHiddenByDefault;
     private boolean mDataSavingMode = false;
     private boolean mDisableImagePreview;
     private boolean mOnlyDisablePreviewInVideoAndGifPosts;
-    private boolean mMarkPostsAsRead;
-    private boolean mMarkPostsAsReadAfterVoting;
-    private boolean mMarkPostsAsReadOnScroll;
+    private final boolean mMarkPostsAsRead;
+    private final boolean mMarkPostsAsReadAfterVoting;
+    private final boolean mMarkPostsAsReadOnScroll;
     private boolean mHidePostType;
     private boolean mHidePostFlair;
     private boolean mHideTheNumberOfAwards;
     private boolean mHideSubredditAndUserPrefix;
     private boolean mHideTheNumberOfVotes;
     private boolean mHideTheNumberOfComments;
-    private boolean mLegacyAutoplayVideoControllerUI;
+    private final boolean mLegacyAutoplayVideoControllerUI;
     private boolean mFixedHeightPreviewInCard;
     private boolean mHideTextPostContent;
     private boolean mEasierToWatchInFullScreen;
-    private Drawable mCommentIcon;
-    private ExoCreator mExoCreator;
-    private Callback mCallback;
+    private final Drawable mCommentIcon;
+    private final ExoCreator mExoCreator;
+    private final Callback mCallback;
     private boolean canPlayVideo = true;
     private RecyclerView.RecycledViewPool mGalleryRecycledViewPool;
 
-    public PostRecyclerViewAdapter(BaseActivity activity, PostFragment fragment, Executor executor, Retrofit oauthRetrofit,
+    public PostRecyclerViewAdapter(@NonNull BaseActivity activity, PostFragment fragment, Executor executor, Retrofit oauthRetrofit,
                                    Retrofit gfycatRetrofit, Retrofit redgifsRetrofit, Retrofit streambleRetrofit,
                                    CustomThemeWrapper customThemeWrapper, Locale locale,
                                    String accessToken, String accountName, int postType, int postLayout, boolean displaySubredditName,
@@ -240,127 +240,125 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                                    SharedPreferences postHistorySharedPreferences,
                                    ExoCreator exoCreator, Callback callback) {
         super(DIFF_CALLBACK);
-        if (activity != null) {
-            mActivity = activity;
-            mFragment = fragment;
-            mSharedPreferences = sharedPreferences;
-            mCurrentAccountSharedPreferences = currentAccountSharedPreferences;
-            mExecutor = executor;
-            mOauthRetrofit = oauthRetrofit;
-            mGfycatRetrofit = gfycatRetrofit;
-            mRedgifsRetrofit = redgifsRetrofit;
-            mStreamableRetrofit = streambleRetrofit;
-            mAccessToken = accessToken;
-            mPostType = postType;
-            mDisplaySubredditName = displaySubredditName;
-            mNeedBlurNsfw = nsfwAndSpoilerSharedPreferences.getBoolean((accountName == null ? "" : accountName) + SharedPreferencesUtils.BLUR_NSFW_BASE, true);
-            mDoNotBlurNsfwInNsfwSubreddits = nsfwAndSpoilerSharedPreferences.getBoolean((accountName == null ? "" : accountName) + SharedPreferencesUtils.DO_NOT_BLUR_NSFW_IN_NSFW_SUBREDDITS, false);
-            mNeedBlurSpoiler = nsfwAndSpoilerSharedPreferences.getBoolean((accountName == null ? "" : accountName) + SharedPreferencesUtils.BLUR_SPOILER_BASE, false);
-            mVoteButtonsOnTheRight = sharedPreferences.getBoolean(SharedPreferencesUtils.VOTE_BUTTONS_ON_THE_RIGHT_KEY, false);
-            mShowElapsedTime = sharedPreferences.getBoolean(SharedPreferencesUtils.SHOW_ELAPSED_TIME_KEY, false);
-            mTimeFormatPattern = sharedPreferences.getString(SharedPreferencesUtils.TIME_FORMAT_KEY, SharedPreferencesUtils.TIME_FORMAT_DEFAULT_VALUE);
-            mShowDividerInCompactLayout = sharedPreferences.getBoolean(SharedPreferencesUtils.SHOW_DIVIDER_IN_COMPACT_LAYOUT, true);
-            mShowAbsoluteNumberOfVotes = sharedPreferences.getBoolean(SharedPreferencesUtils.SHOW_ABSOLUTE_NUMBER_OF_VOTES, true);
-            String autoplayString = sharedPreferences.getString(SharedPreferencesUtils.VIDEO_AUTOPLAY, SharedPreferencesUtils.VIDEO_AUTOPLAY_VALUE_NEVER);
-            int networkType = Utils.getConnectedNetwork(activity);
-            if (autoplayString.equals(SharedPreferencesUtils.VIDEO_AUTOPLAY_VALUE_ALWAYS_ON)) {
-                mAutoplay = true;
-            } else if (autoplayString.equals(SharedPreferencesUtils.VIDEO_AUTOPLAY_VALUE_ON_WIFI)) {
-                mAutoplay = networkType == Utils.NETWORK_TYPE_WIFI;
-            }
-            mAutoplayNsfwVideos = sharedPreferences.getBoolean(SharedPreferencesUtils.AUTOPLAY_NSFW_VIDEOS, true);
-            mMuteAutoplayingVideos = sharedPreferences.getBoolean(SharedPreferencesUtils.MUTE_AUTOPLAYING_VIDEOS, true);
-            mShowThumbnailOnTheRightInCompactLayout = sharedPreferences.getBoolean(
-                    SharedPreferencesUtils.SHOW_THUMBNAIL_ON_THE_LEFT_IN_COMPACT_LAYOUT, false);
-
-            Resources resources = activity.getResources();
-            mStartAutoplayVisibleAreaOffset = resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ?
-                    sharedPreferences.getInt(SharedPreferencesUtils.START_AUTOPLAY_VISIBLE_AREA_OFFSET_PORTRAIT, 75) / 100.0 :
-                    sharedPreferences.getInt(SharedPreferencesUtils.START_AUTOPLAY_VISIBLE_AREA_OFFSET_LANDSCAPE, 50) / 100.0;
-
-            mMuteNSFWVideo = sharedPreferences.getBoolean(SharedPreferencesUtils.MUTE_NSFW_VIDEO, false);
-            mAutomaticallyTryRedgifs = sharedPreferences.getBoolean(SharedPreferencesUtils.AUTOMATICALLY_TRY_REDGIFS, true);
-
-            mLongPressToHideToolbarInCompactLayout = sharedPreferences.getBoolean(SharedPreferencesUtils.LONG_PRESS_TO_HIDE_TOOLBAR_IN_COMPACT_LAYOUT, false);
-            mCompactLayoutToolbarHiddenByDefault = sharedPreferences.getBoolean(SharedPreferencesUtils.POST_COMPACT_LAYOUT_TOOLBAR_HIDDEN_BY_DEFAULT, false);
-
-            String dataSavingModeString = sharedPreferences.getString(SharedPreferencesUtils.DATA_SAVING_MODE, SharedPreferencesUtils.DATA_SAVING_MODE_OFF);
-            if (dataSavingModeString.equals(SharedPreferencesUtils.DATA_SAVING_MODE_ALWAYS)) {
-                mDataSavingMode = true;
-            } else if (dataSavingModeString.equals(SharedPreferencesUtils.DATA_SAVING_MODE_ONLY_ON_CELLULAR_DATA)) {
-                mDataSavingMode = networkType == Utils.NETWORK_TYPE_CELLULAR;
-            }
-            mDisableImagePreview = sharedPreferences.getBoolean(SharedPreferencesUtils.DISABLE_IMAGE_PREVIEW, false);
-            mOnlyDisablePreviewInVideoAndGifPosts = sharedPreferences.getBoolean(SharedPreferencesUtils.ONLY_DISABLE_PREVIEW_IN_VIDEO_AND_GIF_POSTS, false);
-
-            mMarkPostsAsRead = postHistorySharedPreferences.getBoolean((accountName == null ? "" : accountName) + SharedPreferencesUtils.MARK_POSTS_AS_READ_BASE, false);
-            mMarkPostsAsReadAfterVoting = postHistorySharedPreferences.getBoolean((accountName == null ? "" : accountName) + SharedPreferencesUtils.MARK_POSTS_AS_READ_AFTER_VOTING_BASE, false);
-            mMarkPostsAsReadOnScroll = postHistorySharedPreferences.getBoolean((accountName == null ? "" : accountName) + SharedPreferencesUtils.MARK_POSTS_AS_READ_ON_SCROLL_BASE, false);
-
-            mHidePostType = sharedPreferences.getBoolean(SharedPreferencesUtils.HIDE_POST_TYPE, false);
-            mHidePostFlair = sharedPreferences.getBoolean(SharedPreferencesUtils.HIDE_POST_FLAIR, false);
-            mHideTheNumberOfAwards = sharedPreferences.getBoolean(SharedPreferencesUtils.HIDE_THE_NUMBER_OF_AWARDS, false);
-            mHideSubredditAndUserPrefix = sharedPreferences.getBoolean(SharedPreferencesUtils.HIDE_SUBREDDIT_AND_USER_PREFIX, false);
-            mHideTheNumberOfVotes = sharedPreferences.getBoolean(SharedPreferencesUtils.HIDE_THE_NUMBER_OF_VOTES, false);
-            mHideTheNumberOfComments = sharedPreferences.getBoolean(SharedPreferencesUtils.HIDE_THE_NUMBER_OF_COMMENTS, false);
-            mLegacyAutoplayVideoControllerUI = sharedPreferences.getBoolean(SharedPreferencesUtils.LEGACY_AUTOPLAY_VIDEO_CONTROLLER_UI, false);
-            mFixedHeightPreviewInCard = sharedPreferences.getBoolean(SharedPreferencesUtils.FIXED_HEIGHT_PREVIEW_IN_CARD, false);
-            mHideTextPostContent = sharedPreferences.getBoolean(SharedPreferencesUtils.HIDE_TEXT_POST_CONTENT, false);
-            mEasierToWatchInFullScreen = sharedPreferences.getBoolean(SharedPreferencesUtils.EASIER_TO_WATCH_IN_FULL_SCREEN, false);
-
-            mPostLayout = postLayout;
-            mDefaultLinkPostLayout = Integer.parseInt(sharedPreferences.getString(SharedPreferencesUtils.DEFAULT_LINK_POST_LAYOUT_KEY, "-1"));
-
-            mColorAccent = customThemeWrapper.getColorAccent();
-            mCardViewBackgroundColor = customThemeWrapper.getCardViewBackgroundColor();
-            mReadPostCardViewBackgroundColor = customThemeWrapper.getReadPostCardViewBackgroundColor();
-            mPrimaryTextColor = customThemeWrapper.getPrimaryTextColor();
-            mSecondaryTextColor = customThemeWrapper.getSecondaryTextColor();
-            mPostTitleColor = customThemeWrapper.getPostTitleColor();
-            mPostContentColor = customThemeWrapper.getPostContentColor();
-            mReadPostTitleColor = customThemeWrapper.getReadPostTitleColor();
-            mReadPostContentColor = customThemeWrapper.getReadPostContentColor();
-            mStickiedPostIconTint = customThemeWrapper.getStickiedPostIconTint();
-            mPostTypeBackgroundColor = customThemeWrapper.getPostTypeBackgroundColor();
-            mPostTypeTextColor = customThemeWrapper.getPostTypeTextColor();
-            mSubredditColor = customThemeWrapper.getSubreddit();
-            mUsernameColor = customThemeWrapper.getUsername();
-            mSpoilerBackgroundColor = customThemeWrapper.getSpoilerBackgroundColor();
-            mSpoilerTextColor = customThemeWrapper.getSpoilerTextColor();
-            mFlairBackgroundColor = customThemeWrapper.getFlairBackgroundColor();
-            mFlairTextColor = customThemeWrapper.getFlairTextColor();
-            mAwardsBackgroundColor = customThemeWrapper.getAwardsBackgroundColor();
-            mAwardsTextColor = customThemeWrapper.getAwardsTextColor();
-            mNSFWBackgroundColor = customThemeWrapper.getNsfwBackgroundColor();
-            mNSFWTextColor = customThemeWrapper.getNsfwTextColor();
-            mArchivedIconTint = customThemeWrapper.getArchivedIconTint();
-            mLockedIconTint = customThemeWrapper.getLockedIconTint();
-            mCrosspostIconTint = customThemeWrapper.getCrosspostIconTint();
-            mMediaIndicatorIconTint = customThemeWrapper.getMediaIndicatorIconColor();
-            mMediaIndicatorBackgroundColor = customThemeWrapper.getMediaIndicatorBackgroundColor();
-            mNoPreviewPostTypeBackgroundColor = customThemeWrapper.getNoPreviewPostTypeBackgroundColor();
-            mNoPreviewPostTypeIconTint = customThemeWrapper.getNoPreviewPostTypeIconTint();
-            mUpvotedColor = customThemeWrapper.getUpvoted();
-            mDownvotedColor = customThemeWrapper.getDownvoted();
-            mVoteAndReplyUnavailableVoteButtonColor = customThemeWrapper.getVoteAndReplyUnavailableButtonColor();
-            mPostIconAndInfoColor = customThemeWrapper.getPostIconAndInfoColor();
-            mDividerColor = customThemeWrapper.getDividerColor();
-
-            mCommentIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_comment_grey_24dp);
-            if (mCommentIcon != null) {
-                mCommentIcon.setTint(mPostIconAndInfoColor);
-            }
-
-            mScale = resources.getDisplayMetrics().density;
-            mGlide = Glide.with(mActivity);
-            mMaxResolution = Integer.parseInt(mSharedPreferences.getString(SharedPreferencesUtils.POST_FEED_MAX_RESOLUTION, "5000000"));
-            mSaveMemoryCenterInsideDownsampleStrategy = new SaveMemoryCenterInisdeDownsampleStrategy(mMaxResolution);
-            mLocale = locale;
-            mExoCreator = exoCreator;
-            mCallback = callback;
-
-            mGalleryRecycledViewPool = new RecyclerView.RecycledViewPool();
+        mActivity = activity;
+        mFragment = fragment;
+        mSharedPreferences = sharedPreferences;
+        mCurrentAccountSharedPreferences = currentAccountSharedPreferences;
+        mExecutor = executor;
+        mOauthRetrofit = oauthRetrofit;
+        mGfycatRetrofit = gfycatRetrofit;
+        mRedgifsRetrofit = redgifsRetrofit;
+        mStreamableRetrofit = streambleRetrofit;
+        mAccessToken = accessToken;
+        mPostType = postType;
+        mDisplaySubredditName = displaySubredditName;
+        mNeedBlurNsfw = nsfwAndSpoilerSharedPreferences.getBoolean((accountName == null ? "" : accountName) + SharedPreferencesUtils.BLUR_NSFW_BASE, true);
+        mDoNotBlurNsfwInNsfwSubreddits = nsfwAndSpoilerSharedPreferences.getBoolean((accountName == null ? "" : accountName) + SharedPreferencesUtils.DO_NOT_BLUR_NSFW_IN_NSFW_SUBREDDITS, false);
+        mNeedBlurSpoiler = nsfwAndSpoilerSharedPreferences.getBoolean((accountName == null ? "" : accountName) + SharedPreferencesUtils.BLUR_SPOILER_BASE, false);
+        mVoteButtonsOnTheRight = sharedPreferences.getBoolean(SharedPreferencesUtils.VOTE_BUTTONS_ON_THE_RIGHT_KEY, false);
+        mShowElapsedTime = sharedPreferences.getBoolean(SharedPreferencesUtils.SHOW_ELAPSED_TIME_KEY, false);
+        mTimeFormatPattern = sharedPreferences.getString(SharedPreferencesUtils.TIME_FORMAT_KEY, SharedPreferencesUtils.TIME_FORMAT_DEFAULT_VALUE);
+        mShowDividerInCompactLayout = sharedPreferences.getBoolean(SharedPreferencesUtils.SHOW_DIVIDER_IN_COMPACT_LAYOUT, true);
+        mShowAbsoluteNumberOfVotes = sharedPreferences.getBoolean(SharedPreferencesUtils.SHOW_ABSOLUTE_NUMBER_OF_VOTES, true);
+        String autoplayString = sharedPreferences.getString(SharedPreferencesUtils.VIDEO_AUTOPLAY, SharedPreferencesUtils.VIDEO_AUTOPLAY_VALUE_NEVER);
+        int networkType = Utils.getConnectedNetwork(activity);
+        if (autoplayString.equals(SharedPreferencesUtils.VIDEO_AUTOPLAY_VALUE_ALWAYS_ON)) {
+            mAutoplay = true;
+        } else if (autoplayString.equals(SharedPreferencesUtils.VIDEO_AUTOPLAY_VALUE_ON_WIFI)) {
+            mAutoplay = networkType == Utils.NETWORK_TYPE_WIFI;
         }
+        mAutoplayNsfwVideos = sharedPreferences.getBoolean(SharedPreferencesUtils.AUTOPLAY_NSFW_VIDEOS, true);
+        mMuteAutoplayingVideos = sharedPreferences.getBoolean(SharedPreferencesUtils.MUTE_AUTOPLAYING_VIDEOS, true);
+        mShowThumbnailOnTheRightInCompactLayout = sharedPreferences.getBoolean(
+                SharedPreferencesUtils.SHOW_THUMBNAIL_ON_THE_LEFT_IN_COMPACT_LAYOUT, false);
+
+        Resources resources = activity.getResources();
+        mStartAutoplayVisibleAreaOffset = resources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ?
+                sharedPreferences.getInt(SharedPreferencesUtils.START_AUTOPLAY_VISIBLE_AREA_OFFSET_PORTRAIT, 75) / 100.0 :
+                sharedPreferences.getInt(SharedPreferencesUtils.START_AUTOPLAY_VISIBLE_AREA_OFFSET_LANDSCAPE, 50) / 100.0;
+
+        mMuteNSFWVideo = sharedPreferences.getBoolean(SharedPreferencesUtils.MUTE_NSFW_VIDEO, false);
+        mAutomaticallyTryRedgifs = sharedPreferences.getBoolean(SharedPreferencesUtils.AUTOMATICALLY_TRY_REDGIFS, true);
+
+        mLongPressToHideToolbarInCompactLayout = sharedPreferences.getBoolean(SharedPreferencesUtils.LONG_PRESS_TO_HIDE_TOOLBAR_IN_COMPACT_LAYOUT, false);
+        mCompactLayoutToolbarHiddenByDefault = sharedPreferences.getBoolean(SharedPreferencesUtils.POST_COMPACT_LAYOUT_TOOLBAR_HIDDEN_BY_DEFAULT, false);
+
+        String dataSavingModeString = sharedPreferences.getString(SharedPreferencesUtils.DATA_SAVING_MODE, SharedPreferencesUtils.DATA_SAVING_MODE_OFF);
+        if (dataSavingModeString.equals(SharedPreferencesUtils.DATA_SAVING_MODE_ALWAYS)) {
+            mDataSavingMode = true;
+        } else if (dataSavingModeString.equals(SharedPreferencesUtils.DATA_SAVING_MODE_ONLY_ON_CELLULAR_DATA)) {
+            mDataSavingMode = networkType == Utils.NETWORK_TYPE_CELLULAR;
+        }
+        mDisableImagePreview = sharedPreferences.getBoolean(SharedPreferencesUtils.DISABLE_IMAGE_PREVIEW, false);
+        mOnlyDisablePreviewInVideoAndGifPosts = sharedPreferences.getBoolean(SharedPreferencesUtils.ONLY_DISABLE_PREVIEW_IN_VIDEO_AND_GIF_POSTS, false);
+
+        mMarkPostsAsRead = postHistorySharedPreferences.getBoolean((accountName == null ? "" : accountName) + SharedPreferencesUtils.MARK_POSTS_AS_READ_BASE, false);
+        mMarkPostsAsReadAfterVoting = postHistorySharedPreferences.getBoolean((accountName == null ? "" : accountName) + SharedPreferencesUtils.MARK_POSTS_AS_READ_AFTER_VOTING_BASE, false);
+        mMarkPostsAsReadOnScroll = postHistorySharedPreferences.getBoolean((accountName == null ? "" : accountName) + SharedPreferencesUtils.MARK_POSTS_AS_READ_ON_SCROLL_BASE, false);
+
+        mHidePostType = sharedPreferences.getBoolean(SharedPreferencesUtils.HIDE_POST_TYPE, false);
+        mHidePostFlair = sharedPreferences.getBoolean(SharedPreferencesUtils.HIDE_POST_FLAIR, false);
+        mHideTheNumberOfAwards = sharedPreferences.getBoolean(SharedPreferencesUtils.HIDE_THE_NUMBER_OF_AWARDS, false);
+        mHideSubredditAndUserPrefix = sharedPreferences.getBoolean(SharedPreferencesUtils.HIDE_SUBREDDIT_AND_USER_PREFIX, false);
+        mHideTheNumberOfVotes = sharedPreferences.getBoolean(SharedPreferencesUtils.HIDE_THE_NUMBER_OF_VOTES, false);
+        mHideTheNumberOfComments = sharedPreferences.getBoolean(SharedPreferencesUtils.HIDE_THE_NUMBER_OF_COMMENTS, false);
+        mLegacyAutoplayVideoControllerUI = sharedPreferences.getBoolean(SharedPreferencesUtils.LEGACY_AUTOPLAY_VIDEO_CONTROLLER_UI, false);
+        mFixedHeightPreviewInCard = sharedPreferences.getBoolean(SharedPreferencesUtils.FIXED_HEIGHT_PREVIEW_IN_CARD, false);
+        mHideTextPostContent = sharedPreferences.getBoolean(SharedPreferencesUtils.HIDE_TEXT_POST_CONTENT, false);
+        mEasierToWatchInFullScreen = sharedPreferences.getBoolean(SharedPreferencesUtils.EASIER_TO_WATCH_IN_FULL_SCREEN, false);
+
+        mPostLayout = postLayout;
+        mDefaultLinkPostLayout = Integer.parseInt(sharedPreferences.getString(SharedPreferencesUtils.DEFAULT_LINK_POST_LAYOUT_KEY, "-1"));
+
+        mColorAccent = customThemeWrapper.getColorAccent();
+        mCardViewBackgroundColor = customThemeWrapper.getCardViewBackgroundColor();
+        mReadPostCardViewBackgroundColor = customThemeWrapper.getReadPostCardViewBackgroundColor();
+        mPrimaryTextColor = customThemeWrapper.getPrimaryTextColor();
+        mSecondaryTextColor = customThemeWrapper.getSecondaryTextColor();
+        mPostTitleColor = customThemeWrapper.getPostTitleColor();
+        mPostContentColor = customThemeWrapper.getPostContentColor();
+        mReadPostTitleColor = customThemeWrapper.getReadPostTitleColor();
+        mReadPostContentColor = customThemeWrapper.getReadPostContentColor();
+        mStickiedPostIconTint = customThemeWrapper.getStickiedPostIconTint();
+        mPostTypeBackgroundColor = customThemeWrapper.getPostTypeBackgroundColor();
+        mPostTypeTextColor = customThemeWrapper.getPostTypeTextColor();
+        mSubredditColor = customThemeWrapper.getSubreddit();
+        mUsernameColor = customThemeWrapper.getUsername();
+        mSpoilerBackgroundColor = customThemeWrapper.getSpoilerBackgroundColor();
+        mSpoilerTextColor = customThemeWrapper.getSpoilerTextColor();
+        mFlairBackgroundColor = customThemeWrapper.getFlairBackgroundColor();
+        mFlairTextColor = customThemeWrapper.getFlairTextColor();
+        mAwardsBackgroundColor = customThemeWrapper.getAwardsBackgroundColor();
+        mAwardsTextColor = customThemeWrapper.getAwardsTextColor();
+        mNSFWBackgroundColor = customThemeWrapper.getNsfwBackgroundColor();
+        mNSFWTextColor = customThemeWrapper.getNsfwTextColor();
+        mArchivedIconTint = customThemeWrapper.getArchivedIconTint();
+        mLockedIconTint = customThemeWrapper.getLockedIconTint();
+        mCrosspostIconTint = customThemeWrapper.getCrosspostIconTint();
+        mMediaIndicatorIconTint = customThemeWrapper.getMediaIndicatorIconColor();
+        mMediaIndicatorBackgroundColor = customThemeWrapper.getMediaIndicatorBackgroundColor();
+        mNoPreviewPostTypeBackgroundColor = customThemeWrapper.getNoPreviewPostTypeBackgroundColor();
+        mNoPreviewPostTypeIconTint = customThemeWrapper.getNoPreviewPostTypeIconTint();
+        mUpvotedColor = customThemeWrapper.getUpvoted();
+        mDownvotedColor = customThemeWrapper.getDownvoted();
+        mVoteAndReplyUnavailableVoteButtonColor = customThemeWrapper.getVoteAndReplyUnavailableButtonColor();
+        mPostIconAndInfoColor = customThemeWrapper.getPostIconAndInfoColor();
+        mDividerColor = customThemeWrapper.getDividerColor();
+
+        mCommentIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_comment_grey_24dp);
+        if (mCommentIcon != null) {
+            mCommentIcon.setTint(mPostIconAndInfoColor);
+        }
+
+        mScale = resources.getDisplayMetrics().density;
+        mGlide = Glide.with(mActivity);
+        mMaxResolution = Integer.parseInt(mSharedPreferences.getString(SharedPreferencesUtils.POST_FEED_MAX_RESOLUTION, "5000000"));
+        mSaveMemoryCenterInsideDownsampleStrategy = new SaveMemoryCenterInisdeDownsampleStrategy(mMaxResolution);
+        mLocale = locale;
+        mExoCreator = exoCreator;
+        mCallback = callback;
+
+        mGalleryRecycledViewPool = new RecyclerView.RecycledViewPool();
     }
 
     public void setCanStartActivity(boolean canStartActivity) {
