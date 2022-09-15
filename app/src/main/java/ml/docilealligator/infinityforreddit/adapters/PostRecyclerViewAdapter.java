@@ -177,7 +177,6 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
     private final int mAwardsBackgroundColor;
     private final int mAwardsTextColor;
     private final int mNSFWBackgroundColor;
-    private final int mNSFWTextColor;
     private final int mArchivedIconTint;
     private final int mLockedIconTint;
     private final int mCrosspostIconTint;
@@ -331,7 +330,6 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
         mAwardsBackgroundColor = customThemeWrapper.getAwardsBackgroundColor();
         mAwardsTextColor = customThemeWrapper.getAwardsTextColor();
         mNSFWBackgroundColor = customThemeWrapper.getNsfwBackgroundColor();
-        mNSFWTextColor = customThemeWrapper.getNsfwTextColor();
         mArchivedIconTint = customThemeWrapper.getArchivedIconTint();
         mLockedIconTint = customThemeWrapper.getLockedIconTint();
         mCrosspostIconTint = customThemeWrapper.getCrosspostIconTint();
@@ -2300,7 +2298,6 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
             spoilerTextView.setTextColor(mSpoilerTextColor);
             nsfwTextView.setBackgroundColor(mNSFWBackgroundColor);
             nsfwTextView.setBorderColor(mNSFWBackgroundColor);
-            nsfwTextView.setTextColor(mNSFWTextColor);
             flairTextView.setBackgroundColor(mFlairBackgroundColor);
             flairTextView.setBorderColor(mFlairBackgroundColor);
             flairTextView.setTextColor(mFlairTextColor);
@@ -3580,7 +3577,6 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
             spoilerTextView.setTextColor(mSpoilerTextColor);
             nsfwTextView.setBackgroundColor(mNSFWBackgroundColor);
             nsfwTextView.setBorderColor(mNSFWBackgroundColor);
-            nsfwTextView.setTextColor(mNSFWTextColor);
             flairTextView.setBackgroundColor(mFlairBackgroundColor);
             flairTextView.setBorderColor(mFlairBackgroundColor);
             flairTextView.setTextColor(mFlairTextColor);

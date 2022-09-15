@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.libRG.CustomTextView;
+
 import ml.docilealligator.infinityforreddit.BuildConfig;
 import ml.docilealligator.infinityforreddit.R;
 
@@ -39,6 +41,12 @@ public class CustomThemeFactory implements LayoutInflater.Factory2 {
                 }
                 view = createSwipeRefreshLayout(context, attrs);
                 break;
+            case "com.libRG.CustomTextView":
+                if (BuildConfig.DEBUG && view != null) {
+                    throw new IllegalStateException("View " + name + " got inflated by the delegate");
+                }
+                view = new CustomTextView(context, attrs);
+                break;
         }
 
         if (view instanceof TextView) {
@@ -62,6 +70,9 @@ public class CustomThemeFactory implements LayoutInflater.Factory2 {
         switch (res) {
             case R.color.postTitleTextColor:
                 textView.setTextColor(mCustomThemeWrapper.getPostTitleColor());
+                break;
+            case R.color.nsfwTextColor:
+                textView.setTextColor(mCustomThemeWrapper.getNsfwTextColor());
                 break;
         }
     }

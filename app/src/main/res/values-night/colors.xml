@@ -10,4 +10,5 @@
     <color name="primaryTextColor">#FFFFFF</color>
     <color name="dividerColor">#69666c</color>
     <color name="postTitleTextColor">@color/primaryTextColor</color>
+    <color name="nsfwTextColor">@color/primaryTextColor</color>
 </resources>

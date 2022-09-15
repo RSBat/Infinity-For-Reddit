@@ -199,6 +199,7 @@
                 android:fontFamily="?attr/font_family"
                 android:padding="4dp"
                 android:text="@string/nsfw"
+                android:textColor="@color/nsfwTextColor"
                 android:textSize="?attr/font_10"
                 android:visibility="gone"
                 app:lib_setRadius="6dp"

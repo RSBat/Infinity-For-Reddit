@@ -222,6 +222,7 @@ public class PostFragment extends Fragment implements FragmentCommunicator {
     @Inject
     Executor mExecutor;
     private RequestManager mGlide;
+    @Nullable
     private BaseActivity activity;
     private LinearLayoutManagerBugFixed mLinearLayoutManager;
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;

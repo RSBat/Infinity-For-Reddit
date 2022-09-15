@@ -154,6 +154,7 @@
             android:layout_height="wrap_content"
             android:padding="4dp"
             android:text="@string/nsfw"
+            android:textColor="@color/nsfwTextColor"
             android:textSize="?attr/font_12"
             android:fontFamily="?attr/font_family"
             android:visibility="gone"
