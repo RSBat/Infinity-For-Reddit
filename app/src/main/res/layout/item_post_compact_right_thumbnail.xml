@@ -144,7 +144,7 @@
             android:fontFamily="?attr/title_font_family"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:textColor="@color/postTitleTextColor"
+            android:textColor="@color/post_title_text_color"
             android:textSize="?attr/title_font_18"
             app:layout_constraintBottom_toTopOf="@id/flow_layout_item_post_compact_right_thumbnail"
             app:layout_constraintEnd_toEndOf="parent"

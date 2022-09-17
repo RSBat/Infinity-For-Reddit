@@ -68,7 +68,7 @@ public class CustomThemeFactory implements LayoutInflater.Factory2 {
     private void applyTextColor(@NonNull TextView textView, @NonNull AttributeSet attrs) {
         int res = attrs.getAttributeResourceValue("http://schemas.android.com/apk/res/android", "textColor", -1);
         switch (res) {
-            case R.color.postTitleTextColor:
+            case R.color.post_title_text_color:
                 textView.setTextColor(mCustomThemeWrapper.getPostTitleColor());
                 break;
             case R.color.nsfwTextColor:
