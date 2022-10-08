@@ -314,15 +314,8 @@ public class PostFragment extends Fragment implements FragmentCommunicator {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ((Infinity) activity.getApplication()).getAppComponent().inject(this);
-
         // Inflate the layout for this fragment
-        LayoutInflater themedInflater = inflater.cloneInContext(requireContext());// activity);
-        themedInflater.setFactory2(new CustomThemeFactory(activity.getDelegate(), mCustomThemeWrapper));
-//         View rootView = new CustomThemeLayoutInflater(activity, mCustomThemeWrapper)
-//                 .inflate(R.layout.fragment_post, container, false);
-        View rootView = themedInflater.inflate(R.layout.fragment_post, container, false);
-//        LayoutInflater.from(activity);
+        View rootView = inflater.inflate(R.layout.fragment_post, container, false);
 
         unbinder = ButterKnife.bind(this, rootView);
 
@@ -1443,8 +1436,21 @@ public class PostFragment extends Fragment implements FragmentCommunicator {
 
     @Override
     public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
         this.activity = (BaseActivity) context;
+        ((Infinity) activity.getApplication()).getAppComponent().inject(this);
+        super.onAttach(context);
+    }
+
+    @NonNull
+    @Override
+    public LayoutInflater onGetLayoutInflater(@Nullable Bundle savedInstanceState) {
+        LayoutInflater inflater = super.onGetLayoutInflater(savedInstanceState);
+        if (inflater.getFactory2() != null) {
+            inflater = inflater.cloneInContext(activity);
+        }
+        //noinspection ConstantConditions
+        inflater.setFactory2(new CustomThemeFactory(activity.getDelegate(), mCustomThemeWrapper));
+        return inflater;
     }
 
     @Override
