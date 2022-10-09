@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.view.menu.MenuItemImpl;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.os.LocaleListCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -74,25 +75,20 @@ public abstract class BaseActivity extends AppCompatActivity implements CustomFo
 
         SharedPreferences mSharedPreferences = getDefaultSharedPreferences();
 
-        String language = mSharedPreferences.getString(SharedPreferencesUtils.LANGUAGE, SharedPreferencesUtils.LANGUAGE_DEFAULT_VALUE);
-        Locale systemLocale = Resources.getSystem().getConfiguration().locale;
-        Locale locale;
-        if (language.equals(SharedPreferencesUtils.LANGUAGE_DEFAULT_VALUE)) {
-            language = systemLocale.getLanguage();
-            locale = new Locale(language, systemLocale.getCountry());
-        } else {
-            if (language.contains("-")) {
-                locale = new Locale(language.substring(0, 2), language.substring(4));
-            } else {
-                locale = new Locale(language);
-            }
-        }
-        Locale.setDefault(locale);
-        Resources resources = getResources();
-        Configuration config = resources.getConfiguration();
-        config.setLocale(locale);
-        resources.updateConfiguration(config, resources.getDisplayMetrics());
+//        String language = mSharedPreferences.getString(SharedPreferencesUtils.LANGUAGE, SharedPreferencesUtils.LANGUAGE_DEFAULT_VALUE);
+//        Locale systemLocale = Resources.getSystem().getConfiguration().locale;
+//        Locale locale;
+//        if (language.equals(SharedPreferencesUtils.LANGUAGE_DEFAULT_VALUE)) {
+//            locale = systemLocale;
+//        } else {
+//            locale = Locale.forLanguageTag(language);
+//        }
+//        Locale.setDefault(locale);
+//        Resources resources = getResources();
+//        config.setLocale(locale);
+//        resources.updateConfiguration(config, resources.getDisplayMetrics());
 
+        Configuration config = getResources().getConfiguration();
         boolean systemDefault = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
         int systemThemeType = Integer.parseInt(mSharedPreferences.getString(SharedPreferencesUtils.THEME_KEY, "2"));
         immersiveInterface = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&

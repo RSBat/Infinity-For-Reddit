@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.LocaleListCompat;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.SwitchPreference;
@@ -61,7 +63,11 @@ public class MiscellaneousPreferenceFragment extends CustomFontPreferenceFragmen
 
         if (languageListPreference != null) {
             languageListPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                EventBus.getDefault().post(new RecreateActivityEvent());
+                boolean useSystemLocale = SharedPreferencesUtils.LANGUAGE_DEFAULT_VALUE.equals(newValue);
+                LocaleListCompat appLocale = useSystemLocale
+                        ? LocaleListCompat.getEmptyLocaleList()
+                        : LocaleListCompat.forLanguageTags((String) newValue);
+                AppCompatDelegate.setApplicationLocales(appLocale);
                 return true;
             });
         }

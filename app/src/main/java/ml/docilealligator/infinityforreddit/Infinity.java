@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.LocaleListCompat;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
@@ -161,6 +163,22 @@ public class Infinity extends Application implements LifecycleObserver {
         registerReceiver(mNetworkWifiStatusReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
         registerReceiver(new WallpaperChangeReceiver(mSharedPreferences), new IntentFilter(Intent.ACTION_WALLPAPER_CHANGED));
+
+        migrateLocaleStorage();
+    }
+
+    private void migrateLocaleStorage() {
+        if (mSharedPreferences.getBoolean(SharedPreferencesUtils.LANGUAGE_STORAGE_MIGRATED, false)) {
+            return;
+        }
+
+        String language = mSharedPreferences.getString(SharedPreferencesUtils.LANGUAGE, SharedPreferencesUtils.LANGUAGE_DEFAULT_VALUE);
+        if (!language.equals(SharedPreferencesUtils.LANGUAGE_DEFAULT_VALUE)) {
+            LocaleListCompat appLocale = LocaleListCompat.forLanguageTags(language);
+            AppCompatDelegate.setApplicationLocales(appLocale);
+        }
+
+        mSharedPreferences.edit().putBoolean(SharedPreferencesUtils.LANGUAGE_STORAGE_MIGRATED, true).apply();
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
