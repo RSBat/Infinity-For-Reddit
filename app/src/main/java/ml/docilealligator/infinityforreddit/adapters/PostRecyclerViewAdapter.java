@@ -463,8 +463,7 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext()).cloneInContext(parent.getContext());
-        inflater.setFactory2(new CustomThemeFactory(mActivity.getDelegate(), mActivity.customThemeWrapper));
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         if (viewType == VIEW_TYPE_POST_CARD_VIDEO_AUTOPLAY_TYPE) {
             if (mDataSavingMode) {
                 return new PostWithPreviewTypeViewHolder(inflater.inflate(R.layout.item_post_with_preview, parent, false));

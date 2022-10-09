@@ -1441,18 +1441,6 @@ public class PostFragment extends Fragment implements FragmentCommunicator {
         super.onAttach(context);
     }
 
-    @NonNull
-    @Override
-    public LayoutInflater onGetLayoutInflater(@Nullable Bundle savedInstanceState) {
-        LayoutInflater inflater = super.onGetLayoutInflater(savedInstanceState);
-        if (inflater.getFactory2() != null) {
-            inflater = inflater.cloneInContext(activity);
-        }
-        //noinspection ConstantConditions
-        inflater.setFactory2(new CustomThemeFactory(activity.getDelegate(), mCustomThemeWrapper));
-        return inflater;
-    }
-
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);

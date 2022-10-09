@@ -64,6 +64,7 @@ import ml.docilealligator.infinityforreddit.activities.WebViewActivity;
 import ml.docilealligator.infinityforreddit.activities.WikiActivity;
 import ml.docilealligator.infinityforreddit.bottomsheetfragments.AccountChooserBottomSheetFragment;
 import ml.docilealligator.infinityforreddit.bottomsheetfragments.FlairBottomSheetFragment;
+import ml.docilealligator.infinityforreddit.customtheme.CustomThemeWrapper;
 import ml.docilealligator.infinityforreddit.fragments.CommentsListingFragment;
 import ml.docilealligator.infinityforreddit.fragments.FollowedUsersListingFragment;
 import ml.docilealligator.infinityforreddit.fragments.HistoryPostFragment;
@@ -106,6 +107,8 @@ import ml.docilealligator.infinityforreddit.settings.VideoPreferenceFragment;
 @Singleton
 @Component(modules = AppModule.class)
 public interface AppComponent {
+    CustomThemeWrapper getCustomThemeWrapper();
+
     void inject(MainActivity mainActivity);
 
     void inject(LoginActivity loginActivity);

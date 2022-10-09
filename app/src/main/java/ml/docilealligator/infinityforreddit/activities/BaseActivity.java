@@ -15,6 +15,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -42,7 +44,9 @@ import java.util.Locale;
 import ml.docilealligator.infinityforreddit.ActivityToolbarInterface;
 import ml.docilealligator.infinityforreddit.AppBarStateChangeListener;
 import ml.docilealligator.infinityforreddit.CustomFontReceiver;
+import ml.docilealligator.infinityforreddit.Infinity;
 import ml.docilealligator.infinityforreddit.R;
+import ml.docilealligator.infinityforreddit.customtheme.CustomThemeFactory;
 import ml.docilealligator.infinityforreddit.customtheme.CustomThemeWrapper;
 import ml.docilealligator.infinityforreddit.font.ContentFontFamily;
 import ml.docilealligator.infinityforreddit.font.ContentFontStyle;
@@ -66,6 +70,22 @@ public abstract class BaseActivity extends AppCompatActivity implements CustomFo
     public Typeface typeface;
     public Typeface titleTypeface;
     public Typeface contentTypeface;
+
+    private LayoutInflater mThemedInflater = null;
+
+    @Override
+    public Object getSystemService(@NonNull String name) {
+        if (LAYOUT_INFLATER_SERVICE.equals(name)) {
+            if (mThemedInflater == null) {
+                CustomThemeWrapper customThemeWrapper = ((Infinity) getApplicationContext())
+                        .getAppComponent().getCustomThemeWrapper();
+                mThemedInflater = LayoutInflater.from(getBaseContext()).cloneInContext(this);
+                mThemedInflater.setFactory2(new CustomThemeFactory(getDelegate(), customThemeWrapper));
+            }
+            return mThemedInflater;
+        }
+        return super.getSystemService(name);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
