@@ -146,8 +146,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     private int mAwardedCommentBackgroundColor;
     private int[] verticalBlockColors;
 
-    private Drawable mCommentIcon;
-
     private int mSearchCommentIndex = -1;
 
     public CommentsRecyclerViewAdapter(BaseActivity activity, ViewPostDetailFragment fragment,
@@ -267,11 +265,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 customThemeWrapper.getCommentVerticalBarColor6(),
                 customThemeWrapper.getCommentVerticalBarColor7(),
         };
-
-        mCommentIcon = AppCompatResources.getDrawable(activity, R.drawable.ic_comment_grey_24dp);
-        if (mCommentIcon != null) {
-            mCommentIcon.setTint(mPostIconAndInfoColor);
-        }
     }
 
     @Override
