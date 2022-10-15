@@ -471,15 +471,27 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                     case Comment.VOTE_TYPE_UPVOTE:
                         ((CommentViewHolder) holder).upvoteButton
                                 .setColorFilter(mUpvotedColor, PorterDuff.Mode.SRC_IN);
+                        ((CommentViewHolder) holder).downvoteButton
+                                .setColorFilter(mCommentIconAndInfoColor, PorterDuff.Mode.SRC_IN);
                         ((CommentViewHolder) holder).scoreTextView.setTextColor(mUpvotedColor);
                         ((CommentViewHolder) holder).topScoreTextView.setTextColor(mUpvotedColor);
                         break;
                     case Comment.VOTE_TYPE_DOWNVOTE:
+                        ((CommentViewHolder) holder).upvoteButton
+                                .setColorFilter(mCommentIconAndInfoColor, PorterDuff.Mode.SRC_IN);
                         ((CommentViewHolder) holder).downvoteButton
                                 .setColorFilter(mDownvotedColor, PorterDuff.Mode.SRC_IN);
                         ((CommentViewHolder) holder).scoreTextView.setTextColor(mDownvotedColor);
                         ((CommentViewHolder) holder).topScoreTextView.setTextColor(mDownvotedColor);
                         break;
+                    case Comment.VOTE_TYPE_NO_VOTE:
+                        ((CommentViewHolder) holder).upvoteButton
+                                .setColorFilter(mCommentIconAndInfoColor, PorterDuff.Mode.SRC_IN);
+                        ((CommentViewHolder) holder).downvoteButton
+                                .setColorFilter(mCommentIconAndInfoColor, PorterDuff.Mode.SRC_IN);
+                        ((CommentViewHolder) holder).scoreTextView.setTextColor(mCommentIconAndInfoColor);
+                        ((CommentViewHolder) holder).topScoreTextView.setTextColor(mCommentIconAndInfoColor);
+
                 }
 
                 if (mPost.isArchived()) {
@@ -1284,62 +1296,33 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 Comment comment = getCurrentComment(this);
                 if (comment != null) {
                     int previousVoteType = comment.getVoteType();
-                    String newVoteType;
-
-                    downvoteButton.setColorFilter(mCommentIconAndInfoColor, PorterDuff.Mode.SRC_IN);
+                    String newVoteDir;
+                    int newVoteType;
 
                     if (previousVoteType != Comment.VOTE_TYPE_UPVOTE) {
                         //Not upvoted before
-                        comment.setVoteType(Comment.VOTE_TYPE_UPVOTE);
-                        newVoteType = APIUtils.DIR_UPVOTE;
-                        upvoteButton.setColorFilter(mUpvotedColor, PorterDuff.Mode.SRC_IN);
-                        scoreTextView.setTextColor(mUpvotedColor);
-                        topScoreTextView.setTextColor(mUpvotedColor);
+                        newVoteType = Comment.VOTE_TYPE_UPVOTE;
+                        newVoteDir = APIUtils.DIR_UPVOTE;
                     } else {
                         //Upvoted before
-                        comment.setVoteType(Comment.VOTE_TYPE_NO_VOTE);
-                        newVoteType = APIUtils.DIR_UNVOTE;
-                        upvoteButton.setColorFilter(mCommentIconAndInfoColor, PorterDuff.Mode.SRC_IN);
-                        scoreTextView.setTextColor(mCommentIconAndInfoColor);
-                        topScoreTextView.setTextColor(mSecondaryTextColor);
+                        newVoteType = Comment.VOTE_TYPE_NO_VOTE;
+                        newVoteDir = APIUtils.DIR_UNVOTE;
                     }
-
-                    if (!comment.isScoreHidden()) {
-                        scoreTextView.setText(Utils.getNVotes(mShowAbsoluteNumberOfVotes,
-                                comment.getScore() + comment.getVoteType()));
-                        topScoreTextView.setText(mActivity.getString(R.string.top_score,
-                                Utils.getNVotes(mShowAbsoluteNumberOfVotes,
-                                        comment.getScore() + comment.getVoteType())));
-                    }
+                    comment.setVoteType(newVoteType);
+                    notifyItemChanged(getBindingAdapterPosition());
 
                     VoteThing.voteThing(mActivity, mOauthRetrofit, mAccessToken, new VoteThing.VoteThingListener() {
                         @Override
                         public void onVoteThingSuccess(int position) {
-                            int currentPosition = getBindingAdapterPosition();
-                            if (newVoteType.equals(APIUtils.DIR_UPVOTE)) {
-                                comment.setVoteType(Comment.VOTE_TYPE_UPVOTE);
-                                if (currentPosition == position) {
-                                    upvoteButton.setColorFilter(mUpvotedColor, PorterDuff.Mode.SRC_IN);
-                                    scoreTextView.setTextColor(mUpvotedColor);
-                                    topScoreTextView.setTextColor(mUpvotedColor);
-                                }
-                            } else {
-                                comment.setVoteType(Comment.VOTE_TYPE_NO_VOTE);
-                                if (currentPosition == position) {
-                                    upvoteButton.setColorFilter(mCommentIconAndInfoColor, PorterDuff.Mode.SRC_IN);
-                                    scoreTextView.setTextColor(mCommentIconAndInfoColor);
-                                    topScoreTextView.setTextColor(mSecondaryTextColor);
-                                }
-                            }
+                            comment.setVoteType(newVoteType);
 
-                            if (currentPosition == position) {
-                                downvoteButton.setColorFilter(mCommentIconAndInfoColor, PorterDuff.Mode.SRC_IN);
-                                if (!comment.isScoreHidden()) {
-                                    scoreTextView.setText(Utils.getNVotes(mShowAbsoluteNumberOfVotes,
-                                            comment.getScore() + comment.getVoteType()));
-                                    topScoreTextView.setText(mActivity.getString(R.string.top_score,
-                                            Utils.getNVotes(mShowAbsoluteNumberOfVotes,
-                                                    comment.getScore() + comment.getVoteType())));
+                            int positionHint = mIsSingleCommentThreadMode ? getBindingAdapterPosition() - 1 : getBindingAdapterPosition();
+                            int currentPosition = findCommentPositionByFullname(comment.getFullName(), positionHint);
+                            if (currentPosition != -1) {
+                                if (mIsSingleCommentThreadMode) {
+                                    notifyItemChanged(currentPosition + 1);
+                                } else {
+                                    notifyItemChanged(currentPosition);
                                 }
                             }
                         }
@@ -1347,7 +1330,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                         @Override
                         public void onVoteThingFail(int position) {
                         }
-                    }, comment.getFullName(), newVoteType, getBindingAdapterPosition());
+                    }, comment.getFullName(), newVoteDir, getBindingAdapterPosition());
                 }
             });
 
@@ -1365,63 +1348,33 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 Comment comment = getCurrentComment(this);
                 if (comment != null) {
                     int previousVoteType = comment.getVoteType();
-                    String newVoteType;
-
-                    upvoteButton.setColorFilter(mCommentIconAndInfoColor, PorterDuff.Mode.SRC_IN);
+                    String newVoteDir;
+                    int newVoteType;
 
                     if (previousVoteType != Comment.VOTE_TYPE_DOWNVOTE) {
                         //Not downvoted before
-                        comment.setVoteType(Comment.VOTE_TYPE_DOWNVOTE);
-                        newVoteType = APIUtils.DIR_DOWNVOTE;
-                        downvoteButton.setColorFilter(mDownvotedColor, PorterDuff.Mode.SRC_IN);
-                        scoreTextView.setTextColor(mDownvotedColor);
-                        topScoreTextView.setTextColor(mDownvotedColor);
+                        newVoteDir = APIUtils.DIR_DOWNVOTE;
+                        newVoteType = Comment.VOTE_TYPE_DOWNVOTE;
                     } else {
                         //Downvoted before
-                        comment.setVoteType(Comment.VOTE_TYPE_NO_VOTE);
-                        newVoteType = APIUtils.DIR_UNVOTE;
-                        downvoteButton.setColorFilter(mCommentIconAndInfoColor, PorterDuff.Mode.SRC_IN);
-                        scoreTextView.setTextColor(mCommentIconAndInfoColor);
-                        topScoreTextView.setTextColor(mSecondaryTextColor);
+                        newVoteDir = APIUtils.DIR_UNVOTE;
+                        newVoteType = Comment.VOTE_TYPE_NO_VOTE;
                     }
+                    comment.setVoteType(newVoteType);
+                    notifyItemChanged(getBindingAdapterPosition());
 
-                    if (!comment.isScoreHidden()) {
-                        scoreTextView.setText(Utils.getNVotes(mShowAbsoluteNumberOfVotes,
-                                comment.getScore() + comment.getVoteType()));
-                        topScoreTextView.setText(mActivity.getString(R.string.top_score,
-                                Utils.getNVotes(mShowAbsoluteNumberOfVotes,
-                                        comment.getScore() + comment.getVoteType())));
-                    }
-
-                    int position = getBindingAdapterPosition();
                     VoteThing.voteThing(mActivity, mOauthRetrofit, mAccessToken, new VoteThing.VoteThingListener() {
                         @Override
                         public void onVoteThingSuccess(int position1) {
-                            int currentPosition = getBindingAdapterPosition();
-                            if (newVoteType.equals(APIUtils.DIR_DOWNVOTE)) {
-                                comment.setVoteType(Comment.VOTE_TYPE_DOWNVOTE);
-                                if (currentPosition == position) {
-                                    downvoteButton.setColorFilter(mDownvotedColor, PorterDuff.Mode.SRC_IN);
-                                    scoreTextView.setTextColor(mDownvotedColor);
-                                    topScoreTextView.setTextColor(mDownvotedColor);
-                                }
-                            } else {
-                                comment.setVoteType(Comment.VOTE_TYPE_NO_VOTE);
-                                if (currentPosition == position) {
-                                    downvoteButton.setColorFilter(mCommentIconAndInfoColor, PorterDuff.Mode.SRC_IN);
-                                    scoreTextView.setTextColor(mCommentIconAndInfoColor);
-                                    topScoreTextView.setTextColor(mSecondaryTextColor);
-                                }
-                            }
+                            comment.setVoteType(newVoteType);
 
-                            if (currentPosition == position) {
-                                upvoteButton.setColorFilter(mCommentIconAndInfoColor, PorterDuff.Mode.SRC_IN);
-                                if (!comment.isScoreHidden()) {
-                                    scoreTextView.setText(Utils.getNVotes(mShowAbsoluteNumberOfVotes,
-                                            comment.getScore() + comment.getVoteType()));
-                                    topScoreTextView.setText(mActivity.getString(R.string.top_score,
-                                            Utils.getNVotes(mShowAbsoluteNumberOfVotes,
-                                                    comment.getScore() + comment.getVoteType())));
+                            int positionHint = mIsSingleCommentThreadMode ? getBindingAdapterPosition() - 1 : getBindingAdapterPosition();
+                            int currentPosition = findCommentPositionByFullname(comment.getFullName(), positionHint);
+                            if (currentPosition != -1) {
+                                if (mIsSingleCommentThreadMode) {
+                                    notifyItemChanged(currentPosition + 1);
+                                } else {
+                                    notifyItemChanged(currentPosition);
                                 }
                             }
                         }
@@ -1429,7 +1382,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                         @Override
                         public void onVoteThingFail(int position1) {
                         }
-                    }, comment.getFullName(), newVoteType, getBindingAdapterPosition());
+                    }, comment.getFullName(), newVoteDir, getBindingAdapterPosition());
                 }
             });
 
