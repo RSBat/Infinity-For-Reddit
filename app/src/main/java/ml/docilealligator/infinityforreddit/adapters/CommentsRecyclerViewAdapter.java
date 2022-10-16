@@ -26,6 +26,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.recyclerview.widget.AsyncListDiffer;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,6 +39,7 @@ import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.Executor;
 
 import butterknife.BindView;
@@ -86,6 +89,19 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     private static final int VIEW_TYPE_LOAD_MORE_COMMENTS_FAILED = 16;
     private static final int VIEW_TYPE_VIEW_ALL_COMMENTS = 17;
 
+    private final AsyncListDiffer<VisibleComment> asyncListDiffer = new AsyncListDiffer<>(this, new DiffUtil.ItemCallback<VisibleComment>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull VisibleComment oldItem, @NonNull VisibleComment newItem) {
+            return oldItem.fullName.equals(newItem.fullName) && oldItem.placeholderType == newItem.placeholderType;
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull VisibleComment oldItem, @NonNull VisibleComment newItem) {
+            // todo: compare differently based on placeholderType
+            return oldItem.equals(newItem);
+        }
+    });
+
     private BaseActivity mActivity;
     private ViewPostDetailFragment mFragment;
     private Executor mExecutor;
@@ -96,7 +112,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     private String mAccountName;
     private Post mPost;
     private ArrayList<Comment> mComments;
-    private ArrayList<VisibleComment> mVisibleComments = new ArrayList<>();
     private Locale mLocale;
     private RequestManager mGlide;
     private RecyclerView.RecycledViewPool recycledViewPool;
@@ -272,7 +287,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public int getItemViewType(int position) {
-        if (mVisibleComments.size() == 0) {
+        if (asyncListDiffer.getCurrentList().size() == 0) {
             if (isInitiallyLoading) {
                 return VIEW_TYPE_FIRST_LOADING;
             } else if (isInitiallyLoadingFailed) {
@@ -287,7 +302,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 return VIEW_TYPE_VIEW_ALL_COMMENTS;
             }
 
-            if (position == mVisibleComments.size() + 1) {
+            if (position == asyncListDiffer.getCurrentList().size() + 1) {
                 if (mHasMoreComments) {
                     return VIEW_TYPE_IS_LOADING_MORE_COMMENTS;
                 } else {
@@ -295,7 +310,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 }
             }
 
-            VisibleComment comment = mVisibleComments.get(position - 1);
+            VisibleComment comment = asyncListDiffer.getCurrentList().get(position - 1);
             if (comment.getPlaceholderType() == Comment.NOT_PLACEHOLDER) {
                 if (mFullyCollapseComment && !comment.isExpanded() && comment.hasExpandedBefore()) {
                     return VIEW_TYPE_COMMENT_FULLY_COLLAPSED;
@@ -305,7 +320,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 return VIEW_TYPE_LOAD_MORE_CHILD_COMMENTS;
             }
         } else {
-            if (position == mVisibleComments.size()) {
+            if (position == asyncListDiffer.getCurrentList().size()) {
                 if (mHasMoreComments) {
                     return VIEW_TYPE_IS_LOADING_MORE_COMMENTS;
                 } else {
@@ -313,7 +328,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 }
             }
 
-            VisibleComment comment = mVisibleComments.get(position);
+            VisibleComment comment = asyncListDiffer.getCurrentList().get(position);
             if (comment.getPlaceholderType() == Comment.NOT_PLACEHOLDER) {
                 if (mFullyCollapseComment && !comment.isExpanded() && comment.hasExpandedBefore()) {
                     return VIEW_TYPE_COMMENT_FULLY_COLLAPSED;
@@ -796,19 +811,18 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         return mComments;
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private void updateVisibleComments() {
-        mVisibleComments.clear();
+        List<VisibleComment> visibleComments = new ArrayList<>();
         for (Comment comment: mComments) {
             if (comment.getDepth() == 0) {
-                collectVisibleComments(comment, mVisibleComments);
+                collectVisibleComments(comment, visibleComments);
             }
         }
-        if (mVisibleComments.size() != mComments.size()) {
+        if (visibleComments.size() != mComments.size()) {
             Log.e("COMMENT", "Wrong size");
 //            throw new IllegalStateException("Mismatch in comments size");
         }
-        notifyDataSetChanged();
+        asyncListDiffer.submitList(visibleComments);
     }
 
     private void collectVisibleComments(Comment comment, List<VisibleComment> visibleComments) {
@@ -990,22 +1004,22 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public int getItemCount() {
-        if (isInitiallyLoading || isInitiallyLoadingFailed || mVisibleComments.size() == 0) {
+        if (isInitiallyLoading || isInitiallyLoadingFailed || asyncListDiffer.getCurrentList().size() == 0) {
             return 1;
         }
 
         if (mHasMoreComments || loadMoreCommentsFailed) {
             if (mIsSingleCommentThreadMode) {
-                return mVisibleComments.size() + 2;
+                return asyncListDiffer.getCurrentList().size() + 2;
             } else {
-                return mVisibleComments.size() + 1;
+                return asyncListDiffer.getCurrentList().size() + 1;
             }
         }
 
         if (mIsSingleCommentThreadMode) {
-            return mVisibleComments.size() + 1;
+            return asyncListDiffer.getCurrentList().size() + 1;
         } else {
-            return mVisibleComments.size();
+            return asyncListDiffer.getCurrentList().size();
         }
     }
 
@@ -1483,11 +1497,11 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     private VisibleComment getCurrentVisibleComment(int bindingAdapterPosition) {
         if (mIsSingleCommentThreadMode) {
             if (bindingAdapterPosition - 1 >= 0 && bindingAdapterPosition - 1 < mComments.size()) {
-                return mVisibleComments.get(bindingAdapterPosition - 1);
+                return asyncListDiffer.getCurrentList().get(bindingAdapterPosition - 1);
             }
         } else {
             if (bindingAdapterPosition >= 0 && bindingAdapterPosition < mComments.size()) {
-                return mVisibleComments.get(bindingAdapterPosition);
+                return asyncListDiffer.getCurrentList().get(bindingAdapterPosition);
             }
         }
 
@@ -1815,6 +1829,19 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
         public boolean isLoadMoreChildrenFailed() {
             return loadMoreChildrenFailed;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            VisibleComment that = (VisibleComment) o;
+            return placeholderType == that.placeholderType && expanded == that.expanded && hasExpandedBefore == that.hasExpandedBefore && submitter == that.submitter && moderator == that.moderator && commentTimeMillis == that.commentTimeMillis && score == that.score && voteType == that.voteType && depth == that.depth && hasReply == that.hasReply && childCount == that.childCount && saved == that.saved && loadingMoreChildren == that.loadingMoreChildren && loadMoreChildrenFailed == that.loadMoreChildrenFailed && Objects.equals(id, that.id) && Objects.equals(awards, that.awards) && Objects.equals(author, that.author) && Objects.equals(authorFlairHTML, that.authorFlairHTML) && Objects.equals(authorFlair, that.authorFlair) && Objects.equals(authorIconUrl, that.authorIconUrl) && Objects.equals(fullName, that.fullName) && Objects.equals(commentMarkdown, that.commentMarkdown);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(placeholderType, expanded, hasExpandedBefore, id, awards, author, authorFlairHTML, authorFlair, submitter, moderator, authorIconUrl, fullName, commentTimeMillis, commentMarkdown, score, voteType, depth, hasReply, childCount, saved, loadingMoreChildren, loadMoreChildrenFailed);
         }
     }
 }
