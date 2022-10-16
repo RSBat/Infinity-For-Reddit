@@ -17,6 +17,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -841,7 +842,7 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
 
     public void searchComment(String query, boolean searchNextComment) {
         if (mCommentsAdapter != null) {
-            ArrayList<Comment> visibleComments = mCommentsAdapter.getVisibleComments();
+            ArrayList<Comment> visibleComments = mCommentsAdapter.getComments();
             int currentSearchIndex = mCommentsAdapter.getSearchCommentIndex();
             if (currentSearchIndex >= 0) {
                 mCommentsAdapter.notifyItemChanged(currentSearchIndex);
@@ -853,7 +854,6 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
                                 visibleComments.get(i).getCommentRawText().toLowerCase().contains(query.toLowerCase())) {
                             if (mCommentsAdapter != null) {
                                 mCommentsAdapter.highlightSearchResult(i);
-                                mCommentsAdapter.notifyItemChanged(i);
                                 if (mCommentsRecyclerView == null) {
                                     mRecyclerView.scrollToPosition(i + 1);
                                 } else {
@@ -871,7 +871,6 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
                                 visibleComments.get(i).getCommentRawText().toLowerCase().contains(query.toLowerCase())) {
                             if (mCommentsAdapter != null) {
                                 mCommentsAdapter.highlightSearchResult(i);
-                                mCommentsAdapter.notifyItemChanged(i);
                                 if (mCommentsRecyclerView == null) {
                                     mRecyclerView.scrollToPosition(i + 1);
                                 } else {
@@ -896,7 +895,9 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
 
     public void loadIcon(String authorName, LoadIconListener loadIconListener) {
         if (activity.authorIcons.containsKey(authorName)) {
-            loadIconListener.loadIconSuccess(authorName, activity.authorIcons.get(authorName));
+            new Handler(Looper.getMainLooper()).post(() ->
+                loadIconListener.loadIconSuccess(authorName, activity.authorIcons.get(authorName))
+            );
         } else {
             LoadUserData.loadUserData(mExecutor, new Handler(), mRedditDataRoomDatabase, authorName,
                     mRetrofit, iconImageUrl -> {
@@ -1207,12 +1208,12 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        comments = mCommentsAdapter == null ? null : mCommentsAdapter.getVisibleComments();
+        comments = mCommentsAdapter == null ? null : mCommentsAdapter.getComments();
         if (mCommentsRecyclerView != null) {
             //scrollpositionn = mcommentsadapter.getPosition()
             LinearLayoutManager myLayoutManager = (LinearLayoutManager) mCommentsRecyclerView.getLayoutManager();
             scrollPosition = myLayoutManager != null ? myLayoutManager.findFirstVisibleItemPosition() : 0;
-            
+
         } else {
             //scrollposition = mrecyclerviewadapter.getposition()
             LinearLayoutManager myLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
