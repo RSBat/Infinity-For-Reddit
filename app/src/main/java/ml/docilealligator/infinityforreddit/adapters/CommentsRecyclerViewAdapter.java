@@ -1717,6 +1717,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         private final boolean saved;
         private final boolean loadingMoreChildren;
         private final boolean loadMoreChildrenFailed;
+        private boolean scoreHidden;
 
         VisibleComment(Comment comment) {
             placeholderType = comment.getPlaceholderType();
@@ -1741,6 +1742,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             saved = comment.isSaved();
             loadingMoreChildren = comment.isLoadingMoreChildren();
             loadMoreChildrenFailed = comment.isLoadMoreChildrenFailed();
+            scoreHidden = comment.isScoreHidden();
         }
 
         public int getPlaceholderType() {
@@ -1836,12 +1838,16 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             VisibleComment that = (VisibleComment) o;
-            return placeholderType == that.placeholderType && expanded == that.expanded && hasExpandedBefore == that.hasExpandedBefore && submitter == that.submitter && moderator == that.moderator && commentTimeMillis == that.commentTimeMillis && score == that.score && voteType == that.voteType && depth == that.depth && hasReply == that.hasReply && childCount == that.childCount && saved == that.saved && loadingMoreChildren == that.loadingMoreChildren && loadMoreChildrenFailed == that.loadMoreChildrenFailed && Objects.equals(id, that.id) && Objects.equals(awards, that.awards) && Objects.equals(author, that.author) && Objects.equals(authorFlairHTML, that.authorFlairHTML) && Objects.equals(authorFlair, that.authorFlair) && Objects.equals(authorIconUrl, that.authorIconUrl) && Objects.equals(fullName, that.fullName) && Objects.equals(commentMarkdown, that.commentMarkdown);
+            return placeholderType == that.placeholderType && expanded == that.expanded && hasExpandedBefore == that.hasExpandedBefore && submitter == that.submitter && moderator == that.moderator && commentTimeMillis == that.commentTimeMillis && score == that.score && voteType == that.voteType && depth == that.depth && hasReply == that.hasReply && childCount == that.childCount && saved == that.saved && loadingMoreChildren == that.loadingMoreChildren && loadMoreChildrenFailed == that.loadMoreChildrenFailed && Objects.equals(id, that.id) && Objects.equals(awards, that.awards) && Objects.equals(author, that.author) && Objects.equals(authorFlairHTML, that.authorFlairHTML) && Objects.equals(authorFlair, that.authorFlair) && Objects.equals(authorIconUrl, that.authorIconUrl) && Objects.equals(fullName, that.fullName) && Objects.equals(commentMarkdown, that.commentMarkdown) && scoreHidden == that.scoreHidden;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(placeholderType, expanded, hasExpandedBefore, id, awards, author, authorFlairHTML, authorFlair, submitter, moderator, authorIconUrl, fullName, commentTimeMillis, commentMarkdown, score, voteType, depth, hasReply, childCount, saved, loadingMoreChildren, loadMoreChildrenFailed);
+            return Objects.hash(placeholderType, expanded, hasExpandedBefore, id, awards, author, authorFlairHTML, authorFlair, submitter, moderator, authorIconUrl, fullName, commentTimeMillis, commentMarkdown, score, voteType, depth, hasReply, childCount, saved, loadingMoreChildren, loadMoreChildrenFailed, scoreHidden);
+        }
+
+        public boolean isScoreHidden() {
+            return scoreHidden;
         }
     }
 }
