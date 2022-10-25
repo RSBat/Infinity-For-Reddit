@@ -13,25 +13,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ml.docilealligator.infinityforreddit.account.Account;
+import ml.docilealligator.infinityforreddit.account.AccountDao;
 import ml.docilealligator.infinityforreddit.apis.RedditAPI;
 import ml.docilealligator.infinityforreddit.utils.APIUtils;
 import ml.docilealligator.infinityforreddit.utils.SharedPreferencesUtils;
 import okhttp3.Authenticator;
 import okhttp3.Headers;
+import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.Route;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 
-class AccessTokenAuthenticator implements Authenticator {
-    private Retrofit mRetrofit;
-    private RedditDataRoomDatabase mRedditDataRoomDatabase;
-    private SharedPreferences mCurrentAccountSharedPreferences;
+class AccessTokenAuthenticator implements Authenticator, Interceptor {
+    private final Retrofit mRetrofit;
+    // maybe this should be a Provider<AccountDao>
+    private final AccountDao mAccountDao;
+    private final SharedPreferences mCurrentAccountSharedPreferences;
 
     AccessTokenAuthenticator(Retrofit retrofit, RedditDataRoomDatabase accountRoomDatabase, SharedPreferences currentAccountSharedPreferences) {
         mRetrofit = retrofit;
-        mRedditDataRoomDatabase = accountRoomDatabase;
+        mAccountDao = accountRoomDatabase.accountDao();
         mCurrentAccountSharedPreferences = currentAccountSharedPreferences;
     }
 
@@ -46,7 +49,11 @@ class AccessTokenAuthenticator implements Authenticator {
 
             String accessToken = accessTokenHeader.substring(APIUtils.AUTHORIZATION_BASE.length());
             synchronized (this) {
-                Account account = mRedditDataRoomDatabase.accountDao().getCurrentAccount();
+                String accountNameTag = response.request().tag(String.class);
+                if (accountNameTag == null || accountNameTag.equals("-")) {
+                    return null;
+                }
+                Account account = mAccountDao.getAccountData(accountNameTag);
                 if (account == null) {
                     return null;
                 }
@@ -67,7 +74,7 @@ class AccessTokenAuthenticator implements Authenticator {
     }
 
     private String refreshAccessToken(Account account) {
-        String refreshToken = mRedditDataRoomDatabase.accountDao().getCurrentAccount().getRefreshToken();
+        String refreshToken = mAccountDao.getCurrentAccount().getRefreshToken();
 
         RedditAPI api = mRetrofit.create(RedditAPI.class);
 
@@ -83,9 +90,9 @@ class AccessTokenAuthenticator implements Authenticator {
                 String newAccessToken = jsonObject.getString(APIUtils.ACCESS_TOKEN_KEY);
                 String newRefreshToken = jsonObject.has(APIUtils.REFRESH_TOKEN_KEY) ? jsonObject.getString(APIUtils.REFRESH_TOKEN_KEY) : null;
                 if (newRefreshToken == null) {
-                    mRedditDataRoomDatabase.accountDao().updateAccessToken(account.getAccountName(), newAccessToken);
+                    mAccountDao.updateAccessToken(account.getAccountName(), newAccessToken);
                 } else {
-                    mRedditDataRoomDatabase.accountDao().updateAccessTokenAndRefreshToken(account.getAccountName(), newAccessToken, newRefreshToken);
+                    mAccountDao.updateAccessTokenAndRefreshToken(account.getAccountName(), newAccessToken, newRefreshToken);
                 }
                 if (mCurrentAccountSharedPreferences.getString(SharedPreferencesUtils.ACCOUNT_NAME, "").equals(account.getAccountName())) {
                     mCurrentAccountSharedPreferences.edit().putString(SharedPreferencesUtils.ACCESS_TOKEN, newAccessToken).apply();
@@ -99,5 +106,21 @@ class AccessTokenAuthenticator implements Authenticator {
         }
 
         return "";
+    }
+
+    @NonNull
+    @Override
+    public Response intercept(@NonNull Chain chain) throws IOException {
+        Request request = chain.request();
+        String accountNameTag = request.tag(String.class);
+        if (accountNameTag != null && !accountNameTag.equals("-")) {
+            // this needs benchmarking
+            Account account = mAccountDao.getAccountData(accountNameTag);
+            request = request.newBuilder()
+                    .header(APIUtils.AUTHORIZATION_KEY, APIUtils.AUTHORIZATION_BASE + account.getAccessToken())
+                    .header(APIUtils.USER_AGENT_KEY, APIUtils.USER_AGENT)
+                    .build();
+        }
+        return chain.proceed(request);
     }
 }

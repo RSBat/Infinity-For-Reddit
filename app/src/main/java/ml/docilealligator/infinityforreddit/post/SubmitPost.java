@@ -215,23 +215,24 @@ public class SubmitPost {
 
             RedditAPI api = oauthRetrofit.create(RedditAPI.class);
 
-            Call<String> getPostCall = api.getPostOauth(postId, APIUtils.getOAuthHeader(accessToken));
-            Response<String> getPostCallResponse = getPostCall.execute();
-            if (getPostCallResponse.isSuccessful()) {
-                ParsePost.parsePost(executor, handler, getPostCallResponse.body(), new ParsePost.ParsePostListener() {
-                    @Override
-                    public void onParsePostSuccess(Post post) {
-                        submitPostListener.submitSuccessful(post);
-                    }
-
-                    @Override
-                    public void onParsePostFail() {
-                        submitPostListener.submitFailed(null);
-                    }
-                });
-            } else {
-                submitPostListener.submitFailed(getPostCallResponse.message());
-            }
+            throw new IllegalArgumentException("account name");
+//            Call<String> getPostCall = api.getPostOauth(postId, null);
+//            Response<String> getPostCallResponse = getPostCall.execute();
+//            if (getPostCallResponse.isSuccessful()) {
+//                ParsePost.parsePost(executor, handler, getPostCallResponse.body(), new ParsePost.ParsePostListener() {
+//                    @Override
+//                    public void onParsePostSuccess(Post post) {
+//                        submitPostListener.submitSuccessful(post);
+//                    }
+//
+//                    @Override
+//                    public void onParsePostFail() {
+//                        submitPostListener.submitFailed(null);
+//                    }
+//                });
+//            } else {
+//                submitPostListener.submitFailed(getPostCallResponse.message());
+//            }
         } else {
             submitPostListener.submitSuccessful(null);
         }

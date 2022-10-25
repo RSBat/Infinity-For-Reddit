@@ -212,7 +212,9 @@ class AppModule {
     OkHttpClient provideOkHttpClient(@Named("no_oauth") Retrofit retrofit, RedditDataRoomDatabase accountRoomDatabase,
                                      @Named("current_account") SharedPreferences currentAccountSharedPreferences) {
         OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
-        okHttpClientBuilder.authenticator(new AccessTokenAuthenticator(retrofit, accountRoomDatabase, currentAccountSharedPreferences))
+        AccessTokenAuthenticator authenticator = new AccessTokenAuthenticator(retrofit, accountRoomDatabase, currentAccountSharedPreferences);
+        okHttpClientBuilder.authenticator(authenticator)
+                .addInterceptor(authenticator)
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)

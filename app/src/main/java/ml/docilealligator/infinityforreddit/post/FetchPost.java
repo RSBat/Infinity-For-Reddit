@@ -14,13 +14,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class FetchPost {
-    public static void fetchPost(Executor executor, Handler handler, Retrofit retrofit, String id, String accessToken,
+    public static void fetchPost(Executor executor, Handler handler, Retrofit retrofit, String id, String accountName,
                                  FetchPostListener fetchPostListener) {
         Call<String> postCall;
-        if (accessToken == null) {
+        if (accountName == null || accountName.equals("-")) {
             postCall = retrofit.create(RedditAPI.class).getPost(id);
         } else {
-            postCall = retrofit.create(RedditAPI.class).getPostOauth(id, APIUtils.getOAuthHeader(accessToken));
+            postCall = retrofit.create(RedditAPI.class).getPostOauth(id, accountName);
         }
         postCall.enqueue(new Callback<>() {
             @Override

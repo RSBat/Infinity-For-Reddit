@@ -23,6 +23,7 @@ import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Tag;
 
 public interface RedditAPI {
     @FormUrlEncoded
@@ -46,7 +47,7 @@ public interface RedditAPI {
     Call<String> voteThing(@HeaderMap Map<String, String> headers, @FieldMap Map<String, String> params);
 
     @GET("comments/{id}.json?raw_json=1")
-    Call<String> getPostOauth(@Path("id") String id, @HeaderMap Map<String, String> headers);
+    Call<String> getPostOauth(@Path("id") String id, @Tag String accountName);
 
     @GET("comments/{id}.json?raw_json=1")
     Call<String> getPost(@Path("id") String id);
