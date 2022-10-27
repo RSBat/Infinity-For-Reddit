@@ -98,7 +98,15 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         @Override
         public boolean areContentsTheSame(@NonNull VisibleComment oldItem, @NonNull VisibleComment newItem) {
             // todo: compare differently based on placeholderType
-            return oldItem.equals(newItem);
+            if (oldItem.placeholderType == Comment.NOT_PLACEHOLDER) {
+                return oldItem.equals(newItem);
+            } else if (oldItem.placeholderType == Comment.PLACEHOLDER_LOAD_MORE_COMMENTS) {
+                return oldItem.equals(newItem);
+            } else if (oldItem.placeholderType == Comment.PLACEHOLDER_CONTINUE_THREAD) {
+                return oldItem.equals(newItem);
+            } else {
+                throw new IllegalStateException("Illegal placeholder type");
+            }
         }
     });
 
