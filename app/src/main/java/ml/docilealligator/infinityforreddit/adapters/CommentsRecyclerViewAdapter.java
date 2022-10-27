@@ -283,6 +283,38 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 customThemeWrapper.getCommentVerticalBarColor6(),
                 customThemeWrapper.getCommentVerticalBarColor7(),
         };
+
+        registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                Log.d("COMMENT_CHANGE", "onChanged");
+            }
+
+            @Override
+            public void onItemRangeChanged(int positionStart, int itemCount) {
+                Log.d("COMMENT_CHANGE", "onItemRangeChanged " + positionStart + " " + itemCount);
+            }
+
+            @Override
+            public void onItemRangeChanged(int positionStart, int itemCount, @Nullable Object payload) {
+                Log.d("COMMENT_CHANGE", "onItemRangeChanged " + positionStart + " " + itemCount + " payload");
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                Log.d("COMMENT_CHANGE", "onItemRangeInserted " + positionStart + " " + itemCount);
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                Log.d("COMMENT_CHANGE", "onItemRangeRemoved " + positionStart + " " + itemCount);
+            }
+
+            @Override
+            public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+                Log.d("COMMENT_CHANGE", "onItemRangeMoved " + fromPosition + " " + toPosition + " " + itemCount);
+            }
+        });
     }
 
     @Override
