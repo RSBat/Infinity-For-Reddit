@@ -22,6 +22,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.IntRange;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -339,14 +341,28 @@ public abstract class BaseActivity extends AppCompatActivity implements CustomFo
         }
     }
 
+    @ColorInt
+    private int withAlpha(@ColorInt int color, @IntRange(from=0, to=255) int alpha) {
+        return (alpha << 24) | (color & 0x00FFFFFF);
+    }
+
+
     @SuppressLint("RestrictedApi")
     protected boolean applyMenuItemTheme(Menu menu) {
         if (customThemeWrapper != null) {
+            int color = withAlpha(customThemeWrapper.getToolbarPrimaryTextAndIconColor(), 255);
+            int disabledColor = withAlpha(color, 130);
+            ColorStateList csl = new ColorStateList(
+                    new int[][] {
+                            { -android.R.attr.state_enabled },
+                            {}
+                    },
+                    new int[] { disabledColor, color }
+            );
             for (int i = 0; i < menu.size(); i++) {
                 MenuItem item = menu.getItem(i);
                 if (((MenuItemImpl) item).requestsActionButton()) {
-                    MenuItemCompat.setIconTintList(item, ColorStateList
-                            .valueOf(customThemeWrapper.getToolbarPrimaryTextAndIconColor()));
+                    MenuItemCompat.setIconTintList(item, csl);
                 }
                 Utils.setTitleWithCustomFontToMenuItem(typeface, item, null);
             }

@@ -1085,7 +1085,8 @@ public class MainActivity extends BaseActivity implements SortTypeSelectionCallb
             startActivity(intent);
             return true;
         } else if (itemId == R.id.action_sort_main_activity) {
-            changeSortType();
+//            changeSortType();
+            item.setEnabled(!item.isEnabled());
             return true;
         } else if (itemId == R.id.action_refresh_main_activity) {
             sectionsPagerAdapter.refresh();
