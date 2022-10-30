@@ -769,7 +769,9 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
 
         for (int i = 0; i < mComments.size(); i++) {
-            if (fullname.equals(mComments.get(i).getFullName())) {
+            Comment comment = mComments.get(i);
+            if (fullname.equals(comment.getFullName())
+                    && comment.getPlaceholderType() == placeholderType) {
                 return i;
             }
         }
