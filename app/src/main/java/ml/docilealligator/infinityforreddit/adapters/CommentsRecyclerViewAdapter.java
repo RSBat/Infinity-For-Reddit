@@ -1,6 +1,5 @@
 package ml.docilealligator.infinityforreddit.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -107,6 +106,40 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             } else {
                 throw new IllegalStateException("Illegal placeholder type");
             }
+        }
+
+        @Nullable
+        @Override
+        public Object getChangePayload(@NonNull VisibleComment oldItem, @NonNull VisibleComment newItem) {
+            if (oldItem.expanded != newItem.expanded
+                    || oldItem.hasExpandedBefore != newItem.hasExpandedBefore
+                    || oldItem.submitter != newItem.submitter
+                    || oldItem.moderator != newItem.moderator
+                    || oldItem.commentTimeMillis != newItem.commentTimeMillis
+                    || oldItem.score != newItem.score
+                    || oldItem.voteType != newItem.voteType
+                    || oldItem.depth != newItem.depth
+                    || oldItem.hasReply != newItem.hasReply
+                    || oldItem.childCount != newItem.childCount
+                    || oldItem.saved != newItem.saved
+                    || oldItem.loadingMoreChildren != newItem.loadingMoreChildren
+                    || oldItem.loadMoreChildrenFailed != newItem.loadMoreChildrenFailed
+                    || !Objects.equals(oldItem.id, newItem.id)
+                    || !Objects.equals(oldItem.awards, newItem.awards)
+                    || !Objects.equals(oldItem.author, newItem.author)
+                    || !Objects.equals(oldItem.authorFlairHTML, newItem.authorFlairHTML)
+                    || !Objects.equals(oldItem.authorFlair, newItem.authorFlair)
+                    || !Objects.equals(oldItem.fullName, newItem.fullName)
+                    || !Objects.equals(oldItem.commentMarkdown, newItem.commentMarkdown)) {
+                return null;
+            }
+
+            // todo: change to flags object
+            if (!Objects.equals(oldItem.authorIconUrl, newItem.authorIconUrl)) {
+                return newItem.authorIconUrl;
+            }
+
+            return super.getChangePayload(oldItem, newItem);
         }
     });
 
@@ -402,6 +435,31 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 return new LoadMoreCommentsFailedViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_comment_footer_error, parent, false));
             default:
                 return new ViewAllCommentsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_all_comments, parent, false));
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder untypedHolder, int position, @NonNull List<Object> payloads) {
+        if (!payloads.isEmpty()) {
+            if (untypedHolder instanceof CommentViewHolder) {
+                CommentViewHolder holder = (CommentViewHolder) untypedHolder;
+                VisibleComment comment = getCurrentVisibleComment(position);
+                mGlide.load(Objects.requireNonNull(comment).getAuthorIconUrl())
+                        .apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(72, 0)))
+                        .error(mGlide.load(R.drawable.subreddit_default_icon)
+                                .apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(72, 0))))
+                        .into(holder.authorIconImageView);
+            } else if (untypedHolder instanceof CommentFullyCollapsedViewHolder) {
+                CommentFullyCollapsedViewHolder holder = (CommentFullyCollapsedViewHolder) untypedHolder;
+                VisibleComment comment = getCurrentVisibleComment(position);
+                mGlide.load(Objects.requireNonNull(comment).getAuthorIconUrl())
+                        .apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(72, 0)))
+                        .error(mGlide.load(R.drawable.subreddit_default_icon)
+                                .apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(72, 0))))
+                        .into(holder.authorIconImageView);
+            }
+        } else {
+            super.onBindViewHolder(untypedHolder, position, payloads);
         }
     }
 
@@ -1762,7 +1820,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         private final boolean saved;
         private final boolean loadingMoreChildren;
         private final boolean loadMoreChildrenFailed;
-        private boolean scoreHidden;
+        private final boolean scoreHidden;
 
         VisibleComment(Comment comment) {
             placeholderType = comment.getPlaceholderType();
