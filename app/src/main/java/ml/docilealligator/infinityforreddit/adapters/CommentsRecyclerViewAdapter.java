@@ -738,7 +738,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                                         }
 
                                         if (parentCurrentComment.isExpanded()) {
-                                            Comment placeholderComment = findLoadMorePlaceholderByFullname(parentComment.getFullName(), 0);
+                                            Comment placeholderComment = findLoadMorePlaceholderByFullname(parentComment.getFullName());
                                             if (placeholderComment == null) {
                                                 throw new IllegalStateException("Cannot find placeholder");
                                             }
@@ -759,9 +759,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
                                                 removeCommentByFullname(parentComment.getFullName(), 0, Comment.PLACEHOLDER_LOAD_MORE_COMMENTS);
                                             }
-
-                                            int placeholderPosition = findLoadMorePlaceholderPositionByFullname(parentComment.getFullName(), 0);
-                                            mComments.addAll(placeholderPosition, expandedComments);
                                         } else {
                                             if (parentCurrentComment.hasReply() && parentCurrentComment.getChildren().size() <= childrenStartingIndex) {
                                                 parentCurrentComment.getChildren()
@@ -779,7 +776,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                                         Comment parentCurrentComment = findCommentByFullname(parentComment.getFullName(), 0);
                                         if (parentCurrentComment != null) {
                                             if (parentCurrentComment.isExpanded()) {
-                                                Comment placeholderComment = findLoadMorePlaceholderByFullname(parentCurrentComment.getFullName(), 0);
+                                                Comment placeholderComment = findLoadMorePlaceholderByFullname(parentCurrentComment.getFullName());
 
                                                 if (placeholderComment != null) {
                                                     placeholderComment.setLoadingMoreChildren(false);
@@ -821,7 +818,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     @Nullable
-    private Comment findLoadMorePlaceholderByFullname(@NonNull String fullname, int positionHint) {
+    private Comment findLoadMorePlaceholderByFullname(@NonNull String fullname) {
         return findCommentByFullnameRecursively(mComments, fullname, Comment.PLACEHOLDER_LOAD_MORE_COMMENTS);
     }
 
@@ -841,29 +838,23 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         return null;
     }
 
-    private int findLoadMorePlaceholderPositionByFullname(@NonNull String fullname, int positionHint) {
-        return findCommentPositionByFullname(fullname, positionHint, Comment.PLACEHOLDER_LOAD_MORE_COMMENTS);
-    }
-
-    private int findCommentPositionByFullname(@NonNull String fullname, int positionHint, int placeholderType) {
-        if (positionHint >= 0 && positionHint < mComments.size()
-                && fullname.equals(mComments.get(positionHint).getFullName())
-                && mComments.get(positionHint).getPlaceholderType() == placeholderType) {
-            return positionHint;
+    private void removeCommentByFullname(@NonNull String fullname, int positionHint, int placeholderType) {
+        Comment comment = findCommentByFullnameRecursively(mComments, fullname, placeholderType);
+        if (comment == null) {
+            return; // nothing to delete
         }
 
-        for (int i = 0; i < mComments.size(); i++) {
-            Comment comment = mComments.get(i);
-            if (fullname.equals(comment.getFullName())
-                    && comment.getPlaceholderType() == placeholderType) {
-                return i;
+        Comment parentComment = findCommentByFullname("t3_" + comment.getParentId(), 0);
+        if (parentComment != null) {
+            for (Iterator<Comment> it = parentComment.getChildren().iterator(); it.hasNext(); /* noop */) {
+                Comment tmp = it.next();
+                if (fullname.equals(tmp.getFullName())
+                        && tmp.getPlaceholderType() == placeholderType) {
+                    it.remove();
+                }
             }
         }
 
-        return -1;
-    }
-
-    private void removeCommentByFullname(@NonNull String fullname, int positionHint, int placeholderType) {
         if (positionHint >= 0 && positionHint < mComments.size()
                 && fullname.equals(mComments.get(positionHint).getFullName())
                 && mComments.get(positionHint).getPlaceholderType() == placeholderType) {
@@ -871,40 +862,12 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
 
         for (Iterator<Comment> it = mComments.iterator(); it.hasNext(); /* noop */) {
-            Comment comment = it.next();
-            if (fullname.equals(comment.getFullName())
-                    && comment.getPlaceholderType() == placeholderType) {
+            Comment tmp = it.next();
+            if (fullname.equals(tmp.getFullName())
+                    && tmp.getPlaceholderType() == placeholderType) {
                 it.remove();
             }
         }
-    }
-
-    private void expandChildren(ArrayList<Comment> comments, ArrayList<Comment> newList) {
-        if (comments != null && comments.size() > 0) {
-            for (Comment comment : comments) {
-                newList.add(comment);
-                expandChildren(comment.getChildren(), newList);
-                comment.setExpanded(true);
-            }
-        }
-    }
-
-    private void collapseChildren(int position) {
-        mComments.get(position).setExpanded(false);
-        int depth = mComments.get(position).getDepth();
-        int allChildrenSize = 0;
-        for (int i = position + 1; i < mComments.size(); i++) {
-            if (mComments.get(i).getDepth() > depth) {
-                allChildrenSize++;
-            } else {
-                break;
-            }
-        }
-
-        if (allChildrenSize > 0) {
-            mComments.subList(position + 1, position + 1 + allChildrenSize).clear();
-        }
-        updateVisibleComments();
     }
 
     public void addComments(@NonNull ArrayList<Comment> comments, boolean hasMoreComments) {
@@ -925,16 +888,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     public void addChildComment(Comment comment, String parentFullname, int parentPosition) {
-        if (!parentFullname.equals(mComments.get(parentPosition).getFullName())) {
-            for (int i = 0; i < mComments.size(); i++) {
-                if (parentFullname.equals(mComments.get(i).getFullName())) {
-                    parentPosition = i;
-                    break;
-                }
-            }
-        }
-
-        Comment parentComment = findCommentByFullname(parentFullname, parentPosition);
+        Comment parentComment = findCommentByFullname(parentFullname, 0);
         if (parentComment == null) {
             throw new IllegalStateException("Trying to add child to non existent parent");
         }
@@ -943,11 +897,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         parentComment.setHasReply(true);
         if (!parentComment.isExpanded()) {
             parentComment.setExpanded(true);
-            ArrayList<Comment> newList = new ArrayList<>();
-            expandChildren(parentComment.getChildren(), newList);
-            mComments.addAll(parentPosition + 1, newList);
-        } else {
-            mComments.add(parentPosition + 1, comment);
         }
         updateVisibleComments();
     }
@@ -1033,15 +982,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 comment.setAuthor("[deleted]");
                 comment.setCommentMarkdown("[deleted]");
             } else {
-                Comment parent = findCommentByFullname("t3_" + comment.getParentId(), 0);
-                if (parent != null) {
-                    for (Iterator<Comment> it = parent.getChildren().iterator(); it.hasNext(); /* no-op */) {
-                        Comment tmp = it.next();
-                        if (tmp.getFullName().equals(fullName) && tmp.getPlaceholderType() == Comment.NOT_PLACEHOLDER) {
-                            it.remove();
-                        }
-                    }
-                }
                 removeCommentByFullname(fullName, position, Comment.NOT_PLACEHOLDER);
             }
             updateVisibleComments();
@@ -1530,27 +1470,21 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             });
 
             expandButton.setOnClickListener(view -> {
+                Comment comment = getCurrentComment(this);
+                if (comment == null) {
+                    return;
+                }
                 if (expandButton.getVisibility() == View.VISIBLE) {
-                    int commentPosition = mIsSingleCommentThreadMode ? getBindingAdapterPosition() - 1 : getBindingAdapterPosition();
-                    Comment comment = getCurrentComment(this);
-                    if (comment != null) {
-                        if (mComments.get(commentPosition).isExpanded()) {
-                            collapseChildren(commentPosition);
-                            updateVisibleComments();
-                        } else {
-                            comment.setExpanded(true);
-                            ArrayList<Comment> newList = new ArrayList<>();
-                            expandChildren(mComments.get(commentPosition).getChildren(), newList);
-                            mComments.get(commentPosition).setExpanded(true);
-                            mComments.addAll(commentPosition + 1, newList);
-                            updateVisibleComments();
-                        }
+                    if (comment.isExpanded()) {
+                        comment.setExpanded(false);
+                        updateVisibleComments();
+                    } else {
+                        comment.setExpanded(true);
+                        updateVisibleComments();
                     }
                 } else if (mFullyCollapseComment) {
-                    int commentPosition = mIsSingleCommentThreadMode ? getBindingAdapterPosition() - 1 : getBindingAdapterPosition();
-                    if (commentPosition >= 0 && commentPosition < mComments.size()) {
-                        collapseChildren(commentPosition);
-                    }
+                    comment.setExpanded(false);
+                    updateVisibleComments();
                 }
             });
 
@@ -1640,11 +1574,11 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     @Nullable
     private VisibleComment getCurrentVisibleComment(int bindingAdapterPosition) {
         if (mIsSingleCommentThreadMode) {
-            if (bindingAdapterPosition - 1 >= 0 && bindingAdapterPosition - 1 < mComments.size()) {
+            if (bindingAdapterPosition - 1 >= 0 && bindingAdapterPosition - 1 < asyncListDiffer.getCurrentList().size()) {
                 return asyncListDiffer.getCurrentList().get(bindingAdapterPosition - 1);
             }
         } else {
-            if (bindingAdapterPosition >= 0 && bindingAdapterPosition < mComments.size()) {
+            if (bindingAdapterPosition >= 0 && bindingAdapterPosition < asyncListDiffer.getCurrentList().size()) {
                 return asyncListDiffer.getCurrentList().get(bindingAdapterPosition);
             }
         }
@@ -1696,18 +1630,10 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             }
 
             itemView.setOnClickListener(view -> {
-                int commentPosition = mIsSingleCommentThreadMode ? getBindingAdapterPosition() - 1 : getBindingAdapterPosition();
-                if (commentPosition >= 0 && commentPosition < mComments.size()) {
-                    Comment comment = getCurrentComment(this);
-                    if (comment != null) {
-                        comment.setExpanded(true);
-                        ArrayList<Comment> newList = new ArrayList<>();
-                        expandChildren(mComments.get(commentPosition).getChildren(), newList);
-                        mComments.get(commentPosition).setExpanded(true);
-                        mComments.addAll(commentPosition + 1, newList);
-
-                        updateVisibleComments();
-                    }
+                Comment comment = getCurrentComment(this);
+                if (comment != null) {
+                    comment.setExpanded(true);
+                    updateVisibleComments();
                 }
             });
 
