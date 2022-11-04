@@ -711,10 +711,8 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             if (placeholder.getPlaceholderType() == Comment.PLACEHOLDER_LOAD_MORE_COMMENTS) {
                 holder.placeholderTextView.setOnClickListener(view -> {
                     int commentPosition = mIsSingleCommentThreadMode ? holder.getBindingAdapterPosition() - 1 : holder.getBindingAdapterPosition();
-                    int parentPosition = getParentPosition(commentPosition);
-                    if (parentPosition >= 0) {
-                        Comment parentComment = mComments.get(parentPosition);
-
+                    Comment parentComment = getParentComment(commentPosition);
+                    if (parentComment != null) {
                         mComments.get(commentPosition).setLoadingMoreChildren(true);
                         mComments.get(commentPosition).setLoadMoreChildrenFailed(false);
                         updateVisibleComments();
@@ -727,7 +725,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                                     @Override
                                     public void onFetchMoreCommentSuccess(ArrayList<Comment> expandedComments,
                                                                           int childrenStartingIndex) {
-                                        int parentCurrentPosition = findCommentPositionByFullname(parentComment.getFullName(), parentPosition);
+                                        int parentCurrentPosition = findCommentPositionByFullname(parentComment.getFullName(), 0);
                                         if (parentCurrentPosition == -1) {
                                             return;
                                         }
@@ -768,9 +766,9 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
                                     @Override
                                     public void onFetchMoreCommentFailed() {
-                                        int parentCurrentPosition = findCommentPositionByFullname(parentComment.getFullName(), parentPosition);
+                                        int parentCurrentPosition = findCommentPositionByFullname(parentComment.getFullName(), 0);
                                         if (parentCurrentPosition != -1) {
-                                            Comment parentCurrentComment = mComments.get(parentPosition);
+                                            Comment parentCurrentComment = mComments.get(parentCurrentPosition);
                                             if (parentCurrentComment.isExpanded()) {
                                                 int placeholderPositionHint = parentCurrentPosition + parentCurrentComment.getChildren().size();
                                                 int placeholderPosition = findLoadMorePlaceholderPositionByFullname(parentComment.getFullName(), placeholderPositionHint);
@@ -806,18 +804,18 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    private int getParentPosition(int position) {
+    @Nullable
+    private Comment getParentComment(int position) {
         if (position >= 0 && position < mComments.size()) {
             int childDepth = mComments.get(position).getDepth();
             for (int i = position; i >= 0; i--) {
                 if (mComments.get(i).getDepth() < childDepth) {
-                    return i;
+                    return mComments.get(i);
                 }
             }
         }
-        return -1;
+        return null;
     }
-
 
     /**
      * Find position of comment that is not a placeholder
