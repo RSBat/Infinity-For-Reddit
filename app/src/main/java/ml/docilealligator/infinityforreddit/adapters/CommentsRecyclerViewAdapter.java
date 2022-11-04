@@ -160,7 +160,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     private String mAccessToken;
     private String mAccountName;
     private Post mPost;
-    private ArrayList<Comment> mComments;
     private Locale mLocale;
     private RequestManager mGlide;
     private RecyclerView.RecycledViewPool recycledViewPool;
@@ -272,7 +271,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         mAccessToken = accessToken;
         mAccountName = accountName;
         mPost = post;
-        mComments = new ArrayList<>();
         mLocale = locale;
         mSingleCommentId = singleCommentId;
         mIsSingleCommentThreadMode = isSingleCommentThreadMode;
@@ -814,12 +812,12 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
      */
     @Nullable
     private Comment findCommentByFullname(@NonNull String fullname, int positionHint) {
-        return findCommentByFullnameRecursively(mComments, fullname, Comment.NOT_PLACEHOLDER);
+        return findCommentByFullnameRecursively(mCommentRecyclerViewAdapterCallback.getComments(), fullname, Comment.NOT_PLACEHOLDER);
     }
 
     @Nullable
     private Comment findLoadMorePlaceholderByFullname(@NonNull String fullname) {
-        return findCommentByFullnameRecursively(mComments, fullname, Comment.PLACEHOLDER_LOAD_MORE_COMMENTS);
+        return findCommentByFullnameRecursively(mCommentRecyclerViewAdapterCallback.getComments(), fullname, Comment.PLACEHOLDER_LOAD_MORE_COMMENTS);
     }
 
     private Comment findCommentByFullnameRecursively(@NonNull List<Comment> comments, @NonNull String fullname, int placeholderType) {
@@ -839,6 +837,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     private void removeCommentByFullname(@NonNull String fullname, int positionHint, int placeholderType) {
+        List<Comment> mComments = mCommentRecyclerViewAdapterCallback.getComments();
         Comment comment = findCommentByFullnameRecursively(mComments, fullname, placeholderType);
         if (comment == null) {
             return; // nothing to delete
@@ -871,19 +870,19 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     public void addComments(@NonNull ArrayList<Comment> comments, boolean hasMoreComments) {
-        if (mComments.size() == 0) {
+        if (mCommentRecyclerViewAdapterCallback.getComments().size() == 0) {
             isInitiallyLoading = false;
             isInitiallyLoadingFailed = false;
         }
 
-        mComments.addAll(comments);
+        mCommentRecyclerViewAdapterCallback.getComments().addAll(comments);
 
         mHasMoreComments = hasMoreComments;
         updateVisibleComments();
     }
 
     public void addComment(Comment comment) {
-        mComments.add(0, comment);
+        mCommentRecyclerViewAdapterCallback.getComments().add(0, comment);
         updateVisibleComments();
     }
 
@@ -907,12 +906,12 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     public ArrayList<Comment> getComments() {
-        return mComments;
+        return (ArrayList<Comment>) mCommentRecyclerViewAdapterCallback.getComments();
     }
 
     private void updateVisibleComments() {
         List<VisibleComment> visibleComments = new ArrayList<>();
-        for (Comment comment: mComments) {
+        for (Comment comment: mCommentRecyclerViewAdapterCallback.getComments()) {
             if (comment.getDepth() == 0) {
                 collectVisibleComments(comment, visibleComments);
             }
@@ -931,7 +930,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     public void initiallyLoading() {
         resetCommentSearchIndex();
-        mComments.clear();
+        mCommentRecyclerViewAdapterCallback.getComments().clear();
         isInitiallyLoading = true;
         isInitiallyLoadingFailed = false;
         updateVisibleComments();
@@ -1121,6 +1120,8 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         void retryFetchingComments();
 
         void retryFetchingMoreComments();
+
+        List<Comment> getComments();
     }
 
     public class CommentViewHolder extends RecyclerView.ViewHolder {
@@ -1568,7 +1569,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             return null;
         }
 
-        return findCommentByFullnameRecursively(mComments, visibleComment.getFullName(), visibleComment.getPlaceholderType());
+        return findCommentByFullnameRecursively(mCommentRecyclerViewAdapterCallback.getComments(), visibleComment.getFullName(), visibleComment.getPlaceholderType());
     }
 
     @Nullable

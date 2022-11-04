@@ -57,6 +57,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -250,6 +251,10 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
     private float swipeActionThreshold;
     private ItemTouchHelper touchHelper;
     private int scrollPosition;
+
+    // nb: there is already a field comments which is basically the same
+    // but I'm keeping them separated for simplicity for now
+    private final List<Comment> currentComments = new ArrayList<>();
 
     public ViewPostDetailFragment() {
         // Required empty public constructor
@@ -611,6 +616,11 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
                             loadMoreChildrenSuccess = true;
 
                             fetchMoreComments();
+                        }
+
+                        @Override
+                        public List<Comment> getComments() {
+                            return currentComments;
                         }
                     });
             if (mCommentsRecyclerView != null) {
@@ -1302,6 +1312,7 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
                                     mPostDetailsSharedPreferences, mExoCreator,
                                     post1 -> EventBus.getDefault().post(new PostUpdateEventToPostList(mPost, postListPosition)));
 
+                            currentComments.clear();
                             mCommentsAdapter = new CommentsRecyclerViewAdapter(activity,
                                     ViewPostDetailFragment.this, mCustomThemeWrapper, mExecutor,
                                     mRetrofit, mOauthRetrofit, mAccessToken, mAccountName, mPost, mLocale,
@@ -1318,6 +1329,11 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
                                             loadMoreChildrenSuccess = true;
 
                                             fetchMoreComments();
+                                        }
+
+                                        @Override
+                                        public List<Comment> getComments() {
+                                            return currentComments;
                                         }
                                     });
                             if (mCommentsRecyclerView != null) {
