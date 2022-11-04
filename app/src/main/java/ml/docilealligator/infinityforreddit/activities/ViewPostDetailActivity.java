@@ -402,7 +402,7 @@ public class ViewPostDetailActivity extends BaseActivity implements SortTypeSele
                 public void success() {
                     ViewPostDetailFragment fragment = sectionsPagerAdapter.getCurrentFragment();
                     if (fragment != null) {
-                        fragment.saveComment(position, false);
+                        fragment.saveComment(comment.getFullName(), position, false);
                     }
                     Toast.makeText(ViewPostDetailActivity.this, R.string.comment_unsaved_success, Toast.LENGTH_SHORT).show();
                 }
@@ -411,7 +411,7 @@ public class ViewPostDetailActivity extends BaseActivity implements SortTypeSele
                 public void failed() {
                     ViewPostDetailFragment fragment = sectionsPagerAdapter.getCurrentFragment();
                     if (fragment != null) {
-                        fragment.saveComment(position, true);
+                        fragment.saveComment(comment.getFullName(), position, true);
                     }
                     Toast.makeText(ViewPostDetailActivity.this, R.string.comment_unsaved_failed, Toast.LENGTH_SHORT).show();
                 }
@@ -423,7 +423,7 @@ public class ViewPostDetailActivity extends BaseActivity implements SortTypeSele
                 public void success() {
                     ViewPostDetailFragment fragment = sectionsPagerAdapter.getCurrentFragment();
                     if (fragment != null) {
-                        fragment.saveComment(position, true);
+                        fragment.saveComment(comment.getFullName(), position, true);
                     }
                     Toast.makeText(ViewPostDetailActivity.this, R.string.comment_saved_success, Toast.LENGTH_SHORT).show();
                 }
@@ -432,7 +432,7 @@ public class ViewPostDetailActivity extends BaseActivity implements SortTypeSele
                 public void failed() {
                     ViewPostDetailFragment fragment = sectionsPagerAdapter.getCurrentFragment();
                     if (fragment != null) {
-                        fragment.saveComment(position, false);
+                        fragment.saveComment(comment.getFullName(), position, false);
                     }
                     Toast.makeText(ViewPostDetailActivity.this, R.string.comment_saved_failed, Toast.LENGTH_SHORT).show();
                 }

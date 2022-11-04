@@ -1104,8 +1104,8 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    public void setSaveComment(int position, boolean isSaved) {
-        Comment comment = getCurrentComment(position);
+    public void setSaveComment(String fullname, int position, boolean isSaved) {
+        Comment comment = findCommentByFullname(fullname, position);
         if (comment != null) {
             comment.setSaved(isSaved);
             updateVisibleComments();

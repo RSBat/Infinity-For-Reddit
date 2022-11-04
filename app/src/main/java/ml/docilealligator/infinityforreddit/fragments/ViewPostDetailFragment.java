@@ -834,9 +834,9 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
         }
     }
 
-    public void saveComment(int position, boolean isSaved) {
+    public void saveComment(String fullname, int position, boolean isSaved) {
         if (mCommentsAdapter != null) {
-            mCommentsAdapter.setSaveComment(position, isSaved);
+            mCommentsAdapter.setSaveComment(fullname, position, isSaved);
         }
     }
 
