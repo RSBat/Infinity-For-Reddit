@@ -711,11 +711,17 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
             if (placeholder.getPlaceholderType() == Comment.PLACEHOLDER_LOAD_MORE_COMMENTS) {
                 holder.placeholderTextView.setOnClickListener(view -> {
-                    int commentPosition = mIsSingleCommentThreadMode ? holder.getBindingAdapterPosition() - 1 : holder.getBindingAdapterPosition();
-                    Comment parentComment = getParentComment(commentPosition);
+                    Comment comment = getCurrentComment(holder);
+                    if (comment == null) {
+                        return;
+                    }
+
+                    // todo: check
+                    // this works because placeholder's id is equal to parent id
+                    Comment parentComment = findCommentByFullname(comment.getFullName(), 0);
                     if (parentComment != null) {
-                        mComments.get(commentPosition).setLoadingMoreChildren(true);
-                        mComments.get(commentPosition).setLoadMoreChildrenFailed(false);
+                        comment.setLoadingMoreChildren(true);
+                        comment.setLoadMoreChildrenFailed(false);
                         updateVisibleComments();
 
                         Retrofit retrofit = mAccessToken == null ? mRetrofit : mOauthRetrofit;
@@ -732,7 +738,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                                         }
 
                                         if (parentCurrentComment.isExpanded()) {
-                                            Comment placeholderComment = findLoadMorePlaceholderByFullname(parentComment.getFullName(), commentPosition);
+                                            Comment placeholderComment = findLoadMorePlaceholderByFullname(parentComment.getFullName(), 0);
                                             if (placeholderComment == null) {
                                                 throw new IllegalStateException("Cannot find placeholder");
                                             }
@@ -751,10 +757,10 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                                                         .remove(parentCurrentComment.getChildren().size() - 1);
                                                 parentCurrentComment.removeMoreChildrenFullnames();
 
-                                                removeCommentByFullname(parentComment.getFullName(), commentPosition, Comment.PLACEHOLDER_LOAD_MORE_COMMENTS);
+                                                removeCommentByFullname(parentComment.getFullName(), 0, Comment.PLACEHOLDER_LOAD_MORE_COMMENTS);
                                             }
 
-                                            int placeholderPosition = findLoadMorePlaceholderPositionByFullname(parentComment.getFullName(), commentPosition);
+                                            int placeholderPosition = findLoadMorePlaceholderPositionByFullname(parentComment.getFullName(), 0);
                                             mComments.addAll(placeholderPosition, expandedComments);
                                         } else {
                                             if (parentCurrentComment.hasReply() && parentCurrentComment.getChildren().size() <= childrenStartingIndex) {
@@ -804,19 +810,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 });
             }
         }
-    }
-
-    @Nullable
-    private Comment getParentComment(int position) {
-        if (position >= 0 && position < mComments.size()) {
-            int childDepth = mComments.get(position).getDepth();
-            for (int i = position; i >= 0; i--) {
-                if (mComments.get(i).getDepth() < childDepth) {
-                    return mComments.get(i);
-                }
-            }
-        }
-        return null;
     }
 
     /**
