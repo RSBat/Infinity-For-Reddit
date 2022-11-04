@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -88,6 +89,13 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     private static final int VIEW_TYPE_LOAD_MORE_COMMENTS_FAILED = 16;
     private static final int VIEW_TYPE_VIEW_ALL_COMMENTS = 17;
 
+    @IntDef({ LoadingStatus.NOT_LOADING, LoadingStatus.LOADING, LoadingStatus.FAILED })
+    @interface LoadingStatus {
+        int NOT_LOADING = 0;
+        int LOADING = 1;
+        int FAILED = 2;
+    }
+
     private final AsyncListDiffer<VisibleComment> asyncListDiffer = new AsyncListDiffer<>(this, new DiffUtil.ItemCallback<VisibleComment>() {
         @Override
         public boolean areItemsTheSame(@NonNull VisibleComment oldItem, @NonNull VisibleComment newItem) {
@@ -122,8 +130,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                     || oldItem.hasReply != newItem.hasReply
                     || oldItem.childCount != newItem.childCount
                     || oldItem.saved != newItem.saved
-                    || oldItem.loadingMoreChildren != newItem.loadingMoreChildren
-                    || oldItem.loadMoreChildrenFailed != newItem.loadMoreChildrenFailed
+                    || oldItem.loadingStatus != newItem.loadingStatus
                     || !Objects.equals(oldItem.id, newItem.id)
                     || !Objects.equals(oldItem.awards, newItem.awards)
                     || !Objects.equals(oldItem.author, newItem.author)
@@ -686,12 +693,16 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             holder.commentIndentationView.setLevelAndColors(placeholder.getDepth(), verticalBlockColors);
 
             if (placeholder.getPlaceholderType() == Comment.PLACEHOLDER_LOAD_MORE_COMMENTS) {
-                if (placeholder.isLoadingMoreChildren()) {
-                    holder.placeholderTextView.setText(R.string.loading);
-                } else if (placeholder.isLoadMoreChildrenFailed()) {
-                    holder.placeholderTextView.setText(R.string.comment_load_more_comments_failed);
-                } else {
-                    holder.placeholderTextView.setText(R.string.comment_load_more_comments);
+                switch (placeholder.getLoadingStatus()) {
+                    case LoadingStatus.NOT_LOADING:
+                        holder.placeholderTextView.setText(R.string.comment_load_more_comments);
+                        break;
+                    case LoadingStatus.LOADING:
+                        holder.placeholderTextView.setText(R.string.loading);
+                        break;
+                    case LoadingStatus.FAILED:
+                        holder.placeholderTextView.setText(R.string.comment_load_more_comments_failed);
+                        break;
                 }
             } else {
                 holder.placeholderTextView.setText(R.string.comment_continue_thread);
@@ -1818,8 +1829,8 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         private final boolean hasReply;
         private final int childCount;
         private final boolean saved;
-        private final boolean loadingMoreChildren;
-        private final boolean loadMoreChildrenFailed;
+        @LoadingStatus
+        private final int loadingStatus;
         private final boolean scoreHidden;
 
         VisibleComment(Comment comment) {
@@ -1843,8 +1854,13 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             hasReply = comment.hasReply();
             childCount = comment.getChildCount();
             saved = comment.isSaved();
-            loadingMoreChildren = comment.isLoadingMoreChildren();
-            loadMoreChildrenFailed = comment.isLoadMoreChildrenFailed();
+            if (comment.isLoadingMoreChildren()) {
+                loadingStatus = LoadingStatus.LOADING;
+            } else if (comment.isLoadMoreChildrenFailed()) {
+                loadingStatus = LoadingStatus.FAILED;
+            } else {
+                loadingStatus = LoadingStatus.NOT_LOADING;
+            }
             scoreHidden = comment.isScoreHidden();
         }
 
@@ -1928,12 +1944,9 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             return saved;
         }
 
-        public boolean isLoadingMoreChildren() {
-            return loadingMoreChildren;
-        }
-
-        public boolean isLoadMoreChildrenFailed() {
-            return loadMoreChildrenFailed;
+        @LoadingStatus
+        public int getLoadingStatus() {
+            return loadingStatus;
         }
 
         @Override
@@ -1941,12 +1954,12 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             VisibleComment that = (VisibleComment) o;
-            return placeholderType == that.placeholderType && expanded == that.expanded && hasExpandedBefore == that.hasExpandedBefore && submitter == that.submitter && moderator == that.moderator && commentTimeMillis == that.commentTimeMillis && score == that.score && voteType == that.voteType && depth == that.depth && hasReply == that.hasReply && childCount == that.childCount && saved == that.saved && loadingMoreChildren == that.loadingMoreChildren && loadMoreChildrenFailed == that.loadMoreChildrenFailed && Objects.equals(id, that.id) && Objects.equals(awards, that.awards) && Objects.equals(author, that.author) && Objects.equals(authorFlairHTML, that.authorFlairHTML) && Objects.equals(authorFlair, that.authorFlair) && Objects.equals(authorIconUrl, that.authorIconUrl) && Objects.equals(fullName, that.fullName) && Objects.equals(commentMarkdown, that.commentMarkdown) && scoreHidden == that.scoreHidden;
+            return placeholderType == that.placeholderType && expanded == that.expanded && hasExpandedBefore == that.hasExpandedBefore && submitter == that.submitter && moderator == that.moderator && commentTimeMillis == that.commentTimeMillis && score == that.score && voteType == that.voteType && depth == that.depth && hasReply == that.hasReply && childCount == that.childCount && saved == that.saved && loadingStatus == that.loadingStatus && Objects.equals(id, that.id) && Objects.equals(awards, that.awards) && Objects.equals(author, that.author) && Objects.equals(authorFlairHTML, that.authorFlairHTML) && Objects.equals(authorFlair, that.authorFlair) && Objects.equals(authorIconUrl, that.authorIconUrl) && Objects.equals(fullName, that.fullName) && Objects.equals(commentMarkdown, that.commentMarkdown) && scoreHidden == that.scoreHidden;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(placeholderType, expanded, hasExpandedBefore, id, awards, author, authorFlairHTML, authorFlair, submitter, moderator, authorIconUrl, fullName, commentTimeMillis, commentMarkdown, score, voteType, depth, hasReply, childCount, saved, loadingMoreChildren, loadMoreChildrenFailed, scoreHidden);
+            return Objects.hash(placeholderType, expanded, hasExpandedBefore, id, awards, author, authorFlairHTML, authorFlair, submitter, moderator, authorIconUrl, fullName, commentTimeMillis, commentMarkdown, score, voteType, depth, hasReply, childCount, saved, loadingStatus, scoreHidden);
         }
 
         public boolean isScoreHidden() {
