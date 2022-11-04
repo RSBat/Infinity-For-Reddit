@@ -1031,6 +1031,15 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 comment.setAuthor("[deleted]");
                 comment.setCommentMarkdown("[deleted]");
             } else {
+                Comment parent = findCommentByFullname("t3_" + comment.getParentId(), 0);
+                if (parent != null) {
+                    for (Iterator<Comment> it = parent.getChildren().iterator(); it.hasNext(); /* no-op */) {
+                        Comment tmp = it.next();
+                        if (tmp.getFullName().equals(fullName) && tmp.getPlaceholderType() == Comment.NOT_PLACEHOLDER) {
+                            it.remove();
+                        }
+                    }
+                }
                 removeCommentByFullname(fullName, position, Comment.NOT_PLACEHOLDER);
             }
             updateVisibleComments();
