@@ -732,7 +732,10 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                                         }
 
                                         if (parentCurrentComment.isExpanded()) {
-                                            int placeholderPosition = findLoadMorePlaceholderPositionByFullname(parentComment.getFullName(), commentPosition);
+                                            Comment placeholderComment = findLoadMorePlaceholderByFullname(parentComment.getFullName(), commentPosition);
+                                            if (placeholderComment == null) {
+                                                throw new IllegalStateException("Cannot find placeholder");
+                                            }
 
                                             if (parentCurrentComment.getChildren().size() > childrenStartingIndex) {
                                                 parentCurrentComment.setMoreChildrenStartingIndex(childrenStartingIndex);
@@ -741,8 +744,8 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                                                 parentCurrentComment.getChildren().get(parentCurrentComment.getChildren().size() - 1)
                                                         .setLoadMoreChildrenFailed(false);
 
-                                                mComments.get(placeholderPosition).setLoadingMoreChildren(false);
-                                                mComments.get(placeholderPosition).setLoadMoreChildrenFailed(false);
+                                                placeholderComment.setLoadingMoreChildren(false);
+                                                placeholderComment.setLoadMoreChildrenFailed(false);
                                             } else {
                                                 parentCurrentComment.getChildren()
                                                         .remove(parentCurrentComment.getChildren().size() - 1);
@@ -751,6 +754,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                                                 removeCommentByFullname(parentComment.getFullName(), commentPosition, Comment.PLACEHOLDER_LOAD_MORE_COMMENTS);
                                             }
 
+                                            int placeholderPosition = findLoadMorePlaceholderPositionByFullname(parentComment.getFullName(), commentPosition);
                                             mComments.addAll(placeholderPosition, expandedComments);
                                         } else {
                                             if (parentCurrentComment.hasReply() && parentCurrentComment.getChildren().size() <= childrenStartingIndex) {
@@ -769,11 +773,11 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                                         Comment parentCurrentComment = findCommentByFullname(parentComment.getFullName(), 0);
                                         if (parentCurrentComment != null) {
                                             if (parentCurrentComment.isExpanded()) {
-                                                int placeholderPosition = findLoadMorePlaceholderPositionByFullname(parentComment.getFullName(), 0);
+                                                Comment placeholderComment = findLoadMorePlaceholderByFullname(parentCurrentComment.getFullName(), 0);
 
-                                                if (placeholderPosition != -1) {
-                                                    mComments.get(placeholderPosition).setLoadingMoreChildren(false);
-                                                    mComments.get(placeholderPosition).setLoadMoreChildrenFailed(true);
+                                                if (placeholderComment != null) {
+                                                    placeholderComment.setLoadingMoreChildren(false);
+                                                    placeholderComment.setLoadMoreChildrenFailed(true);
                                                 }
                                                 holder.placeholderTextView.setText(R.string.comment_load_more_comments_failed);
                                             }
@@ -820,12 +824,28 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
      */
     @Nullable
     private Comment findCommentByFullname(@NonNull String fullname, int positionHint) {
-        int position = findCommentPositionByFullname(fullname, positionHint, Comment.NOT_PLACEHOLDER);
-        if (position != -1) {
-            return mComments.get(position);
-        } else {
-            return null;
+        return findCommentByFullnameRecursively(mComments, fullname, Comment.NOT_PLACEHOLDER);
+    }
+
+    @Nullable
+    private Comment findLoadMorePlaceholderByFullname(@NonNull String fullname, int positionHint) {
+        return findCommentByFullnameRecursively(mComments, fullname, Comment.PLACEHOLDER_LOAD_MORE_COMMENTS);
+    }
+
+    private Comment findCommentByFullnameRecursively(@NonNull List<Comment> comments, @NonNull String fullname, int placeholderType) {
+        for (Comment comment: comments) {
+            if (comment.getFullName().equals(fullname)
+                    && comment.getPlaceholderType() == placeholderType) {
+                return comment;
+            }
+            if (comment.getChildren() != null) {
+                Comment child = findCommentByFullnameRecursively(comment.getChildren(), fullname, placeholderType);
+                if (child != null) {
+                    return child;
+                }
+            }
         }
+        return null;
     }
 
     private int findLoadMorePlaceholderPositionByFullname(@NonNull String fullname, int positionHint) {
@@ -954,10 +974,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             if (comment.getDepth() == 0) {
                 collectVisibleComments(comment, visibleComments);
             }
-        }
-        if (visibleComments.size() != mComments.size()) {
-            Log.e("COMMENT", "Wrong size");
-//            throw new IllegalStateException("Mismatch in comments size");
         }
         asyncListDiffer.submitList(visibleComments);
     }
