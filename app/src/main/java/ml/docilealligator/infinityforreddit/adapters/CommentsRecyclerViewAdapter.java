@@ -1015,16 +1015,16 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         updateVisibleComments();
     }
 
-    public void deleteComment(int position) {
-        if (mComments != null && position >= 0 && position < mComments.size()) {
-            if (mComments.get(position).hasReply()) {
-                mComments.get(position).setAuthor("[deleted]");
-                mComments.get(position).setCommentMarkdown("[deleted]");
-                updateVisibleComments();
+    public void deleteComment(String fullName, int position) {
+        Comment comment = findCommentByFullname(fullName, position);
+        if (comment != null) {
+            if (comment.isExpanded()) {
+                comment.setAuthor("[deleted]");
+                comment.setCommentMarkdown("[deleted]");
             } else {
-                mComments.remove(position);
-                updateVisibleComments();
+                removeCommentByFullname(fullName, position, Comment.NOT_PLACEHOLDER);
             }
+            updateVisibleComments();
         }
     }
 

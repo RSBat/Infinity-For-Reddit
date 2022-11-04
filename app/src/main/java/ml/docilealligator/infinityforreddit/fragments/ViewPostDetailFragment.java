@@ -1800,7 +1800,7 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
                     @Override
                     public void deleteSuccess() {
                         Toast.makeText(activity, R.string.delete_post_success, Toast.LENGTH_SHORT).show();
-                        mCommentsAdapter.deleteComment(position);
+                        mCommentsAdapter.deleteComment(fullName, position);
                     }
 
                     @Override
