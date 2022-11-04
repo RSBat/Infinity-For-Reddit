@@ -1629,18 +1629,12 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Nullable
     private Comment getCurrentComment(RecyclerView.ViewHolder holder) {
-        int position = holder.getBindingAdapterPosition();
-        if (mIsSingleCommentThreadMode) {
-            if (position - 1 >= 0 && position - 1 < mComments.size()) {
-                return mComments.get(position - 1);
-            }
-        } else {
-            if (position >= 0 && position < mComments.size()) {
-                return mComments.get(position);
-            }
+        VisibleComment visibleComment = getCurrentVisibleComment(holder.getBindingAdapterPosition());
+        if (visibleComment == null) {
+            return null;
         }
 
-        return null;
+        return findCommentByFullnameRecursively(mComments, visibleComment.getFullName(), visibleComment.getPlaceholderType());
     }
 
     @Nullable
