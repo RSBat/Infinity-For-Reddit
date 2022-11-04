@@ -787,6 +787,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                                                     .setLoadingMoreChildren(false);
                                             parentCurrentComment.getChildren().get(parentCurrentComment.getChildren().size() - 1)
                                                     .setLoadMoreChildrenFailed(true);
+                                            updateVisibleComments();
                                         }
                                     }
                                 });
