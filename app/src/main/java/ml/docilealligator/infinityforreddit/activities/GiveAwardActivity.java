@@ -48,6 +48,7 @@ public class GiveAwardActivity extends BaseActivity {
     public static final String EXTRA_RETURN_ITEM_POSITION = "ERIP";
     public static final String EXTRA_RETURN_NEW_AWARDS = "ERNA";
     public static final String EXTRA_RETURN_NEW_AWARDS_COUNT = "ERNAC";
+    public static final String EXTRA_RETURN_FULLNAME = "ER_FULLNAME";
 
     @BindView(R.id.coordinator_layout_give_award_activity)
     CoordinatorLayout coordinatorLayout;
@@ -130,6 +131,7 @@ public class GiveAwardActivity extends BaseActivity {
                                         data.putExtra(EXTRA_RETURN_ITEM_POSITION, itemPosition);
                                         data.putExtra(EXTRA_RETURN_NEW_AWARDS, awardsHTML);
                                         data.putExtra(EXTRA_RETURN_NEW_AWARDS_COUNT, awardCount);
+                                        data.putExtra(EXTRA_RETURN_FULLNAME, thingFullname);
                                         setResult(RESULT_OK, data);
                                         finish();
                                     }

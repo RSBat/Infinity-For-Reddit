@@ -367,11 +367,11 @@ public class ViewPostDetailActivity extends BaseActivity implements SortTypeSele
         }
     }
 
-    private void awardGiven(String awardsHTML, int awardCount, int position) {
+    private void awardGiven(String fullname, String awardsHTML, int awardCount, int position) {
         if (sectionsPagerAdapter != null) {
             ViewPostDetailFragment fragment = sectionsPagerAdapter.getCurrentFragment();
             if (fragment != null) {
-                fragment.awardGiven(awardsHTML, awardCount, position);
+                fragment.awardGiven(fullname, awardsHTML, awardCount, position);
             }
         }
     }
@@ -499,7 +499,8 @@ public class ViewPostDetailActivity extends BaseActivity implements SortTypeSele
                 int position = data.getIntExtra(GiveAwardActivity.EXTRA_RETURN_ITEM_POSITION, 0);
                 String newAwardsHTML = data.getStringExtra(GiveAwardActivity.EXTRA_RETURN_NEW_AWARDS);
                 int newAwardsCount = data.getIntExtra(GiveAwardActivity.EXTRA_RETURN_NEW_AWARDS_COUNT, 0);
-                awardGiven(newAwardsHTML, newAwardsCount, position);
+                String fullname = data.getStringExtra(GiveAwardActivity.EXTRA_RETURN_FULLNAME);
+                awardGiven(fullname, newAwardsHTML, newAwardsCount, position);
             }
         } else if (requestCode == CommentActivity.WRITE_COMMENT_REQUEST_CODE) {
             if (data != null && resultCode == Activity.RESULT_OK) {

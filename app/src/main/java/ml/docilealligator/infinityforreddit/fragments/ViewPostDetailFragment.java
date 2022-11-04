@@ -766,9 +766,9 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
         }
     }
 
-    public void awardGiven(String awardsHTML, int awardCount, int position) {
+    public void awardGiven(String fullname, String awardsHTML, int awardCount, int position) {
         if (mCommentsAdapter != null) {
-            mCommentsAdapter.giveAward(awardsHTML, awardCount, position);
+            mCommentsAdapter.giveAward(fullname, awardsHTML, awardCount, position);
         }
     }
 

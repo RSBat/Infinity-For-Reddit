@@ -1095,9 +1095,8 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    public void giveAward(String awardsHTML, int awardCount, int position) {
-        position = mIsSingleCommentThreadMode ? position + 1 : position;
-        Comment comment = getCurrentComment(position);
+    public void giveAward(String fullname, String awardsHTML, int awardCount, int position) {
+        Comment comment = findCommentByFullname(fullname, position);
         if (comment != null) {
             comment.addAwards(awardsHTML);
             updateVisibleComments();
@@ -1619,11 +1618,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Nullable
     private Comment getCurrentComment(RecyclerView.ViewHolder holder) {
-        return getCurrentComment(holder.getBindingAdapterPosition());
-    }
-
-    @Nullable
-    private Comment getCurrentComment(int position) {
+        int position = holder.getBindingAdapterPosition();
         if (mIsSingleCommentThreadMode) {
             if (position - 1 >= 0 && position - 1 < mComments.size()) {
                 return mComments.get(position - 1);
