@@ -1029,16 +1029,17 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     public int getNextParentCommentPosition(int currentPosition) {
-        if (mComments != null && !mComments.isEmpty()) {
+        List<VisibleComment> comments = asyncListDiffer.getCurrentList();
+        if (!comments.isEmpty()) {
             if (mIsSingleCommentThreadMode) {
-                for (int i = currentPosition + 1; i - 1 < mComments.size() && i - 1 >= 0; i++) {
-                    if (mComments.get(i - 1).getDepth() == 0) {
+                for (int i = currentPosition + 1; i - 1 < comments.size() && i - 1 >= 0; i++) {
+                    if (comments.get(i - 1).getDepth() == 0) {
                         return i;
                     }
                 }
             } else {
-                for (int i = currentPosition + 1; i < mComments.size(); i++) {
-                    if (mComments.get(i).getDepth() == 0) {
+                for (int i = currentPosition + 1; i < comments.size(); i++) {
+                    if (comments.get(i).getDepth() == 0) {
                         return i;
                     }
                 }
@@ -1048,16 +1049,17 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     public int getPreviousParentCommentPosition(int currentPosition) {
-        if (mComments != null && !mComments.isEmpty()) {
+        List<VisibleComment> comments = asyncListDiffer.getCurrentList();
+        if (!comments.isEmpty()) {
             if (mIsSingleCommentThreadMode) {
                 for (int i = currentPosition - 1; i - 1 >= 0; i--) {
-                    if (mComments.get(i - 1).getDepth() == 0) {
+                    if (comments.get(i - 1).getDepth() == 0) {
                         return i;
                     }
                 }
             } else {
                 for (int i = currentPosition - 1; i >= 0; i--) {
-                    if (mComments.get(i).getDepth() == 0) {
+                    if (comments.get(i).getDepth() == 0) {
                         return i;
                     }
                 }
