@@ -904,12 +904,17 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             }
         }
 
-        mComments.get(parentPosition).addChild(comment);
-        mComments.get(parentPosition).setHasReply(true);
-        if (!mComments.get(parentPosition).isExpanded()) {
-            mComments.get(parentPosition).setExpanded(true);
+        Comment parentComment = findCommentByFullname(parentFullname, parentPosition);
+        if (parentComment == null) {
+            throw new IllegalStateException("Trying to add child to non existent parent");
+        }
+
+        parentComment.addChild(comment);
+        parentComment.setHasReply(true);
+        if (!parentComment.isExpanded()) {
+            parentComment.setExpanded(true);
             ArrayList<Comment> newList = new ArrayList<>();
-            expandChildren(mComments.get(parentPosition).getChildren(), newList);
+            expandChildren(parentComment.getChildren(), newList);
             mComments.addAll(parentPosition + 1, newList);
         } else {
             mComments.add(parentPosition + 1, comment);
