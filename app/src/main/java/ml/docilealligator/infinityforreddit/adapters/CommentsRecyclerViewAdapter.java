@@ -37,6 +37,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -747,7 +748,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                                                         .remove(parentCurrentComment.getChildren().size() - 1);
                                                 parentCurrentComment.removeMoreChildrenFullnames();
 
-                                                mComments.remove(placeholderPosition);
+                                                removeCommentByFullname(parentComment.getFullName(), commentPosition, Comment.PLACEHOLDER_LOAD_MORE_COMMENTS);
                                             }
 
                                             mComments.addAll(placeholderPosition, expandedComments);
@@ -847,6 +848,22 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
 
         return -1;
+    }
+
+    private void removeCommentByFullname(@NonNull String fullname, int positionHint, int placeholderType) {
+        if (positionHint >= 0 && positionHint < mComments.size()
+                && fullname.equals(mComments.get(positionHint).getFullName())
+                && mComments.get(positionHint).getPlaceholderType() == placeholderType) {
+            mComments.remove(positionHint);
+        }
+
+        for (Iterator<Comment> it = mComments.iterator(); it.hasNext(); /* noop */) {
+            Comment comment = it.next();
+            if (fullname.equals(comment.getFullName())
+                    && comment.getPlaceholderType() == placeholderType) {
+                it.remove();
+            }
+        }
     }
 
     private void expandChildren(ArrayList<Comment> comments, ArrayList<Comment> newList) {
