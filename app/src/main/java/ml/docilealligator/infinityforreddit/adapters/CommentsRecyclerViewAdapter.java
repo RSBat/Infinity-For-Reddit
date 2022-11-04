@@ -995,11 +995,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         mComments.get(position).setSubmittedByAuthor(originalComment.isSubmitter());
         mComments.get(position).setCommentMarkdown(fetchedComment.getCommentMarkdown());
 
-        if (mIsSingleCommentThreadMode) {
-            notifyItemChanged(position + 1);
-        } else {
-            notifyItemChanged(position);
-        }
+        updateVisibleComments();
     }
 
     public void deleteComment(int position) {
