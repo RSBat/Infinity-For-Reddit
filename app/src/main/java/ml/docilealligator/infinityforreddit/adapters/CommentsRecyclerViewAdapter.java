@@ -999,27 +999,29 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         updateVisibleComments();
     }
 
-    public void editComment(String commentAuthor, String commentContentMarkdown, int position) {
-        if (commentAuthor != null) {
-            mComments.get(position).setAuthor(commentAuthor);
+    public void editComment(String fullname, String commentAuthor, String commentContentMarkdown, int position) {
+        Comment comment = findCommentByFullname(fullname, position);
+        if (comment == null) {
+            return;
         }
 
-        mComments.get(position).setSubmittedByAuthor(mComments.get(position).isSubmitter());
+        if (commentAuthor != null) {
+            comment.setAuthor(commentAuthor);
+        }
 
-        mComments.get(position).setCommentMarkdown(commentContentMarkdown);
+        comment.setCommentMarkdown(commentContentMarkdown);
         updateVisibleComments();
     }
 
     public void editComment(Comment fetchedComment, Comment originalComment, int position) {
-        if (position >= mComments.size() || !mComments.get(position).equals(originalComment)) {
-            position = mComments.indexOf(originalComment);
-            if (position < 0) {
-                Toast.makeText(mActivity, R.string.show_removed_comment_failed, Toast.LENGTH_SHORT).show();
-                return;
-            }
+        Comment currentComment = findCommentByFullname(originalComment.getFullName(), position);
+        if (currentComment == null) {
+            Toast.makeText(mActivity, R.string.show_removed_comment_failed, Toast.LENGTH_SHORT).show();
+            return;
         }
-        mComments.get(position).setSubmittedByAuthor(originalComment.isSubmitter());
-        mComments.get(position).setCommentMarkdown(fetchedComment.getCommentMarkdown());
+
+        currentComment.setSubmittedByAuthor(originalComment.isSubmitter());
+        currentComment.setCommentMarkdown(fetchedComment.getCommentMarkdown());
 
         updateVisibleComments();
     }

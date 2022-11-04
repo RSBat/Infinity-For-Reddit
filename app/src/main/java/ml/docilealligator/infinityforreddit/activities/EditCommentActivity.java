@@ -67,6 +67,7 @@ public class EditCommentActivity extends BaseActivity implements UploadImageEnab
     public static final String EXTRA_POSITION = "EP";
     public static final String EXTRA_EDITED_COMMENT_CONTENT = "EECC";
     public static final String EXTRA_EDITED_COMMENT_POSITION = "EECP";
+    public static final String EXTRA_EDITED_COMMENT_FULLNAME = "EEC_FULLNAME";
 
     private static final int PICK_IMAGE_REQUEST_CODE = 100;
     private static final int CAPTURE_IMAGE_REQUEST_CODE = 200;
@@ -248,6 +249,7 @@ public class EditCommentActivity extends BaseActivity implements UploadImageEnab
                                 Intent returnIntent = new Intent();
                                 returnIntent.putExtra(EXTRA_EDITED_COMMENT_CONTENT, Utils.modifyMarkdown(content));
                                 returnIntent.putExtra(EXTRA_EDITED_COMMENT_POSITION, getIntent().getExtras().getInt(EXTRA_POSITION));
+                                returnIntent.putExtra(EXTRA_EDITED_COMMENT_FULLNAME, mFullName);
                                 setResult(RESULT_OK, returnIntent);
 
                                 finish();
