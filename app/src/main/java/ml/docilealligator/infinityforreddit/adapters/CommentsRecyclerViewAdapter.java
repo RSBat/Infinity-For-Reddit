@@ -171,8 +171,8 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     private boolean mAlwaysShowChildCommentCount;
     private int mDepthThreshold;
     private CommentRecyclerViewAdapterCallback mCommentRecyclerViewAdapterCallback;
-    private boolean isInitiallyLoading;
-    private boolean isInitiallyLoadingFailed;
+    @LoadingStatus
+    private int initiallyLoadingStatus;
     private boolean mHasMoreComments;
     private boolean loadMoreCommentsFailed;
     private Drawable expandDrawable;
@@ -278,8 +278,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         mDepthThreshold = sharedPreferences.getInt(SharedPreferencesUtils.SHOW_FEWER_TOOLBAR_OPTIONS_THRESHOLD, 5);
 
         mCommentRecyclerViewAdapterCallback = commentRecyclerViewAdapterCallback;
-        isInitiallyLoading = true;
-        isInitiallyLoadingFailed = false;
+        initiallyLoadingStatus = LoadingStatus.LOADING;
         mHasMoreComments = false;
         loadMoreCommentsFailed = false;
 
@@ -353,12 +352,13 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public int getItemViewType(int position) {
         if (asyncListDiffer.getCurrentList().size() == 0) {
-            if (isInitiallyLoading) {
-                return VIEW_TYPE_FIRST_LOADING;
-            } else if (isInitiallyLoadingFailed) {
-                return VIEW_TYPE_FIRST_LOADING_FAILED;
-            } else {
-                return VIEW_TYPE_NO_COMMENT_PLACEHOLDER;
+            switch (initiallyLoadingStatus) {
+                case LoadingStatus.NOT_LOADING:
+                    return VIEW_TYPE_NO_COMMENT_PLACEHOLDER;
+                case LoadingStatus.LOADING:
+                    return VIEW_TYPE_FIRST_LOADING;
+                case LoadingStatus.FAILED:
+                    return VIEW_TYPE_FIRST_LOADING_FAILED;
             }
         }
 
@@ -774,8 +774,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     public void addComments(@NonNull ArrayList<Comment> comments, boolean hasMoreComments) {
         if (mCommentRecyclerViewAdapterCallback.getComments().size() == 0) {
-            isInitiallyLoading = false;
-            isInitiallyLoadingFailed = false;
+            initiallyLoadingStatus = LoadingStatus.NOT_LOADING;
         }
 
         mCommentRecyclerViewAdapterCallback.getComments().addAll(comments);
@@ -820,14 +819,12 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     public void initiallyLoading() {
         resetCommentSearchIndex();
         mCommentRecyclerViewAdapterCallback.getComments().clear();
-        isInitiallyLoading = true;
-        isInitiallyLoadingFailed = false;
+        initiallyLoadingStatus = LoadingStatus.LOADING;
         updateVisibleComments();
     }
 
     public void initiallyLoadCommentsFailed() {
-        isInitiallyLoading = false;
-        isInitiallyLoadingFailed = true;
+        initiallyLoadingStatus = LoadingStatus.FAILED;
         updateVisibleComments();
     }
 
@@ -943,7 +940,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public int getItemCount() {
-        if (isInitiallyLoading || isInitiallyLoadingFailed || asyncListDiffer.getCurrentList().size() == 0) {
+        if (initiallyLoadingStatus != LoadingStatus.NOT_LOADING || asyncListDiffer.getCurrentList().size() == 0) {
             return 1;
         }
 
