@@ -57,6 +57,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -277,6 +278,92 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
         @Override
         public List<Comment> getComments() {
             return currentComments;
+        }
+
+        @Override
+        public void loadMoreComments(String placeholderFullname) {
+            Comment comment = findLoadMorePlaceholderByFullname(placeholderFullname);
+            if (comment == null) {
+                throw new IllegalStateException("Cannot find placeholder");
+            }
+
+            // todo: check
+            // this works because placeholder's id is equal to parent id
+            Comment parentComment = findCommentByFullname(comment.getFullName(), 0);
+            if (parentComment != null) {
+                comment.setLoadingMoreChildren(true);
+                comment.setLoadMoreChildrenFailed(false);
+                mCommentsAdapter.updateVisibleComments();
+
+                Retrofit retrofit = mAccessToken == null ? mRetrofit : mOauthRetrofit;
+                FetchComment.fetchMoreComment(mExecutor, new Handler(), retrofit, mAccessToken,
+                        parentComment.getMoreChildrenFullnames(),
+                        parentComment.getMoreChildrenStartingIndex(), parentComment.getDepth() + 1,
+                        mExpandChildren, new FetchComment.FetchMoreCommentListener() {
+                            @Override
+                            public void onFetchMoreCommentSuccess(ArrayList<Comment> expandedComments,
+                                                                  int childrenStartingIndex) {
+                                Comment parentCurrentComment = findCommentByFullname(parentComment.getFullName(), 0);
+                                if (parentCurrentComment == null) {
+                                    return;
+                                }
+
+                                if (parentCurrentComment.isExpanded()) {
+                                    Comment placeholderComment = findLoadMorePlaceholderByFullname(parentComment.getFullName());
+                                    if (placeholderComment == null) {
+                                        throw new IllegalStateException("Cannot find placeholder");
+                                    }
+
+                                    if (parentCurrentComment.getChildren().size() > childrenStartingIndex) {
+                                        parentCurrentComment.setMoreChildrenStartingIndex(childrenStartingIndex);
+                                        parentCurrentComment.getChildren().get(parentCurrentComment.getChildren().size() - 1)
+                                                .setLoadingMoreChildren(false);
+                                        parentCurrentComment.getChildren().get(parentCurrentComment.getChildren().size() - 1)
+                                                .setLoadMoreChildrenFailed(false);
+
+                                        placeholderComment.setLoadingMoreChildren(false);
+                                        placeholderComment.setLoadMoreChildrenFailed(false);
+                                    } else {
+                                        parentCurrentComment.getChildren()
+                                                .remove(parentCurrentComment.getChildren().size() - 1);
+                                        parentCurrentComment.removeMoreChildrenFullnames();
+
+                                        removeCommentByFullname(parentComment.getFullName(), 0, Comment.PLACEHOLDER_LOAD_MORE_COMMENTS);
+                                    }
+                                } else {
+                                    if (parentCurrentComment.hasReply() && parentCurrentComment.getChildren().size() <= childrenStartingIndex) {
+                                        parentCurrentComment.getChildren()
+                                                .remove(parentCurrentComment.getChildren().size() - 1);
+                                        parentCurrentComment.removeMoreChildrenFullnames();
+                                    }
+                                }
+
+                                parentCurrentComment.addChildren(expandedComments);
+                                mCommentsAdapter.updateVisibleComments();
+                            }
+
+                            @Override
+                            public void onFetchMoreCommentFailed() {
+                                Comment parentCurrentComment = findCommentByFullname(parentComment.getFullName(), 0);
+                                if (parentCurrentComment != null) {
+                                    if (parentCurrentComment.isExpanded()) {
+                                        Comment placeholderComment = findLoadMorePlaceholderByFullname(parentCurrentComment.getFullName());
+
+                                        if (placeholderComment != null) {
+                                            placeholderComment.setLoadingMoreChildren(false);
+                                            placeholderComment.setLoadMoreChildrenFailed(true);
+                                        }
+                                    }
+
+                                    parentCurrentComment.getChildren().get(parentCurrentComment.getChildren().size() - 1)
+                                            .setLoadingMoreChildren(false);
+                                    parentCurrentComment.getChildren().get(parentCurrentComment.getChildren().size() - 1)
+                                            .setLoadMoreChildrenFailed(true);
+                                    mCommentsAdapter.updateVisibleComments();
+                                }
+                            }
+                        });
+            }
         }
     };
 
@@ -621,7 +708,7 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
                     mSharedPreferences, mCurrentAccountSharedPreferences, mNsfwAndSpoilerSharedPreferences, mPostDetailsSharedPreferences,
                     mExoCreator, post -> EventBus.getDefault().post(new PostUpdateEventToPostList(mPost, postListPosition)));
             mCommentsAdapter = new CommentsRecyclerViewAdapter(activity,
-                    this, mCustomThemeWrapper, mExecutor, mRetrofit, mOauthRetrofit,
+                    this, mCustomThemeWrapper, mOauthRetrofit,
                     mAccessToken, mAccountName, mPost, mLocale, mSingleCommentId,
                     isSingleCommentThreadMode, mSharedPreferences,
                     adapterCallback);
@@ -1316,8 +1403,8 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
 
                             currentComments.clear();
                             mCommentsAdapter = new CommentsRecyclerViewAdapter(activity,
-                                    ViewPostDetailFragment.this, mCustomThemeWrapper, mExecutor,
-                                    mRetrofit, mOauthRetrofit, mAccessToken, mAccountName, mPost, mLocale,
+                                    ViewPostDetailFragment.this, mCustomThemeWrapper,
+                                    mOauthRetrofit, mAccessToken, mAccountName, mPost, mLocale,
                                     mSingleCommentId, isSingleCommentThreadMode, mSharedPreferences,
                                     adapterCallback);
                             if (mCommentsRecyclerView != null) {
@@ -2023,6 +2110,68 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
     private void onWindowFocusChanged(boolean hasWindowsFocus) {
         if (mPostAdapter != null) {
             mPostAdapter.setCanPlayVideo(hasWindowsFocus);
+        }
+    }
+
+    /**
+     * Find comment that is not a placeholder
+     */
+    @Nullable
+    private Comment findCommentByFullname(@NonNull String fullname, int positionHint) {
+        return findCommentByFullnameRecursively(currentComments, fullname, Comment.NOT_PLACEHOLDER);
+    }
+
+    @Nullable
+    private Comment findLoadMorePlaceholderByFullname(@NonNull String fullname) {
+        return findCommentByFullnameRecursively(currentComments, fullname, Comment.PLACEHOLDER_LOAD_MORE_COMMENTS);
+    }
+
+    private Comment findCommentByFullnameRecursively(@NonNull List<Comment> comments, @NonNull String fullname, int placeholderType) {
+        for (Comment comment: comments) {
+            if (comment.getFullName().equals(fullname)
+                    && comment.getPlaceholderType() == placeholderType) {
+                return comment;
+            }
+            if (comment.getChildren() != null) {
+                Comment child = findCommentByFullnameRecursively(comment.getChildren(), fullname, placeholderType);
+                if (child != null) {
+                    return child;
+                }
+            }
+        }
+        return null;
+    }
+
+    private void removeCommentByFullname(@NonNull String fullname, int positionHint, int placeholderType) {
+        List<Comment> mComments = currentComments;
+        Comment comment = findCommentByFullnameRecursively(mComments, fullname, placeholderType);
+        if (comment == null) {
+            return; // nothing to delete
+        }
+
+        Comment parentComment = findCommentByFullname("t3_" + comment.getParentId(), 0);
+        if (parentComment != null) {
+            for (Iterator<Comment> it = parentComment.getChildren().iterator(); it.hasNext(); /* noop */) {
+                Comment tmp = it.next();
+                if (fullname.equals(tmp.getFullName())
+                        && tmp.getPlaceholderType() == placeholderType) {
+                    it.remove();
+                }
+            }
+        }
+
+        if (positionHint >= 0 && positionHint < mComments.size()
+                && fullname.equals(mComments.get(positionHint).getFullName())
+                && mComments.get(positionHint).getPlaceholderType() == placeholderType) {
+            mComments.remove(positionHint);
+        }
+
+        for (Iterator<Comment> it = mComments.iterator(); it.hasNext(); /* noop */) {
+            Comment tmp = it.next();
+            if (fullname.equals(tmp.getFullName())
+                    && tmp.getPlaceholderType() == placeholderType) {
+                it.remove();
+            }
         }
     }
 

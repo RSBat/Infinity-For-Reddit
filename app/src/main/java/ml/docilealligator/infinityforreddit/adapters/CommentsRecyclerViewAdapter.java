@@ -153,8 +153,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     private BaseActivity mActivity;
     private ViewPostDetailFragment mFragment;
-    private Executor mExecutor;
-    private Retrofit mRetrofit;
     private Retrofit mOauthRetrofit;
     private Markwon mCommentMarkwon;
     private String mAccessToken;
@@ -216,7 +214,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     public CommentsRecyclerViewAdapter(BaseActivity activity, ViewPostDetailFragment fragment,
                                        CustomThemeWrapper customThemeWrapper,
-                                       Executor executor, Retrofit retrofit, Retrofit oauthRetrofit,
+                                       Retrofit oauthRetrofit,
                                        String accessToken, String accountName,
                                        Post post, Locale locale, String singleCommentId,
                                        boolean isSingleCommentThreadMode,
@@ -224,8 +222,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                                        CommentRecyclerViewAdapterCallback commentRecyclerViewAdapterCallback) {
         mActivity = activity;
         mFragment = fragment;
-        mExecutor = executor;
-        mRetrofit = retrofit;
         mOauthRetrofit = oauthRetrofit;
         mGlide = Glide.with(activity);
         mSecondaryTextColor = customThemeWrapper.getSecondaryTextColor();
@@ -709,88 +705,9 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
             if (placeholder.getPlaceholderType() == Comment.PLACEHOLDER_LOAD_MORE_COMMENTS) {
                 holder.placeholderTextView.setOnClickListener(view -> {
-                    Comment comment = getCurrentComment(holder);
-                    if (comment == null) {
-                        return;
-                    }
-
-                    // todo: check
-                    // this works because placeholder's id is equal to parent id
-                    Comment parentComment = findCommentByFullname(comment.getFullName(), 0);
-                    if (parentComment != null) {
-                        comment.setLoadingMoreChildren(true);
-                        comment.setLoadMoreChildrenFailed(false);
-                        updateVisibleComments();
-
-                        Retrofit retrofit = mAccessToken == null ? mRetrofit : mOauthRetrofit;
-                        FetchComment.fetchMoreComment(mExecutor, new Handler(), retrofit, mAccessToken,
-                                parentComment.getMoreChildrenFullnames(),
-                                parentComment.getMoreChildrenStartingIndex(), parentComment.getDepth() + 1,
-                                mExpandChildren, new FetchComment.FetchMoreCommentListener() {
-                                    @Override
-                                    public void onFetchMoreCommentSuccess(ArrayList<Comment> expandedComments,
-                                                                          int childrenStartingIndex) {
-                                        Comment parentCurrentComment = findCommentByFullname(parentComment.getFullName(), 0);
-                                        if (parentCurrentComment == null) {
-                                            return;
-                                        }
-
-                                        if (parentCurrentComment.isExpanded()) {
-                                            Comment placeholderComment = findLoadMorePlaceholderByFullname(parentComment.getFullName());
-                                            if (placeholderComment == null) {
-                                                throw new IllegalStateException("Cannot find placeholder");
-                                            }
-
-                                            if (parentCurrentComment.getChildren().size() > childrenStartingIndex) {
-                                                parentCurrentComment.setMoreChildrenStartingIndex(childrenStartingIndex);
-                                                parentCurrentComment.getChildren().get(parentCurrentComment.getChildren().size() - 1)
-                                                        .setLoadingMoreChildren(false);
-                                                parentCurrentComment.getChildren().get(parentCurrentComment.getChildren().size() - 1)
-                                                        .setLoadMoreChildrenFailed(false);
-
-                                                placeholderComment.setLoadingMoreChildren(false);
-                                                placeholderComment.setLoadMoreChildrenFailed(false);
-                                            } else {
-                                                parentCurrentComment.getChildren()
-                                                        .remove(parentCurrentComment.getChildren().size() - 1);
-                                                parentCurrentComment.removeMoreChildrenFullnames();
-
-                                                removeCommentByFullname(parentComment.getFullName(), 0, Comment.PLACEHOLDER_LOAD_MORE_COMMENTS);
-                                            }
-                                        } else {
-                                            if (parentCurrentComment.hasReply() && parentCurrentComment.getChildren().size() <= childrenStartingIndex) {
-                                                parentCurrentComment.getChildren()
-                                                        .remove(parentCurrentComment.getChildren().size() - 1);
-                                                parentCurrentComment.removeMoreChildrenFullnames();
-                                            }
-                                        }
-
-                                        parentCurrentComment.addChildren(expandedComments);
-                                        updateVisibleComments();
-                                    }
-
-                                    @Override
-                                    public void onFetchMoreCommentFailed() {
-                                        Comment parentCurrentComment = findCommentByFullname(parentComment.getFullName(), 0);
-                                        if (parentCurrentComment != null) {
-                                            if (parentCurrentComment.isExpanded()) {
-                                                Comment placeholderComment = findLoadMorePlaceholderByFullname(parentCurrentComment.getFullName());
-
-                                                if (placeholderComment != null) {
-                                                    placeholderComment.setLoadingMoreChildren(false);
-                                                    placeholderComment.setLoadMoreChildrenFailed(true);
-                                                }
-                                                holder.placeholderTextView.setText(R.string.comment_load_more_comments_failed);
-                                            }
-
-                                            parentCurrentComment.getChildren().get(parentCurrentComment.getChildren().size() - 1)
-                                                    .setLoadingMoreChildren(false);
-                                            parentCurrentComment.getChildren().get(parentCurrentComment.getChildren().size() - 1)
-                                                    .setLoadMoreChildrenFailed(true);
-                                            updateVisibleComments();
-                                        }
-                                    }
-                                });
+                    VisibleComment visibleComment = getCurrentVisibleComment(holder.getBindingAdapterPosition());
+                    if (visibleComment != null) {
+                        mCommentRecyclerViewAdapterCallback.loadMoreComments(visibleComment.getFullName());
                     }
                 });
             } else {
@@ -910,7 +827,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         return (ArrayList<Comment>) mCommentRecyclerViewAdapterCallback.getComments();
     }
 
-    private void updateVisibleComments() {
+    public void updateVisibleComments() {
         List<VisibleComment> visibleComments = new ArrayList<>();
         for (Comment comment: mCommentRecyclerViewAdapterCallback.getComments()) {
             if (comment.getDepth() == 0) {
@@ -1123,6 +1040,8 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         void retryFetchingMoreComments();
 
         List<Comment> getComments();
+
+        void loadMoreComments(String placeholderFullName);
     }
 
     public class CommentViewHolder extends RecyclerView.ViewHolder {
