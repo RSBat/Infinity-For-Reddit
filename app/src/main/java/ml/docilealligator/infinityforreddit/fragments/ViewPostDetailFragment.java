@@ -2002,12 +2002,49 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
                     @Override
                     public void deleteSuccess() {
                         Toast.makeText(activity, R.string.delete_post_success, Toast.LENGTH_SHORT).show();
-                        mCommentsAdapter.deleteComment(fullName, position);
+                        deleteComment();
                     }
 
                     @Override
                     public void deleteFailed() {
                         Toast.makeText(activity, R.string.delete_post_failed, Toast.LENGTH_SHORT).show();
+                    }
+
+                    void deleteComment() {
+                        Comment comment = findCommentByFullname(fullName, position);
+                        if (comment != null) {
+                            if (comment.isExpanded()) {
+                                comment.setAuthor("[deleted]");
+                                comment.setCommentMarkdown("[deleted]");
+                            } else {
+                                List<Comment> mComments = currentComments;
+
+                                Comment parentComment = findCommentByFullname("t3_" + comment.getParentId(), 0);
+                                if (parentComment != null) {
+                                    for (Iterator<Comment> it = parentComment.getChildren().iterator(); it.hasNext(); /* noop */) {
+                                        Comment tmp = it.next();
+                                        if (fullName.equals(tmp.getFullName())
+                                                && tmp.getPlaceholderType() == Comment.NOT_PLACEHOLDER) {
+                                            it.remove();
+                                        }
+                                    }
+                                }
+                                if (position >= 0 && position < mComments.size()
+                                        && fullName.equals(mComments.get(position).getFullName())
+                                        && mComments.get(position).getPlaceholderType() == Comment.NOT_PLACEHOLDER) {
+                                    mComments.remove(position);
+                                }
+                                for (Iterator<Comment> it = mComments.iterator(); it.hasNext(); /* noop */) {
+                                    Comment tmp = it.next();
+                                    if (fullName.equals(tmp.getFullName())
+                                            && tmp.getPlaceholderType() == Comment.NOT_PLACEHOLDER) {
+                                        it.remove();
+                                    }
+                                }
+
+                            }
+                            mCommentsAdapter.updateVisibleComments();
+                        }
                     }
                 }))
                 .setNegativeButton(R.string.cancel, null)

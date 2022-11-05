@@ -36,7 +36,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -737,39 +736,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         return null;
     }
 
-    private void removeCommentByFullname(@NonNull String fullname, int positionHint, int placeholderType) {
-        List<Comment> mComments = mCommentRecyclerViewAdapterCallback.getComments();
-        Comment comment = findCommentByFullnameRecursively(mComments, fullname, placeholderType);
-        if (comment == null) {
-            return; // nothing to delete
-        }
-
-        Comment parentComment = findCommentByFullname("t3_" + comment.getParentId(), 0);
-        if (parentComment != null) {
-            for (Iterator<Comment> it = parentComment.getChildren().iterator(); it.hasNext(); /* noop */) {
-                Comment tmp = it.next();
-                if (fullname.equals(tmp.getFullName())
-                        && tmp.getPlaceholderType() == placeholderType) {
-                    it.remove();
-                }
-            }
-        }
-
-        if (positionHint >= 0 && positionHint < mComments.size()
-                && fullname.equals(mComments.get(positionHint).getFullName())
-                && mComments.get(positionHint).getPlaceholderType() == placeholderType) {
-            mComments.remove(positionHint);
-        }
-
-        for (Iterator<Comment> it = mComments.iterator(); it.hasNext(); /* noop */) {
-            Comment tmp = it.next();
-            if (fullname.equals(tmp.getFullName())
-                    && tmp.getPlaceholderType() == placeholderType) {
-                it.remove();
-            }
-        }
-    }
-
     public void addComments(@NonNull ArrayList<Comment> comments, boolean hasMoreComments) {
         if (mCommentRecyclerViewAdapterCallback.getComments().size() == 0) {
             initiallyLoadingStatus = LoadingStatus.NOT_LOADING;
@@ -829,19 +795,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     public void loadMoreCommentsFailed() {
         loadMoreCommentsFailed = true;
         updateVisibleComments();
-    }
-
-    public void deleteComment(String fullName, int position) {
-        Comment comment = findCommentByFullname(fullName, position);
-        if (comment != null) {
-            if (comment.isExpanded()) {
-                comment.setAuthor("[deleted]");
-                comment.setCommentMarkdown("[deleted]");
-            } else {
-                removeCommentByFullname(fullName, position, Comment.NOT_PLACEHOLDER);
-            }
-            updateVisibleComments();
-        }
     }
 
     public int getNextParentCommentPosition(int currentPosition) {
