@@ -365,6 +365,61 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
                         });
             }
         }
+
+        @Override
+        public void saveComment(String fullName, boolean save) {
+            Comment comment = findCommentByFullname(fullName, 0);
+            if (comment == null) {
+                throw new IllegalStateException("Cannot find comment for saving");
+            }
+
+            comment.setSaved(save);
+            if (save) {
+                SaveThing.saveThing(mOauthRetrofit, mAccessToken, comment.getFullName(), new SaveThing.SaveThingListener() {
+                    @Override
+                    public void success() {
+                        comment.setSaved(true);
+                        mCommentsAdapter.updateVisibleComments();
+                        Activity activity = getActivity();
+                        if (activity != null) {
+                            Toast.makeText(activity, R.string.comment_saved_success, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void failed() {
+                        comment.setSaved(false);
+                        mCommentsAdapter.updateVisibleComments();
+                        Activity activity = getActivity();
+                        if (activity != null) {
+                            Toast.makeText(activity, R.string.comment_saved_failed, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            } else {
+                SaveThing.unsaveThing(mOauthRetrofit, mAccessToken, comment.getFullName(), new SaveThing.SaveThingListener() {
+                    @Override
+                    public void success() {
+                        comment.setSaved(false);
+                        mCommentsAdapter.updateVisibleComments();
+                        Activity activity = getActivity();
+                        if (activity != null) {
+                            Toast.makeText(activity, R.string.comment_unsaved_success, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void failed() {
+                        comment.setSaved(true);
+                        mCommentsAdapter.updateVisibleComments();
+                        Activity activity = getActivity();
+                        if (activity != null) {
+                            Toast.makeText(activity, R.string.comment_unsaved_failed, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        }
     };
 
     @Override

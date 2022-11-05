@@ -1101,6 +1101,8 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         List<Comment> getComments();
 
         void loadMoreComments(String placeholderFullName);
+
+        void saveComment(String fullName, boolean save);
     }
 
     public class CommentViewHolder extends RecyclerView.ViewHolder {
@@ -1314,43 +1316,9 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             });
 
             saveButton.setOnClickListener(view -> {
-                Comment comment = getCurrentComment(this);
+                VisibleComment comment = getCurrentVisibleComment(getBindingAdapterPosition());
                 if (comment != null) {
-                    if (comment.isSaved()) {
-                        comment.setSaved(false);
-                        SaveThing.unsaveThing(mOauthRetrofit, mAccessToken, comment.getFullName(), new SaveThing.SaveThingListener() {
-                            @Override
-                            public void success() {
-                                comment.setSaved(false);
-                                updateVisibleComments();
-                                Toast.makeText(mActivity, R.string.comment_unsaved_success, Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void failed() {
-                                comment.setSaved(true);
-                                updateVisibleComments();
-                                Toast.makeText(mActivity, R.string.comment_unsaved_failed, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    } else {
-                        comment.setSaved(true);
-                        SaveThing.saveThing(mOauthRetrofit, mAccessToken, comment.getFullName(), new SaveThing.SaveThingListener() {
-                            @Override
-                            public void success() {
-                                comment.setSaved(true);
-                                updateVisibleComments();
-                                Toast.makeText(mActivity, R.string.comment_saved_success, Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void failed() {
-                                comment.setSaved(false);
-                                updateVisibleComments();
-                                Toast.makeText(mActivity, R.string.comment_saved_failed, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
+                    mCommentRecyclerViewAdapterCallback.saveComment(comment.getFullName(), !comment.isSaved());
                 }
             });
 
