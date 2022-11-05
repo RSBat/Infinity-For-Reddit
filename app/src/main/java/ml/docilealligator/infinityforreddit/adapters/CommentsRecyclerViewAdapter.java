@@ -1034,6 +1034,65 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
+    private void vote(String fullname, int buttonVoteType) {
+        if (mPost.isArchived()) {
+            Toast.makeText(mActivity, R.string.archived_post_vote_unavailable, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (mAccessToken == null) {
+            Toast.makeText(mActivity, R.string.login_first, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Comment comment = findCommentByFullname(fullname, 0);
+        if (comment != null) {
+            int previousVoteType = comment.getVoteType();
+
+            int newVoteType;
+            if (previousVoteType != buttonVoteType) {
+                //Not upvoted before
+                newVoteType = buttonVoteType;
+            } else {
+                //Upvoted before
+                newVoteType = Comment.VOTE_TYPE_NO_VOTE;
+            }
+            comment.setVoteType(newVoteType);
+            updateVisibleComments();
+
+            String newVoteDir;
+            switch (newVoteType) {
+                case Comment.VOTE_TYPE_DOWNVOTE:
+                    newVoteDir = APIUtils.DIR_DOWNVOTE;
+                    break;
+                case Comment.VOTE_TYPE_NO_VOTE:
+                    newVoteDir = APIUtils.DIR_UNVOTE;
+                    break;
+                case Comment.VOTE_TYPE_UPVOTE:
+                    newVoteDir = APIUtils.DIR_UPVOTE;
+                    break;
+                default:
+                    throw new IllegalStateException("Illegal newVoteType");
+            }
+
+            VoteThing.voteThing(mActivity, mOauthRetrofit, mAccessToken, new VoteThing.VoteThingListener() {
+                @Override
+                public void onVoteThingSuccess(int position) {
+                    comment.setVoteType(newVoteType);
+
+                    Comment currentComment = findCommentByFullname(comment.getFullName(), 0);
+                    if (currentComment != null) {
+                        updateVisibleComments();
+                    }
+                }
+
+                @Override
+                public void onVoteThingFail(int position) {
+                }
+            }, comment.getFullName(), newVoteDir, 0);
+        }
+    }
+
     public interface CommentRecyclerViewAdapterCallback {
         void retryFetchingComments();
 
@@ -1241,98 +1300,16 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             });
 
             upvoteButton.setOnClickListener(view -> {
-                if (mPost.isArchived()) {
-                    Toast.makeText(mActivity, R.string.archived_post_vote_unavailable, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (mAccessToken == null) {
-                    Toast.makeText(mActivity, R.string.login_first, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                Comment comment = getCurrentComment(this);
+                VisibleComment comment = getCurrentVisibleComment(getBindingAdapterPosition());
                 if (comment != null) {
-                    int previousVoteType = comment.getVoteType();
-                    String newVoteDir;
-                    int newVoteType;
-
-                    if (previousVoteType != Comment.VOTE_TYPE_UPVOTE) {
-                        //Not upvoted before
-                        newVoteType = Comment.VOTE_TYPE_UPVOTE;
-                        newVoteDir = APIUtils.DIR_UPVOTE;
-                    } else {
-                        //Upvoted before
-                        newVoteType = Comment.VOTE_TYPE_NO_VOTE;
-                        newVoteDir = APIUtils.DIR_UNVOTE;
-                    }
-                    comment.setVoteType(newVoteType);
-                    updateVisibleComments();
-
-                    VoteThing.voteThing(mActivity, mOauthRetrofit, mAccessToken, new VoteThing.VoteThingListener() {
-                        @Override
-                        public void onVoteThingSuccess(int position) {
-                            comment.setVoteType(newVoteType);
-
-                            int positionHint = mIsSingleCommentThreadMode ? getBindingAdapterPosition() - 1 : getBindingAdapterPosition();
-                            Comment currentComment = findCommentByFullname(comment.getFullName(), positionHint);
-                            if (currentComment != null) {
-                                updateVisibleComments();
-                            }
-                        }
-
-                        @Override
-                        public void onVoteThingFail(int position) {
-                        }
-                    }, comment.getFullName(), newVoteDir, getBindingAdapterPosition());
+                    vote(comment.getFullName(), Comment.VOTE_TYPE_UPVOTE);
                 }
             });
 
             downvoteButton.setOnClickListener(view -> {
-                if (mPost.isArchived()) {
-                    Toast.makeText(mActivity, R.string.archived_post_vote_unavailable, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (mAccessToken == null) {
-                    Toast.makeText(mActivity, R.string.login_first, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                Comment comment = getCurrentComment(this);
+                VisibleComment comment = getCurrentVisibleComment(getBindingAdapterPosition());
                 if (comment != null) {
-                    int previousVoteType = comment.getVoteType();
-                    String newVoteDir;
-                    int newVoteType;
-
-                    if (previousVoteType != Comment.VOTE_TYPE_DOWNVOTE) {
-                        //Not downvoted before
-                        newVoteDir = APIUtils.DIR_DOWNVOTE;
-                        newVoteType = Comment.VOTE_TYPE_DOWNVOTE;
-                    } else {
-                        //Downvoted before
-                        newVoteDir = APIUtils.DIR_UNVOTE;
-                        newVoteType = Comment.VOTE_TYPE_NO_VOTE;
-                    }
-                    comment.setVoteType(newVoteType);
-                    updateVisibleComments();
-
-                    VoteThing.voteThing(mActivity, mOauthRetrofit, mAccessToken, new VoteThing.VoteThingListener() {
-                        @Override
-                        public void onVoteThingSuccess(int position1) {
-                            comment.setVoteType(newVoteType);
-
-                            int positionHint = mIsSingleCommentThreadMode ? getBindingAdapterPosition() - 1 : getBindingAdapterPosition();
-                            Comment currentComment = findCommentByFullname(comment.getFullName(), positionHint);
-                            if (currentComment != null) {
-                                updateVisibleComments();
-                            }
-                        }
-
-                        @Override
-                        public void onVoteThingFail(int position1) {
-                        }
-                    }, comment.getFullName(), newVoteDir, getBindingAdapterPosition());
+                    vote(comment.getFullName(), Comment.VOTE_TYPE_DOWNVOTE);
                 }
             });
 
