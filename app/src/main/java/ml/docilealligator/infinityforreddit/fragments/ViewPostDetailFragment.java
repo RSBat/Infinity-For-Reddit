@@ -954,8 +954,18 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
     }
 
     public void addChildComment(Comment comment, String parentFullname, int parentPosition) {
+        Comment parentComment = findCommentByFullname(parentFullname, 0);
+        if (parentComment == null) {
+            throw new IllegalStateException("Trying to add child to non existent parent");
+        }
+        parentComment.addChild(comment);
+        parentComment.setHasReply(true);
+        if (!parentComment.isExpanded()) {
+            parentComment.setExpanded(true);
+        }
+
         if (mCommentsAdapter != null) {
-            mCommentsAdapter.addChildComment(comment, parentFullname, parentPosition);
+            mCommentsAdapter.updateVisibleComments();
         }
         if (mPostAdapter != null) {
             mPostAdapter.addOneComment();
@@ -964,16 +974,27 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
     }
 
     public void editComment(String fullname, String commentAuthor, String commentContentMarkdown, int position) {
+        Comment comment = findCommentByFullname(fullname, position);
+        if (comment == null) {
+            return;
+        }
+        if (commentAuthor != null) {
+            comment.setAuthor(commentAuthor);
+        }
+        comment.setCommentMarkdown(commentContentMarkdown);
+
         if (mCommentsAdapter != null) {
-            mCommentsAdapter.editComment(fullname, commentAuthor,
-                    commentContentMarkdown,
-                    position);
+            mCommentsAdapter.updateVisibleComments();
         }
     }
 
     public void awardGiven(String fullname, String awardsHTML, int awardCount, int position) {
-        if (mCommentsAdapter != null) {
-            mCommentsAdapter.giveAward(fullname, awardsHTML, awardCount, position);
+        Comment comment = findCommentByFullname(fullname, position);
+        if (comment != null) {
+            comment.addAwards(awardsHTML);
+            if (mCommentsAdapter != null) {
+                mCommentsAdapter.updateVisibleComments();
+            }
         }
     }
 
@@ -1040,8 +1061,12 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
     }
 
     public void saveComment(String fullname, int position, boolean isSaved) {
-        if (mCommentsAdapter != null) {
-            mCommentsAdapter.setSaveComment(fullname, position, isSaved);
+        Comment comment = findCommentByFullname(fullname, position);
+        if (comment != null) {
+            comment.setSaved(isSaved);
+            if (mCommentsAdapter != null) {
+                mCommentsAdapter.updateVisibleComments();
+            }
         }
     }
 
@@ -2012,7 +2037,7 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
                 new FetchRemovedComment.FetchRemovedCommentListener() {
                     @Override
                     public void fetchSuccess(Comment fetchedComment, Comment originalComment) {
-                        mCommentsAdapter.editComment(fetchedComment, originalComment, position);
+                        editComment(fetchedComment, originalComment, position);
                     }
 
                     @Override
@@ -2023,7 +2048,7 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
                                 new FetchRemovedCommentReveddit.FetchRemovedCommentListener() {
                                     @Override
                                     public void fetchSuccess(Comment fetchedComment, Comment originalComment) {
-                                        mCommentsAdapter.editComment(fetchedComment, originalComment, position);
+                                        editComment(fetchedComment, originalComment, position);
                                     }
 
                                     @Override
@@ -2031,6 +2056,24 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
                                         Toast.makeText(activity, R.string.show_removed_comment_failed, Toast.LENGTH_SHORT).show();
                                     }
                                 });
+                    }
+
+                    private void editComment(Comment fetchedComment, @NonNull Comment originalComment, int position) {
+                        Comment currentComment = findCommentByFullname(originalComment.getFullName(), position);
+                        if (currentComment == null) {
+                            Activity activity = getActivity();
+                            if (activity != null) {
+                                Toast.makeText(activity, R.string.show_removed_comment_failed, Toast.LENGTH_SHORT).show();
+                            }
+                            return;
+                        }
+
+                        currentComment.setSubmittedByAuthor(originalComment.isSubmitter());
+                        currentComment.setCommentMarkdown(fetchedComment.getCommentMarkdown());
+
+                        if (mCommentsAdapter != null) {
+                            mCommentsAdapter.updateVisibleComments();
+                        }
                     }
                 });
     }

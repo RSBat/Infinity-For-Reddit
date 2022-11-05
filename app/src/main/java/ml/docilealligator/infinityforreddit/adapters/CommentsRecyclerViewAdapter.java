@@ -8,7 +8,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,7 +40,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.Executor;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,8 +51,6 @@ import io.noties.markwon.core.MarkwonTheme;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import me.saket.bettermovementmethod.BetterLinkMovementMethod;
 import ml.docilealligator.infinityforreddit.R;
-import ml.docilealligator.infinityforreddit.SaveThing;
-import ml.docilealligator.infinityforreddit.VoteThing;
 import ml.docilealligator.infinityforreddit.activities.BaseActivity;
 import ml.docilealligator.infinityforreddit.activities.CommentActivity;
 import ml.docilealligator.infinityforreddit.activities.LinkResolverActivity;
@@ -63,7 +59,6 @@ import ml.docilealligator.infinityforreddit.activities.ViewUserDetailActivity;
 import ml.docilealligator.infinityforreddit.bottomsheetfragments.CommentMoreBottomSheetFragment;
 import ml.docilealligator.infinityforreddit.bottomsheetfragments.UrlMenuBottomSheetFragment;
 import ml.docilealligator.infinityforreddit.comment.Comment;
-import ml.docilealligator.infinityforreddit.comment.FetchComment;
 import ml.docilealligator.infinityforreddit.customtheme.CustomThemeWrapper;
 import ml.docilealligator.infinityforreddit.customviews.CommentIndentationView;
 import ml.docilealligator.infinityforreddit.customviews.CustomMarkwonAdapter;
@@ -74,10 +69,8 @@ import ml.docilealligator.infinityforreddit.customviews.SwipeLockScrollView;
 import ml.docilealligator.infinityforreddit.fragments.ViewPostDetailFragment;
 import ml.docilealligator.infinityforreddit.markdown.MarkdownUtils;
 import ml.docilealligator.infinityforreddit.post.Post;
-import ml.docilealligator.infinityforreddit.utils.APIUtils;
 import ml.docilealligator.infinityforreddit.utils.SharedPreferencesUtils;
 import ml.docilealligator.infinityforreddit.utils.Utils;
-import retrofit2.Retrofit;
 
 public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_TYPE_FIRST_LOADING = 9;
@@ -730,11 +723,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         return findCommentByFullnameRecursively(mCommentRecyclerViewAdapterCallback.getComments(), fullname, Comment.NOT_PLACEHOLDER);
     }
 
-    @Nullable
-    private Comment findLoadMorePlaceholderByFullname(@NonNull String fullname) {
-        return findCommentByFullnameRecursively(mCommentRecyclerViewAdapterCallback.getComments(), fullname, Comment.PLACEHOLDER_LOAD_MORE_COMMENTS);
-    }
-
     private Comment findCommentByFullnameRecursively(@NonNull List<Comment> comments, @NonNull String fullname, int placeholderType) {
         for (Comment comment: comments) {
             if (comment.getFullName().equals(fullname)
@@ -801,20 +789,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         updateVisibleComments();
     }
 
-    public void addChildComment(Comment comment, String parentFullname, int parentPosition) {
-        Comment parentComment = findCommentByFullname(parentFullname, 0);
-        if (parentComment == null) {
-            throw new IllegalStateException("Trying to add child to non existent parent");
-        }
-
-        parentComment.addChild(comment);
-        parentComment.setHasReply(true);
-        if (!parentComment.isExpanded()) {
-            parentComment.setExpanded(true);
-        }
-        updateVisibleComments();
-    }
-
     public void setSingleComment(String singleCommentId, boolean isSingleCommentThreadMode) {
         mSingleCommentId = singleCommentId;
         mIsSingleCommentThreadMode = isSingleCommentThreadMode;
@@ -859,33 +833,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     public void loadMoreCommentsFailed() {
         loadMoreCommentsFailed = true;
-        updateVisibleComments();
-    }
-
-    public void editComment(String fullname, String commentAuthor, String commentContentMarkdown, int position) {
-        Comment comment = findCommentByFullname(fullname, position);
-        if (comment == null) {
-            return;
-        }
-
-        if (commentAuthor != null) {
-            comment.setAuthor(commentAuthor);
-        }
-
-        comment.setCommentMarkdown(commentContentMarkdown);
-        updateVisibleComments();
-    }
-
-    public void editComment(Comment fetchedComment, Comment originalComment, int position) {
-        Comment currentComment = findCommentByFullname(originalComment.getFullName(), position);
-        if (currentComment == null) {
-            Toast.makeText(mActivity, R.string.show_removed_comment_failed, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        currentComment.setSubmittedByAuthor(originalComment.isSubmitter());
-        currentComment.setCommentMarkdown(fetchedComment.getCommentMarkdown());
-
         updateVisibleComments();
     }
 
@@ -957,22 +904,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                     ((CommentViewHolder) viewHolder).downvoteButton.performClick();
                 }
             }
-        }
-    }
-
-    public void giveAward(String fullname, String awardsHTML, int awardCount, int position) {
-        Comment comment = findCommentByFullname(fullname, position);
-        if (comment != null) {
-            comment.addAwards(awardsHTML);
-            updateVisibleComments();
-        }
-    }
-
-    public void setSaveComment(String fullname, int position, boolean isSaved) {
-        Comment comment = findCommentByFullname(fullname, position);
-        if (comment != null) {
-            comment.setSaved(isSaved);
-            updateVisibleComments();
         }
     }
 
