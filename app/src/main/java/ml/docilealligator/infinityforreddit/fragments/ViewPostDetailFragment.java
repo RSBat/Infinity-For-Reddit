@@ -231,7 +231,6 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
     private String mSingleCommentId;
     private String mContextNumber;
     private boolean showToast = false;
-    private boolean isSortingComments = false;
     private boolean mIsSmoothScrolling = false;
     private boolean mLockFab;
     private boolean mSwipeUpToHideFab;
@@ -1679,14 +1678,6 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
                     @Override
                     public void onFetchCommentSuccess(ArrayList<Comment> expandedComments,
                                                       String parentId, ArrayList<String> children) {
-                        if (checkSortState && isSortingComments) {
-                            if (changeRefreshState) {
-                                isRefreshing = false;
-                            }
-
-                            return;
-                        }
-
                         ViewPostDetailFragment.this.children = children;
 
                         comments = expandedComments;
@@ -1748,13 +1739,6 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
                     @Override
                     public void onFetchCommentFailed() {
                         isFetchingComments = false;
-                        if (checkSortState && isSortingComments) {
-                            if (changeRefreshState) {
-                                isRefreshing = false;
-                            }
-
-                            return;
-                        }
 
                         mCommentsAdapter.initiallyLoadCommentsFailed();
                         if (changeRefreshState) {
