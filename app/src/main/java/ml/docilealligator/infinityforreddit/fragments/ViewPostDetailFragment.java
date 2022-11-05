@@ -260,6 +260,26 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
         // Required empty public constructor
     }
 
+    private final CommentsRecyclerViewAdapter.CommentRecyclerViewAdapterCallback adapterCallback = new CommentsRecyclerViewAdapter.CommentRecyclerViewAdapterCallback() {
+        @Override
+        public void retryFetchingComments() {
+            fetchCommentsRespectRecommendedSort(false);
+        }
+
+        @Override
+        public void retryFetchingMoreComments() {
+            isLoadingMoreChildren = false;
+            loadMoreChildrenSuccess = true;
+
+            fetchMoreComments();
+        }
+
+        @Override
+        public List<Comment> getComments() {
+            return currentComments;
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -604,25 +624,7 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
                     this, mCustomThemeWrapper, mExecutor, mRetrofit, mOauthRetrofit,
                     mAccessToken, mAccountName, mPost, mLocale, mSingleCommentId,
                     isSingleCommentThreadMode, mSharedPreferences,
-                    new CommentsRecyclerViewAdapter.CommentRecyclerViewAdapterCallback() {
-                        @Override
-                        public void retryFetchingComments() {
-                            fetchCommentsRespectRecommendedSort(false);
-                        }
-
-                        @Override
-                        public void retryFetchingMoreComments() {
-                            isLoadingMoreChildren = false;
-                            loadMoreChildrenSuccess = true;
-
-                            fetchMoreComments();
-                        }
-
-                        @Override
-                        public List<Comment> getComments() {
-                            return currentComments;
-                        }
-                    });
+                    adapterCallback);
             if (mCommentsRecyclerView != null) {
                 mRecyclerView.setAdapter(mPostAdapter);
                 mCommentsRecyclerView.setAdapter(mCommentsAdapter);
@@ -1317,25 +1319,7 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
                                     ViewPostDetailFragment.this, mCustomThemeWrapper, mExecutor,
                                     mRetrofit, mOauthRetrofit, mAccessToken, mAccountName, mPost, mLocale,
                                     mSingleCommentId, isSingleCommentThreadMode, mSharedPreferences,
-                                    new CommentsRecyclerViewAdapter.CommentRecyclerViewAdapterCallback() {
-                                        @Override
-                                        public void retryFetchingComments() {
-                                            fetchCommentsRespectRecommendedSort(false);
-                                        }
-
-                                        @Override
-                                        public void retryFetchingMoreComments() {
-                                            isLoadingMoreChildren = false;
-                                            loadMoreChildrenSuccess = true;
-
-                                            fetchMoreComments();
-                                        }
-
-                                        @Override
-                                        public List<Comment> getComments() {
-                                            return currentComments;
-                                        }
-                                    });
+                                    adapterCallback);
                             if (mCommentsRecyclerView != null) {
                                 mRecyclerView.setAdapter(mPostAdapter);
                                 mCommentsRecyclerView.setAdapter(mCommentsAdapter);
