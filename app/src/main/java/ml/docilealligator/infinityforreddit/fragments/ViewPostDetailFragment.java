@@ -76,6 +76,7 @@ import ml.docilealligator.infinityforreddit.R;
 import ml.docilealligator.infinityforreddit.RedditDataRoomDatabase;
 import ml.docilealligator.infinityforreddit.SaveThing;
 import ml.docilealligator.infinityforreddit.SortType;
+import ml.docilealligator.infinityforreddit.VoteThing;
 import ml.docilealligator.infinityforreddit.activities.CommentActivity;
 import ml.docilealligator.infinityforreddit.activities.EditPostActivity;
 import ml.docilealligator.infinityforreddit.activities.GiveAwardActivity;
@@ -418,6 +419,56 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
                         }
                     }
                 });
+            }
+        }
+
+        @Override
+        public void vote(String fullname, int buttonVoteType) {
+            Comment comment = findCommentByFullname(fullname, 0);
+            if (comment != null) {
+                int previousVoteType = comment.getVoteType();
+
+                int newVoteType;
+                if (previousVoteType != buttonVoteType) {
+                    //Not upvoted before
+                    newVoteType = buttonVoteType;
+                } else {
+                    //Upvoted before
+                    newVoteType = Comment.VOTE_TYPE_NO_VOTE;
+                }
+                comment.setVoteType(newVoteType);
+                mCommentsAdapter.updateVisibleComments();
+
+                String newVoteDir;
+                switch (newVoteType) {
+                    case Comment.VOTE_TYPE_DOWNVOTE:
+                        newVoteDir = APIUtils.DIR_DOWNVOTE;
+                        break;
+                    case Comment.VOTE_TYPE_NO_VOTE:
+                        newVoteDir = APIUtils.DIR_UNVOTE;
+                        break;
+                    case Comment.VOTE_TYPE_UPVOTE:
+                        newVoteDir = APIUtils.DIR_UPVOTE;
+                        break;
+                    default:
+                        throw new IllegalStateException("Illegal newVoteType");
+                }
+
+                VoteThing.voteThing(activity, mOauthRetrofit, mAccessToken, new VoteThing.VoteThingListener() {
+                    @Override
+                    public void onVoteThingSuccess(int position) {
+                        comment.setVoteType(newVoteType);
+
+                        Comment currentComment = findCommentByFullname(comment.getFullName(), 0);
+                        if (currentComment != null) {
+                            mCommentsAdapter.updateVisibleComments();
+                        }
+                    }
+
+                    @Override
+                    public void onVoteThingFail(int position) {
+                    }
+                }, comment.getFullName(), newVoteDir, 0);
             }
         }
     };
@@ -763,7 +814,7 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
                     mSharedPreferences, mCurrentAccountSharedPreferences, mNsfwAndSpoilerSharedPreferences, mPostDetailsSharedPreferences,
                     mExoCreator, post -> EventBus.getDefault().post(new PostUpdateEventToPostList(mPost, postListPosition)));
             mCommentsAdapter = new CommentsRecyclerViewAdapter(activity,
-                    this, mCustomThemeWrapper, mOauthRetrofit,
+                    this, mCustomThemeWrapper,
                     mAccessToken, mAccountName, mPost, mLocale, mSingleCommentId,
                     isSingleCommentThreadMode, mSharedPreferences,
                     adapterCallback);
@@ -1459,7 +1510,7 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
                             currentComments.clear();
                             mCommentsAdapter = new CommentsRecyclerViewAdapter(activity,
                                     ViewPostDetailFragment.this, mCustomThemeWrapper,
-                                    mOauthRetrofit, mAccessToken, mAccountName, mPost, mLocale,
+                                    mAccessToken, mAccountName, mPost, mLocale,
                                     mSingleCommentId, isSingleCommentThreadMode, mSharedPreferences,
                                     adapterCallback);
                             if (mCommentsRecyclerView != null) {

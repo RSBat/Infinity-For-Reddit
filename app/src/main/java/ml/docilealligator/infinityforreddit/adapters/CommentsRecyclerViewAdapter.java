@@ -153,7 +153,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     private BaseActivity mActivity;
     private ViewPostDetailFragment mFragment;
-    private Retrofit mOauthRetrofit;
     private Markwon mCommentMarkwon;
     private String mAccessToken;
     private String mAccountName;
@@ -214,7 +213,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     public CommentsRecyclerViewAdapter(BaseActivity activity, ViewPostDetailFragment fragment,
                                        CustomThemeWrapper customThemeWrapper,
-                                       Retrofit oauthRetrofit,
                                        String accessToken, String accountName,
                                        Post post, Locale locale, String singleCommentId,
                                        boolean isSingleCommentThreadMode,
@@ -222,7 +220,6 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                                        CommentRecyclerViewAdapterCallback commentRecyclerViewAdapterCallback) {
         mActivity = activity;
         mFragment = fragment;
-        mOauthRetrofit = oauthRetrofit;
         mGlide = Glide.with(activity);
         mSecondaryTextColor = customThemeWrapper.getSecondaryTextColor();
         mCommentTextColor = customThemeWrapper.getCommentColor();
@@ -1045,52 +1042,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             return;
         }
 
-        Comment comment = findCommentByFullname(fullname, 0);
-        if (comment != null) {
-            int previousVoteType = comment.getVoteType();
-
-            int newVoteType;
-            if (previousVoteType != buttonVoteType) {
-                //Not upvoted before
-                newVoteType = buttonVoteType;
-            } else {
-                //Upvoted before
-                newVoteType = Comment.VOTE_TYPE_NO_VOTE;
-            }
-            comment.setVoteType(newVoteType);
-            updateVisibleComments();
-
-            String newVoteDir;
-            switch (newVoteType) {
-                case Comment.VOTE_TYPE_DOWNVOTE:
-                    newVoteDir = APIUtils.DIR_DOWNVOTE;
-                    break;
-                case Comment.VOTE_TYPE_NO_VOTE:
-                    newVoteDir = APIUtils.DIR_UNVOTE;
-                    break;
-                case Comment.VOTE_TYPE_UPVOTE:
-                    newVoteDir = APIUtils.DIR_UPVOTE;
-                    break;
-                default:
-                    throw new IllegalStateException("Illegal newVoteType");
-            }
-
-            VoteThing.voteThing(mActivity, mOauthRetrofit, mAccessToken, new VoteThing.VoteThingListener() {
-                @Override
-                public void onVoteThingSuccess(int position) {
-                    comment.setVoteType(newVoteType);
-
-                    Comment currentComment = findCommentByFullname(comment.getFullName(), 0);
-                    if (currentComment != null) {
-                        updateVisibleComments();
-                    }
-                }
-
-                @Override
-                public void onVoteThingFail(int position) {
-                }
-            }, comment.getFullName(), newVoteDir, 0);
-        }
+        mCommentRecyclerViewAdapterCallback.vote(fullname, buttonVoteType);
     }
 
     public interface CommentRecyclerViewAdapterCallback {
@@ -1103,6 +1055,8 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         void loadMoreComments(String placeholderFullName);
 
         void saveComment(String fullName, boolean save);
+
+        void vote(String fullname, int buttonVoteType);
     }
 
     public class CommentViewHolder extends RecyclerView.ViewHolder {
