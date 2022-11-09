@@ -81,11 +81,17 @@ public class ParseComment {
                                 localMoreChildrenIds.add(childrenIds.getString(j));
                             }
 
+                            Comment loadMoreChildrenPlaceholder = new Comment(
+                                    parentFullName,
+                                    childData.getInt(JSONUtils.DEPTH_KEY),
+                                    Comment.PLACEHOLDER_LOAD_MORE_COMMENTS
+                            );
+
                             Comment parentComment = findCommentByFullName(newComments, parentFullName);
                             if (parentComment != null) {
                                 parentComment.setHasReply(true);
                                 parentComment.setMoreChildrenIds(localMoreChildrenIds);
-                                parentComment.addChildren(new ArrayList<>()); // ensure children list is not null
+                                parentComment.addChild(loadMoreChildrenPlaceholder, parentComment.getChildCount());
                             } else {
                                 // assume that it is parent of this call
                                 moreChildrenIds.addAll(localMoreChildrenIds);
@@ -166,6 +172,7 @@ public class ParseComment {
 
         JSONObject more = comments.getJSONObject(comments.length() - 1).getJSONObject(JSONUtils.DATA_KEY);
 
+        Comment moreChildrenComment = null;
         //Maybe moreChildrenIds contain only commentsJSONArray and no more info
         if (more.has(JSONUtils.COUNT_KEY)) {
             JSONArray childrenArray = more.getJSONArray(JSONUtils.CHILDREN_KEY);
@@ -179,6 +186,8 @@ public class ParseComment {
             if (moreChildrenIds.isEmpty() && comments.getJSONObject(comments.length() - 1).getString(JSONUtils.KIND_KEY).equals(JSONUtils.KIND_VALUE_MORE)) {
                 newCommentData.add(new Comment(more.getString(JSONUtils.PARENT_ID_KEY), more.getInt(JSONUtils.DEPTH_KEY), Comment.PLACEHOLDER_CONTINUE_THREAD));
                 return;
+            } else {
+                moreChildrenComment = new Comment(more.getString(JSONUtils.PARENT_ID_KEY), more.getInt(JSONUtils.DEPTH_KEY), Comment.PLACEHOLDER_LOAD_MORE_COMMENTS);
             }
         } else {
             actualCommentLength = comments.length();
@@ -200,6 +209,10 @@ public class ParseComment {
             }
 
             newCommentData.add(singleComment);
+        }
+
+        if (moreChildrenComment != null) {
+            newCommentData.add(moreChildrenComment);
         }
     }
 
@@ -225,12 +238,6 @@ public class ParseComment {
                 expandChildren(c.getChildren(), visibleComments, setExpanded);
             } else {
                 c.setExpanded(true);
-            }
-            if (c.hasMoreChildrenIds() && !c.getMoreChildrenIds().isEmpty()) {
-                //Add a load more placeholder
-                Comment placeholder = new Comment(c.getFullName(), c.getDepth() + 1, Comment.PLACEHOLDER_LOAD_MORE_COMMENTS);
-                visibleComments.add(placeholder);
-                c.addChild(placeholder, c.getChildren().size());
             }
         }
     }
