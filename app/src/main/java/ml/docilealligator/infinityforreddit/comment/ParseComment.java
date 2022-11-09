@@ -164,7 +164,6 @@ public class ParseComment {
 
     private static void parseCommentRecursion(JSONArray comments, ArrayList<Comment> newCommentData,
                                               ArrayList<String> moreChildrenIds, int depth) throws JSONException {
-        int actualCommentLength;
 
         if (comments.length() == 0) {
             return;
@@ -172,47 +171,36 @@ public class ParseComment {
 
         JSONObject more = comments.getJSONObject(comments.length() - 1).getJSONObject(JSONUtils.DATA_KEY);
 
-        Comment moreChildrenComment = null;
-        //Maybe moreChildrenIds contain only commentsJSONArray and no more info
-        if (more.has(JSONUtils.COUNT_KEY)) {
-            JSONArray childrenArray = more.getJSONArray(JSONUtils.CHILDREN_KEY);
-
-            for (int i = 0; i < childrenArray.length(); i++) {
-                moreChildrenIds.add(childrenArray.getString(i));
-            }
-
-            actualCommentLength = comments.length() - 1;
-
-            if (moreChildrenIds.isEmpty() && comments.getJSONObject(comments.length() - 1).getString(JSONUtils.KIND_KEY).equals(JSONUtils.KIND_VALUE_MORE)) {
-                newCommentData.add(new Comment(more.getString(JSONUtils.PARENT_ID_KEY), more.getInt(JSONUtils.DEPTH_KEY), Comment.PLACEHOLDER_CONTINUE_THREAD));
-                return;
-            } else {
-                moreChildrenComment = new Comment(more.getString(JSONUtils.PARENT_ID_KEY), more.getInt(JSONUtils.DEPTH_KEY), Comment.PLACEHOLDER_LOAD_MORE_COMMENTS);
-            }
-        } else {
-            actualCommentLength = comments.length();
-        }
-
-        for (int i = 0; i < actualCommentLength; i++) {
+        for (int i = 0; i < comments.length(); i++) {
+            String kind = comments.getJSONObject(i).getString(JSONUtils.KIND_KEY);
             JSONObject data = comments.getJSONObject(i).getJSONObject(JSONUtils.DATA_KEY);
-            Comment singleComment = parseSingleComment(data, depth);
 
-            if (data.get(JSONUtils.REPLIES_KEY) instanceof JSONObject) {
-                JSONArray childrenArray = data.getJSONObject(JSONUtils.REPLIES_KEY)
-                        .getJSONObject(JSONUtils.DATA_KEY).getJSONArray(JSONUtils.CHILDREN_KEY);
-                ArrayList<Comment> children = new ArrayList<>();
-                ArrayList<String> nextMoreChildrenIds = new ArrayList<>();
-                parseCommentRecursion(childrenArray, children, nextMoreChildrenIds, singleComment.getDepth());
-                singleComment.addChildren(children);
-                singleComment.setMoreChildrenIds(nextMoreChildrenIds);
-                singleComment.setChildCount(getChildCount(singleComment));
+            if (kind.equals("t1")) {
+                Comment singleComment = parseSingleComment(data, depth);
+
+                if (data.get(JSONUtils.REPLIES_KEY) instanceof JSONObject) {
+                    JSONArray childrenArray = data.getJSONObject(JSONUtils.REPLIES_KEY)
+                            .getJSONObject(JSONUtils.DATA_KEY).getJSONArray(JSONUtils.CHILDREN_KEY);
+                    ArrayList<Comment> children = new ArrayList<>();
+                    ArrayList<String> nextMoreChildrenIds = new ArrayList<>();
+                    parseCommentRecursion(childrenArray, children, nextMoreChildrenIds, singleComment.getDepth());
+                    singleComment.addChildren(children);
+                    singleComment.setMoreChildrenIds(nextMoreChildrenIds);
+                    singleComment.setChildCount(getChildCount(singleComment));
+                }
+
+                newCommentData.add(singleComment);
+            } else if (data.getJSONArray(JSONUtils.CHILDREN_KEY).length() == 0) {
+                newCommentData.add(new Comment(more.getString(JSONUtils.PARENT_ID_KEY), more.getInt(JSONUtils.DEPTH_KEY), Comment.PLACEHOLDER_CONTINUE_THREAD));
+            } else {
+                JSONArray childrenArray = more.getJSONArray(JSONUtils.CHILDREN_KEY);
+
+                for (int child = 0; child < childrenArray.length(); child++) {
+                    moreChildrenIds.add(childrenArray.getString(child));
+                }
+
+                newCommentData.add(new Comment(more.getString(JSONUtils.PARENT_ID_KEY), more.getInt(JSONUtils.DEPTH_KEY), Comment.PLACEHOLDER_LOAD_MORE_COMMENTS));
             }
-
-            newCommentData.add(singleComment);
-        }
-
-        if (moreChildrenComment != null) {
-            newCommentData.add(moreChildrenComment);
         }
     }
 
