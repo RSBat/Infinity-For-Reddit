@@ -856,9 +856,8 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                                 ((PostWithPreviewTypeViewHolder) holder).imageView.setVisibility(View.VISIBLE);
                                 ((PostWithPreviewTypeViewHolder) holder).imageWrapperRelativeLayout.setVisibility(View.VISIBLE);
                                 if (mFixedHeightPreviewInCard || (preview.getPreviewWidth() <= 0 || preview.getPreviewHeight() <= 0)) {
-                                    int height = (int) (400 * mScale);
                                     ((PostWithPreviewTypeViewHolder) holder).imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                                    ((PostWithPreviewTypeViewHolder) holder).imageView.getLayoutParams().height = height;
+                                    ((PostWithPreviewTypeViewHolder) holder).imageView.setRatio(1f);
                                 } else {
                                     ((PostWithPreviewTypeViewHolder) holder).imageView
                                             .setRatio((float) preview.getPreviewHeight() / preview.getPreviewWidth());
@@ -1046,9 +1045,8 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                             if (preview != null) {
                                 ((PostCard2WithPreviewViewHolder) holder).imageView.setVisibility(View.VISIBLE);
                                 if (mFixedHeightPreviewInCard || (preview.getPreviewWidth() <= 0 || preview.getPreviewHeight() <= 0)) {
-                                    int height = (int) (400 * mScale);
                                     ((PostCard2WithPreviewViewHolder) holder).imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                                    ((PostCard2WithPreviewViewHolder) holder).imageView.getLayoutParams().height = height;
+                                    ((PostCard2WithPreviewViewHolder) holder).imageView.setRatio(1f);
                                 } else {
                                     ((PostCard2WithPreviewViewHolder) holder).imageView
                                             .setRatio((float) preview.getPreviewHeight() / preview.getPreviewWidth());
@@ -1449,9 +1447,8 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                                 ((PostGalleryViewHolder) holder).progressBar.setVisibility(View.VISIBLE);
 
                                 if (mFixedHeightPreviewInCard || (preview.getPreviewWidth() <= 0 || preview.getPreviewHeight() <= 0)) {
-                                    int height = (int) (400 * mScale);
                                     ((PostGalleryViewHolder) holder).imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                                    ((PostGalleryViewHolder) holder).imageView.getLayoutParams().height = height;
+                                    ((PostGalleryViewHolder) holder).imageView.setRatio(1f);
                                 } else {
                                     ((PostGalleryViewHolder) holder).imageView
                                             .setRatio((float) preview.getPreviewHeight() / preview.getPreviewWidth());
@@ -1483,9 +1480,8 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                                     ((PostGalleryViewHolder) holder).videoOrGifIndicatorImageView.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.ic_play_circle_36dp));
 
                                     if (mFixedHeightPreviewInCard || (preview.getPreviewWidth() <= 0 || preview.getPreviewHeight() <= 0)) {
-                                        int height = (int) (400 * mScale);
                                         ((PostGalleryViewHolder) holder).imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                                        ((PostGalleryViewHolder) holder).imageView.getLayoutParams().height = height;
+                                        ((PostGalleryViewHolder) holder).imageView.setRatio(1f);
                                     } else {
                                         ((PostGalleryViewHolder) holder).imageView
                                                 .setRatio((float) preview.getPreviewHeight() / preview.getPreviewWidth());
@@ -1514,9 +1510,8 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                                 ((PostGalleryViewHolder) holder).videoOrGifIndicatorImageView.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.ic_play_circle_36dp));
 
                                 if (mFixedHeightPreviewInCard || (preview.getPreviewWidth() <= 0 || preview.getPreviewHeight() <= 0)) {
-                                    int height = (int) (400 * mScale);
                                     ((PostGalleryViewHolder) holder).imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                                    ((PostGalleryViewHolder) holder).imageView.getLayoutParams().height = height;
+                                    ((PostGalleryViewHolder) holder).imageView.setRatio(1f);
                                 } else {
                                     ((PostGalleryViewHolder) holder).imageView
                                             .setRatio((float) preview.getPreviewHeight() / preview.getPreviewWidth());
@@ -1544,9 +1539,8 @@ public class PostRecyclerViewAdapter extends PagingDataAdapter<Post, RecyclerVie
                                 ((PostGalleryViewHolder) holder).videoOrGifIndicatorImageView.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.ic_link_post_type_indicator));
 
                                 if (mFixedHeightPreviewInCard || (preview.getPreviewWidth() <= 0 || preview.getPreviewHeight() <= 0)) {
-                                    int height = (int) (400 * mScale);
                                     ((PostGalleryViewHolder) holder).imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                                    ((PostGalleryViewHolder) holder).imageView.getLayoutParams().height = height;
+                                    ((PostGalleryViewHolder) holder).imageView.setRatio(1f);
                                 } else {
                                     ((PostGalleryViewHolder) holder).imageView
                                             .setRatio((float) preview.getPreviewHeight() / preview.getPreviewWidth());
