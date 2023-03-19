@@ -4,20 +4,20 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
+import ml.docilealligator.infinityforreddit.R;
 import pl.droidsonroids.gif.GifImageView;
 
 public class AspectRatioGifImageView extends GifImageView {
-    private float ratio;
+    private float ratio = 1f;
 
     public AspectRatioGifImageView(Context context) {
         super(context);
-        this.ratio = 1.0F;
+        init(context, null);
     }
 
     public AspectRatioGifImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.ratio = 1.0F;
-        this.init(context, attrs);
+        init(context, attrs);
     }
 
     public final float getRatio() {
@@ -34,10 +34,8 @@ public class AspectRatioGifImageView extends GifImageView {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        if (attrs != null) {
-            TypedArray a = context.obtainStyledAttributes(attrs, com.santalu.aspectratioimageview.R.styleable.AspectRatioImageView);
-            this.ratio = a.getFloat(com.santalu.aspectratioimageview.R.styleable.AspectRatioImageView_ari_ratio, 1.0F);
-            a.recycle();
+        try (TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AspectRatioGifImageView)) {
+            this.ratio = a.getFloat(R.styleable.AspectRatioGifImageView_ratio, 1f);
         }
     }
 

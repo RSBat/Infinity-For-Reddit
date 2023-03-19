@@ -49,4 +49,8 @@
         <attr name="backgroundColor" format="color"/>
         <attr name="cardViewBackgroundColor" format="color"/>
     </declare-styleable>
+
+    <declare-styleable name="AspectRatioGifImageView">
+        <attr name="ratio" format="float|reference"/>
+    </declare-styleable>
 </resources>
