@@ -1,0 +1,25 @@
+name: Sync to upstream
+
+on:
+  workflow_dispatch:
+  schedule:
+    # run every wednesday at 1:30 UTC
+    - cron: '30 1 * * 3'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: 'master'
+
+      - run: |
+          git config user.name 'Sergei Kozelko'
+          git config user.email 'kozelkos@yandex.ru'
+          
+          git remote add upstream https://github.com/Docile-Alligator/Infinity-For-Reddit.git
+          git fetch upstream master
+          git rebase upstream/master
+          git push origin master --force
