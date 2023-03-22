@@ -82,9 +82,8 @@ public class PostGalleryTypeImageRecyclerViewAdapter extends RecyclerView.Adapte
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         if (ratio < 0) {
-            int height = (int) (400 * mScale);
             holder.binding.imageViewItemGalleryImageInPostFeed.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            holder.binding.imageViewItemGalleryImageInPostFeed.getLayoutParams().height = height;
+            holder.binding.imageViewItemGalleryImageInPostFeed.setRatio(1);
         } else {
             holder.binding.imageViewItemGalleryImageInPostFeed.setRatio(ratio);
         }
