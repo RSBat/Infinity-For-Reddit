@@ -5,11 +5,6 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    commit-message:
-      prefix: "⬆[Gradle]"
-    reviewers:
-      - "Wladefant"
-      - "Docile-Alligator"
 
   # Updates for GitHub Actions used in the repository
   - package-ecosystem: github-actions
@@ -18,6 +13,3 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "⬆[GitHub Actions]"
-    reviewers:
-      - "Wladefant"
-      - "Docile-Alligator"
