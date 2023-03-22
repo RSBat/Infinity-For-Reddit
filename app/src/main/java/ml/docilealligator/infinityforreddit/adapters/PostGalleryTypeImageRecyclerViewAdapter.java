@@ -20,6 +20,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.DrawableImageViewTarget;
 import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
@@ -90,13 +91,7 @@ public class PostGalleryTypeImageRecyclerViewAdapter extends RecyclerView.Adapte
         holder.binding.errorTextViewItemGalleryImageInPostFeed.setVisibility(View.GONE);
         holder.binding.progressBarItemGalleryImageInPostFeed.setVisibility(View.VISIBLE);
 
-        holder.binding.imageViewItemGalleryImageInPostFeed.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                holder.binding.imageViewItemGalleryImageInPostFeed.removeOnLayoutChangeListener(this);
-                loadImage(holder);
-            }
-        });
+        loadImage(holder);
 
         if (showCaption) {
             loadCaptionPreview(holder);
@@ -142,11 +137,12 @@ public class PostGalleryTypeImageRecyclerViewAdapter extends RecyclerView.Adapte
                 return false;
             }
         });
+        Target<Drawable> target = new DrawableImageViewTarget(holder.binding.imageViewItemGalleryImageInPostFeed).waitForLayout();
         if (blurImage) {
             imageRequestBuilder.apply(RequestOptions.bitmapTransform(new BlurTransformation(50, 10)))
-                    .into(holder.binding.imageViewItemGalleryImageInPostFeed);
+                    .into(target);
         } else {
-            imageRequestBuilder.centerInside().downsample(saveMemoryCenterInisdeDownsampleStrategy).into(holder.binding.imageViewItemGalleryImageInPostFeed);
+            imageRequestBuilder.centerInside().downsample(saveMemoryCenterInisdeDownsampleStrategy).into(target);
         }
     }
 
