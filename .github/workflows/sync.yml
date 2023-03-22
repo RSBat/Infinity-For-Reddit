@@ -15,11 +15,9 @@ jobs:
           fetch-depth: 0
           ref: 'master'
 
-      - run: |
-          git config user.name 'Sergei Kozelko'
-          git config user.email 'kozelkos@yandex.ru'
-          
+      - name: Push upstream to master
+        run: |
           git remote add upstream https://github.com/Docile-Alligator/Infinity-For-Reddit.git
           git fetch upstream master
-          git rebase upstream/master
-          git push origin master --force
+          git reset --hard upstream/master
+          git push origin master
