@@ -372,7 +372,7 @@
     <string name="settings_email_title">"이메일"</string>
     <string name="settings_email_summary">"docilealligator.app@gmail.com"</string>
     <string name="settings_reddit_account_title">"레딧 계정"</string>
-    <string name="settings_reddit_account_summary">"u/Hostilenemy"</string>
+    <string name="settings_reddit_account_summary">"u/example"</string>
     <string name="settings_subreddit_title">"서브레딧"</string>
     <string name="settings_subreddit_summary">"r/Infinity_For_Reddit"</string>
     <string name="settings_share_title">"공유"</string>

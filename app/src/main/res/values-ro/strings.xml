@@ -147,7 +147,7 @@ Apăsați pentru reîncercare."</string>
     <string name="unfollowed">"Urmărire anulată"</string>
     <string name="unfollow_failed">"Eșuare anulare urmărire"</string>
     <string name="content_description_banner_imageview">"Banner subreddit"</string>
-    <string name="app_label">"Infinity"</string>
+    <string name="app_label">"Omega"</string>
     <string name="search_hint">"Căutați orice"</string>
     <string name="no_posts_no_lazy_mode">"Nicio postare disponibilă"</string>
     <string name="lazy_mode_start">"Mod Leneș începe în %1$.1fs"</string>
@@ -399,12 +399,12 @@ Apăsați pentru reîncărcare."</string>
     <string name="settings_email_title">"E-mail"</string>
     <string name="settings_email_summary">"docilealligator.app@gmail.com"</string>
     <string name="settings_reddit_account_title">"Cont Reddit"</string>
-    <string name="settings_reddit_account_summary">"u/Hostilenemy"</string>
+    <string name="settings_reddit_account_summary">"u/example"</string>
     <string name="settings_subreddit_title">"Subreddit"</string>
     <string name="settings_subreddit_summary">"r/Infinity_For_Reddit"</string>
     <string name="settings_share_title">"Distribuiți"</string>
     <string name="settings_share_summary">"Distribuiți această aplicație altor persoane dacă vă place"</string>
-    <string name="settings_version_title">"Infinity For Reddit"</string>
+    <string name="settings_version_title">"Omega For Reddit"</string>
     <string name="settings_version_summary">"Versiunea %s"</string>
     <string name="settings_category_customization_title">"Personalizare"</string>
     <string name="settings_customize_light_theme_title">"Temă luminoasă"</string>
@@ -722,7 +722,7 @@ Bazat pe Tema Indigo Amoled"</string>
     <string name="delete_all_themes_success">"Toate temele au fost șterse cu succes"</string>
     <string name="delete_all_front_page_scrolled_positions_success">"Toate pozițiile de derulare în pagina principală au fost șterse cu succes"</string>
     <string name="reset_all_settings_success">"Au fost resetate cu succes toate setările"</string>
-    <string name="username_preview">"u/Hostilenemy"</string>
+    <string name="username_preview">"u/example"</string>
     <string name="subreddit_preview">"r/Infinity_For_Reddit"</string>
     <string name="primary_text_preview">"Text Primar"</string>
     <string name="secondary_text_preview">"Text Secundar"</string>
@@ -937,7 +937,7 @@ Mesaj: %2$s"</string>
     <string name="title_excludes_strings_hint">"Titlu: exclude cuvintele cheie (cheie1,cheie2)"</string>
     <string name="title_excludes_regex_hint">"Titlu: exclude regex"</string>
     <string name="exclude_subreddits_hint">"Exclude subreddit-uri (de ex. funny, AskReddit)"</string>
-    <string name="exclude_users_hint">"Exclude utilizatori (de ex. Hostilenemy, random)"</string>
+    <string name="exclude_users_hint">"Exclude utilizatori (de ex. example, random)"</string>
     <string name="exclude_flairs_hint">"Exclude insigne (de ex. insigna1, insigna2)"</string>
     <string name="contain_flairs_hint">"Să conțină insignele (de ex. insigna1, insigna2)"</string>
     <string name="min_vote_hint">"Votul minim (-1: fără restricții)"</string>

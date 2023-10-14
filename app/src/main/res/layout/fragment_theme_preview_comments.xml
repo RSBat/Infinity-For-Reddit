@@ -444,7 +444,7 @@
                 android:paddingBottom="12dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="8dp"
-                android:text="u/Hostilenemy"
+                android:text="u/example"
                 android:textSize="?attr/font_default"
                 android:fontFamily="?attr/font_family" />
 

@@ -404,7 +404,7 @@ Tekrar denemek için tıklayın."</string>
     <string name="settings_email_title">"E-posta"</string>
     <string name="settings_email_summary">"docilealligator.app@gmail.com"</string>
     <string name="settings_reddit_account_title">"Reddit Hesabı"</string>
-    <string name="settings_reddit_account_summary">"u/Hostilenemy"</string>
+    <string name="settings_reddit_account_summary">"u/example"</string>
     <string name="settings_subreddit_title">"Subreddit"</string>
     <string name="settings_subreddit_summary">"r/Infinity_For_Reddit"</string>
     <string name="settings_share_title">"Paylaş"</string>
@@ -731,7 +731,7 @@ Amoled Tema Şablonu Oluştur"</string>
     <string name="delete_all_themes_success">"Tüm temalar başarıyla silindi"</string>
     <string name="delete_all_front_page_scrolled_positions_success">"Ön sayfadaki tüm kaydırılmış pozisyonlar başarıyla silindi"</string>
     <string name="reset_all_settings_success">"Tüm ayarlar başarıyla sıfırlandı"</string>
-    <string name="username_preview">"u/Hostilenemy"</string>
+    <string name="username_preview">"u/example"</string>
     <string name="subreddit_preview">"r/Infinity_For_Reddit"</string>
     <string name="primary_text_preview">"Birincil Metin"</string>
     <string name="secondary_text_preview">"İkincil Metin"</string>

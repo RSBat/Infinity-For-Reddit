@@ -41,6 +41,9 @@ public class AcknowledgementFragment extends Fragment {
         ButterKnife.bind(this, rootView);
 
         ArrayList<Acknowledgement> acknowledgements = new ArrayList<>();
+        acknowledgements.add(new Acknowledgement("Infinity For Reddit",
+                "Original project that is used as the base for Omega For Reddit",
+                Uri.parse("https://github.com/Docile-Alligator/Infinity-For-Reddit")));
         acknowledgements.add(new Acknowledgement("ExoPlayer",
                 "An application level media player for Android",
                 Uri.parse("https://github.com/google/ExoPlayer")));

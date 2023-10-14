@@ -155,7 +155,7 @@ Appuyez pour réessayer."</string>
     <string name="unfollowed">"Suivi annulé"</string>
     <string name="unfollow_failed">"Echec de l'annulation du suivi"</string>
     <string name="content_description_banner_imageview">"Image de la bannière du subreddit"</string>
-    <string name="app_label">"Infinity"</string>
+    <string name="app_label">"Omega"</string>
     <string name="search_hint">"Rechercher n'importe quoi"</string>
     <string name="no_posts_no_lazy_mode">"Aucune publication disponible"</string>
     <string name="lazy_mode_start">"Le Mode Paresseux commence dans %1$.1fs"</string>
@@ -460,12 +460,12 @@ peut ne pas fonctionner sur Android 11"</string>
     <string name="settings_email_title">"E-mail"</string>
     <string name="settings_email_summary">"docilealligator.app@gmail.com"</string>
     <string name="settings_reddit_account_title">"Compte Reddit"</string>
-    <string name="settings_reddit_account_summary">"u/Hostilenemy"</string>
+    <string name="settings_reddit_account_summary">"u/example"</string>
     <string name="settings_subreddit_title">"Subreddit"</string>
     <string name="settings_subreddit_summary">"r/Infinity_For_Reddit"</string>
     <string name="settings_share_title">"Partager"</string>
     <string name="settings_share_summary">"Partagez cette application avec d'autres si vous l'appréciez"</string>
-    <string name="settings_version_title">"Infinity Pour Reddit"</string>
+    <string name="settings_version_title">"Omega Pour Reddit"</string>
     <string name="settings_version_summary">"Version %s"</string>
     <string name="settings_category_customization_title">"Personnalisations"</string>
     <string name="settings_customize_light_theme_title">"Thème Clair"</string>
@@ -543,7 +543,7 @@ peut ne pas fonctionner sur Android 11"</string>
     <string name="error_getting_multi_reddit_data">"Erreur de récupération des données du multireddit"</string>
     <string name="error_loading_multi_reddit_list">"Impossible de synchroniser les multireddits"</string>
     <string name="error_loading_subscriptions">"Impossible de synchroniser les abonnements"</string>
-    <string name="share_this_app">"Essaie Infinity Pour Reddit, un super client Reddit !
+    <string name="share_this_app">"Essaie Omega Pour Reddit, un super client Reddit !
 https://play.google.com/store/apps/details?id=ml.docilealligator.infinityforreddit"</string>
     <string name="error_getting_subreddit_name">"Impossible de récupérer le nom du subreddit"</string>
     <string name="share_post_link">"Partager le Lien de la Publication"</string>
@@ -812,7 +812,7 @@ Basé sur le thème sombre Indigo"</string>
 
     <!-- Fuzzy -->
     <string name="reset_all_settings_success">"Réinitialisation des paramètres réussie"</string>
-    <string name="username_preview">"u/Hostilenemy"</string>
+    <string name="username_preview">"u/example"</string>
     <string name="subreddit_preview">"r/Infinity_For_Reddit"</string>
     <string name="primary_text_preview">"Texte principal"</string>
     <string name="secondary_text_preview">"Texte secondaire"</string>
@@ -1046,7 +1046,7 @@ Les onglets pourraient perdre tout leur contenu quand vous passez d'un onglet à
     <!-- Fuzzy -->
     <string name="title_excludes_regex_hint">"Titre: exclure regex"</string>
     <string name="exclude_subreddits_hint">"Exclure des subreddits (e.g. funny, AskReddit)"</string>
-    <string name="exclude_users_hint">"Exclure des utilisateurs (e.g. Hostilenemy, random)"</string>
+    <string name="exclude_users_hint">"Exclure des utilisateurs (e.g. example, random)"</string>
 
     <!-- Fuzzy -->
     <string name="exclude_flairs_hint">"Exclure flairs (ex: flair1, flair2)"</string>
@@ -1204,9 +1204,9 @@ Vous voulez toujours l'activer ?"</string>
 \"Materiel You Amoled\".
 Sinon, renommez-les avant d'activer Material You."</string>
     <string name="settings_enable_material_you_title">"Activer Material You"</string>
-    <string name="settings_enable_material_you_summary">"Personnalisez Infinity en fonction de votre fond d'écran"</string>
+    <string name="settings_enable_material_you_summary">"Personnalisez Omega en fonction de votre fond d'écran"</string>
     <string name="settings_apply_material_you_title">"Appliquer Material You"</string>
-    <string name="settings_apply_material_you_summary">"Au cas où Infinity n'aurait pas changé le thème"</string>
+    <string name="settings_apply_material_you_summary">"Au cas où Omega n'aurait pas changé le thème"</string>
     <string name="settings_more_tabs_show_favorite_multireddits_title">"Afficher les Multireddits favoris"</string>
     <string name="settings_more_tabs_show_multireddits_title">"Montrer les Multireddits"</string>
     <string name="settings_collapse_reddit_section_title">"Réduire Section Reddit"</string>
@@ -1369,7 +1369,7 @@ Cliquer pour réessayer."</string>
     <string name="reddit_gallery_item_caption_hint">"Sous titres (Maximum 180 caractères)"</string>
     <string name="reddit_gallery_item_url_hint">"Url"</string>
     <string name="user_agreement_dialog_title">"Accord d'utilisation"</string>
-    <string name="user_agreement_message">"Vous devez accepter l'accord d'utilisation de Reddit (%1$s) et la politique de confidentialité d'Infinity for Reddit (%2$s), avant de vous connecter."</string>
+    <string name="user_agreement_message">"Vous devez accepter l'accord d'utilisation de Reddit (%1$s) et la politique de confidentialité d'Omega for Reddit (%2$s), avant de vous connecter."</string>
     <string name="agree">"J'accepte"</string>
     <string name="do_not_agree">"Je n’accepte pas"</string>
     <string name="option_1_hint">"Option 1 (Requise)"</string>
@@ -1421,11 +1421,11 @@ Cliquez pour réessayer."</string>
     <string name="subscription_activity_label">"Abonnement"</string>
     <string name="edited">"Modifié"</string>
     <string name="edited_time">"Édité le %s"</string>
-    <string name="welcome_to_infinity">"Bienvenue sur Infinity for Reddit, la porte d'entrée vers une nouvelle façon de naviguer sur Reddit!"</string>
+    <string name="welcome_to_infinity">"Bienvenue sur Omega for Reddit, la porte d'entrée vers une nouvelle façon de naviguer sur Reddit!"</string>
 
     <!-- Fuzzy -->
     <string name="subscription_prompt">"Avant que vous puissiez profiter des nombreuses possibilités présentes sur cette appli, je voudrais être totalement honnête et transparent à propos d'un changement majeur que j'ai implémenter afin de vous offrir la meilleure expérience possible.
 
-À partir de maintenant, un abonnement mensuel est requis pour accéder à l'API de Reddit dans Infinity for Reddit dû à la décision de Reddit de facturer l'accès à l'API depuis le 1er Juin 2023."</string>
+À partir de maintenant, un abonnement mensuel est requis pour accéder à l'API de Reddit dans Omega for Reddit dû à la décision de Reddit de facturer l'accès à l'API depuis le 1er Juin 2023."</string>
     <string name="monthly">"Mensuel"</string>
 </resources>

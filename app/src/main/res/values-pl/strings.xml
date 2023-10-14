@@ -142,7 +142,7 @@ Naciśnij, aby spróbować ponownie."</string>
     <string name="unfollowed">"Przestano obserwować"</string>
     <string name="unfollow_failed">"Nie udało się przestać obserwować"</string>
     <string name="content_description_banner_imageview">"Banner subreddita"</string>
-    <string name="app_label">"Infinity"</string>
+    <string name="app_label">"Omega"</string>
     <string name="search_hint">"Wyszukaj cokolwiek"</string>
     <string name="no_posts_no_lazy_mode">"Nie znaleziono postów"</string>
     <string name="lazy_mode_start">"Tryb lenia zaczyna się za %1$.1fs"</string>
@@ -404,12 +404,12 @@ Naciśnij, aby spróbować ponownie."</string>
     <string name="settings_email_title">"Email"</string>
     <string name="settings_email_summary">"docilealligator.app@gmail.com"</string>
     <string name="settings_reddit_account_title">"Konto Reddit"</string>
-    <string name="settings_reddit_account_summary">"u/Hostilenemy"</string>
+    <string name="settings_reddit_account_summary">"u/example"</string>
     <string name="settings_subreddit_title">"Subreddit"</string>
     <string name="settings_subreddit_summary">"r/Infinity_For_Reddit"</string>
     <string name="settings_share_title">"Udostępnij"</string>
     <string name="settings_share_summary">"Udostępnij tą aplikację, jeśli ci się ona podoba"</string>
-    <string name="settings_version_title">"Infinity For Reddit"</string>
+    <string name="settings_version_title">"Omega For Reddit"</string>
     <string name="settings_version_summary">"Wersja %s"</string>
     <string name="settings_category_customization_title">"Personalizacja"</string>
     <string name="settings_customize_light_theme_title">"Jasny motyw"</string>
@@ -483,7 +483,7 @@ Naciśnij, aby spróbować ponownie."</string>
     <string name="error_getting_multi_reddit_data">"Błąd podczas pobierania danych multiredditu"</string>
     <string name="error_loading_multi_reddit_list">"Nie można zsynchronizować multiredditów"</string>
     <string name="error_loading_subscriptions">"Nie można zsynchronizować subskrypcji"</string>
-    <string name="share_this_app">"Sprawdź Infinity for Reddit, niesamowitego klienta dla Reddita! https://play.google.com/store/apps/details?id=ml.docilealligator.infinityforreddit"</string>
+    <string name="share_this_app">"Sprawdź Omega for Reddit, niesamowitego klienta dla Reddita! https://play.google.com/store/apps/details?id=ml.docilealligator.infinityforreddit"</string>
     <string name="error_getting_subreddit_name">"Błąd podczas uzyskiwania nazwy subreddita"</string>
     <string name="share_post_link">"Udostępnij link do posta"</string>
     <string name="share_image_link">"Udostępnij link do obrazu"</string>
@@ -728,7 +728,7 @@ Bazowany na motywie Indigo Amoled"</string>
     <string name="delete_all_themes_success">"Pomyślnie usunięto wszystkie motywy"</string>
     <string name="delete_all_front_page_scrolled_positions_success">"Pomyślnie usunięto wszystkie przewinięte pozycje na stronie głównej"</string>
     <string name="reset_all_settings_success">"Pomyślnie zresetowano wszystkie ustawienia"</string>
-    <string name="username_preview">"u/Hostilenemy"</string>
+    <string name="username_preview">"u/example"</string>
     <string name="subreddit_preview">"r/Infinity_For_Reddit"</string>
     <string name="primary_text_preview">"Tekst główny"</string>
     <string name="secondary_text_preview">"Tekst dodatkowy"</string>

@@ -147,7 +147,7 @@
     <string name="unfollowed">"Sledování zrušeno"</string>
     <string name="unfollow_failed">"Rušení sledování selhalo"</string>
     <string name="content_description_banner_imageview">"Bannerový obrázek subredditu"</string>
-    <string name="app_label">"Infinity"</string>
+    <string name="app_label">"Omega"</string>
     <string name="search_hint">"Hledat cokoli"</string>
     <string name="no_posts_no_lazy_mode">"Nejsou dostupné žádné příspěvky"</string>
     <string name="lazy_mode_start">"Líný režim bude spuštěn za %1$.1fs"</string>
@@ -405,12 +405,12 @@
     <string name="settings_email_title">"E-mail"</string>
     <string name="settings_email_summary">"docilealligator.app@gmail.com"</string>
     <string name="settings_reddit_account_title">"Reddit účet"</string>
-    <string name="settings_reddit_account_summary">"u/Hostilenemy"</string>
+    <string name="settings_reddit_account_summary">"u/example"</string>
     <string name="settings_subreddit_title">"Subreddit"</string>
     <string name="settings_subreddit_summary">"r/Infinity_For_Reddit"</string>
     <string name="settings_share_title">"Sdílet"</string>
     <string name="settings_share_summary">"Pokud máte rádi tuto aplikaci, sdílejte ji s ostatními lidmi"</string>
-    <string name="settings_version_title">"Infinity pro Reddit"</string>
+    <string name="settings_version_title">"Omega pro Reddit"</string>
     <string name="settings_version_summary">"Verze %s"</string>
     <string name="settings_category_customization_title">"Přizpůsobení"</string>
     <string name="settings_customize_light_theme_title">"Světlý motiv"</string>
@@ -484,7 +484,7 @@
     <string name="error_getting_multi_reddit_data">"Chyba při získávání dat o multiredditu"</string>
     <string name="error_loading_multi_reddit_list">"Nelze synchronizovat multireddity"</string>
     <string name="error_loading_subscriptions">"Nelze synchronizovat odběry"</string>
-    <string name="share_this_app">"Mrkni na Infinity pro Reddit, úžasný Reddit klient!
+    <string name="share_this_app">"Mrkni na Omega pro Reddit, úžasný Reddit klient!
 https://play.google.com/store/apps/details?id=ml.docilealligator.infinityforreddit"</string>
     <string name="error_getting_subreddit_name">"Chyba při získávání názvu subredditu"</string>
     <string name="share_post_link">"Sdílet odkaz příspěvku"</string>
@@ -730,7 +730,7 @@ Založené na amoled indigovém motivu"</string>
     <string name="delete_all_themes_success">"Všechny motivy úspěšně odstraněny"</string>
     <string name="delete_all_front_page_scrolled_positions_success">"Všechny pozice posouvání na hlavní straně úspěšně odstraněny"</string>
     <string name="reset_all_settings_success">"Všechna nastavení úspěšně obnovena"</string>
-    <string name="username_preview">"u/Hostilenemy"</string>
+    <string name="username_preview">"u/example"</string>
     <string name="subreddit_preview">"r/Infinity_For_Reddit"</string>
     <string name="primary_text_preview">"Primární text"</string>
     <string name="secondary_text_preview">"Sekundární text"</string>
@@ -945,7 +945,7 @@ Zpráva: %2$s"</string>
     <string name="title_excludes_strings_hint">"Název: vyloučení klíčových slov (slovo1,slovo2)"</string>
     <string name="title_excludes_regex_hint">"Název: vyloučení regexu"</string>
     <string name="exclude_subreddits_hint">"Vyloučit subreddity (např. funny,AskReddit)"</string>
-    <string name="exclude_users_hint">"Vyloučit uživatele (např. Hostilenemy,random)"</string>
+    <string name="exclude_users_hint">"Vyloučit uživatele (např. example,random)"</string>
     <string name="exclude_flairs_hint">"Vyloučit štítky (např. štítek1,štítek2)"</string>
     <string name="contain_flairs_hint">"Obsahuje štítky (např. štítek1,štítek2)"</string>
     <string name="min_vote_hint">"Min. počet hlasů (-1: žádné omezení)"</string>
@@ -1089,9 +1089,9 @@ Stále chcete tuto možnost povolit?"</string>
 \"Material You Amoled\".
 Pokud ano, přejmenujte je, než povolíte Material You."</string>
     <string name="settings_enable_material_you_title">"Povolit Material You"</string>
-    <string name="settings_enable_material_you_summary">"Personalizovat Infinity podle pozadí"</string>
+    <string name="settings_enable_material_you_summary">"Personalizovat Omega podle pozadí"</string>
     <string name="settings_apply_material_you_title">"Použít Material You"</string>
-    <string name="settings_apply_material_you_summary">"Pokud Infinity nezměnil motiv"</string>
+    <string name="settings_apply_material_you_summary">"Pokud Omega nezměnil motiv"</string>
     <string name="settings_more_tabs_show_favorite_multireddits_title">"Zobrazit oblíbené multireddity"</string>
     <string name="settings_more_tabs_show_multireddits_title">"Zobrazit multireddity"</string>
     <string name="settings_collapse_reddit_section_title">"Sbalit sekci Redditu"</string>
@@ -1243,7 +1243,7 @@ Pokud ano, přejmenujte je, než povolíte Material You."</string>
     <string name="reddit_gallery_item_caption_hint">"Popis (max 180 znaků)"</string>
     <string name="reddit_gallery_item_url_hint">"URL"</string>
     <string name="user_agreement_dialog_title">"Smlouva s uživatelem"</string>
-    <string name="user_agreement_message">"Před přihlášením musíte souhlasit se Smlovou s uživatelem Redditu (%1$s) a Zásadami ochrany osobních údajů aplikace Infinity for Reddit (%2$s)"</string>
+    <string name="user_agreement_message">"Před přihlášením musíte souhlasit se Smlovou s uživatelem Redditu (%1$s) a Zásadami ochrany osobních údajů aplikace Omega for Reddit (%2$s)"</string>
     <string name="agree">"Souhlasím"</string>
     <string name="do_not_agree">"Nesouhlasit"</string>
     <string name="option_1_hint">"Možnost 1 (Povinná)"</string>

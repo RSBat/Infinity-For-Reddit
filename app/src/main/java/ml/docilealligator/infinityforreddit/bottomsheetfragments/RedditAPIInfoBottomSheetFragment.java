@@ -18,10 +18,6 @@ public class RedditAPIInfoBottomSheetFragment extends LandscapeExpandedRoundedBo
 
     private MainActivity mainActivity;
 
-    public RedditAPIInfoBottomSheetFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -34,16 +30,8 @@ public class RedditAPIInfoBottomSheetFragment extends LandscapeExpandedRoundedBo
 
         binding.getRoot().setNestedScrollingEnabled(true);
 
-        /*SpannableString message = new SpannableString(getString(R.string.reddit_api_info, "https://www.reddit.com/r/reddit/comments/145bram/addressing_the_community_about_changes_to_our_api", "https://www.reddit.com/r/Infinity_For_Reddit/comments/147bhsg/the_future_of_infinity"));
-        Linkify.addLinks(message, Linkify.WEB_URLS);
+        String message = "This is Omega for Reddit, a fork of Infinity for Reddit that fixes some of its problems including support for gifs in comments. This apk uses a free API key, so you won't really be able to browse Reddit with it.";
         binding.messageTextViewRedditApiInfoBottomSheetFragment.setText(message);
-        binding.messageTextViewRedditApiInfoBottomSheetFragment.setMovementMethod(BetterLinkMovementMethod.newInstance().setOnLinkClickListener((textView, url) -> {
-            Intent intent = new Intent(mainActivity, LinkResolverActivity.class);
-            intent.setData(Uri.parse(url));
-            startActivity(intent);
-            return true;
-        }));*/
-        binding.messageTextViewRedditApiInfoBottomSheetFragment.setLinkTextColor(getResources().getColor(R.color.colorAccent));
 
         binding.doNotShowThisAgainTextView.setOnClickListener(view -> {
             binding.doNotShowThisAgainCheckBox.toggle();

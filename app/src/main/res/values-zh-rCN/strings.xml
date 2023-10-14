@@ -409,7 +409,7 @@
     <string name="settings_email_title">"Email"</string>
     <string name="settings_email_summary">"docilealligator.app@gmail.com"</string>
     <string name="settings_reddit_account_title">"Reddit 帐户"</string>
-    <string name="settings_reddit_account_summary">"u/Hostilenemy"</string>
+    <string name="settings_reddit_account_summary">"u/example"</string>
     <string name="settings_subreddit_title">"版块"</string>
 
     <!-- 这个应该不做翻译为好，它是指示infinity社区位置的。在关于界面 -->
@@ -747,7 +747,7 @@ https://play.google.com/store/apps/details?id=ml.docilealligator.infinityforredd
     <string name="delete_all_themes_success">"成功删除所有主题"</string>
     <string name="delete_all_front_page_scrolled_positions_success">"成功删除所有首页滚动位置"</string>
     <string name="reset_all_settings_success">"成功重置所有设置"</string>
-    <string name="username_preview">"u/Hostilenemy"</string>
+    <string name="username_preview">"u/example"</string>
 
     <!-- 此项也建议不要翻译，它大概是主题界面预览时显示社区位置的 -->
     <string name="subreddit_preview">"r/Infinity_For_Reddit"</string>
@@ -968,7 +968,7 @@ Reddit 视频分辨率较低。
     <string name="title_excludes_strings_hint">"标题：排除关键词（关键词1,关键词2）"</string>
     <string name="title_excludes_regex_hint">"标题：排除正则表达式"</string>
     <string name="exclude_subreddits_hint">"排除版块（例如 funny,AskReddit）"</string>
-    <string name="exclude_users_hint">"排除用户（例如 Hostilenemy,random）"</string>
+    <string name="exclude_users_hint">"排除用户（例如 example,random）"</string>
     <string name="exclude_flairs_hint">"排除头衔（例如 头衔1,头衔2）"</string>
     <string name="contain_flairs_hint">"包含头衔（例如 头衔1,头衔2）"</string>
     <string name="min_vote_hint">"最少投票数（-1: 无限制）"</string>

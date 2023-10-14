@@ -153,7 +153,7 @@ Toca para reintentar."</string>
     <string name="unfollowed">"Dejó de Seguir"</string>
     <string name="unfollow_failed">"Error al dejar de seguir"</string>
     <string name="content_description_banner_imageview">"Imagen de portada del subreddit"</string>
-    <string name="app_label">"Infinity"</string>
+    <string name="app_label">"Omega"</string>
     <string name="search_hint">"Busca cualquier cosa"</string>
     <string name="no_posts_no_lazy_mode">"No hay publicaciones disponibles"</string>
     <string name="lazy_mode_start">"El modo automático empieza en %1$.1fs"</string>
@@ -399,7 +399,7 @@ Premio means prize, so it's better suited the first word instead of the second o
     <string name="settings_enable_nsfw_title">"Permitir NSFW"</string>
     <string name="settings_blur_nsfw_title">"Difuminar imágenes NSFW"</string>
     <string name="settings_blur_spoiler_title">"Difuminar Imágenes con Spoiler"</string>
-    <string name="settings_about_master_title">"Acerca de Infinity for Reddit"</string>
+    <string name="settings_about_master_title">"Acerca de Omega for Reddit"</string>
     <string name="settings_acknowledgement_master_title">"Reconocimientos"</string>
     <string name="settings_credits_master_title">"Créditos"</string>
     <string name="settings_credits_icon_foreground_title">"ícono de primer plano"</string>
@@ -425,12 +425,12 @@ Premio means prize, so it's better suited the first word instead of the second o
     <string name="settings_email_title">"Email"</string>
     <string name="settings_email_summary">"docilealligator.app@gmail.com"</string>
     <string name="settings_reddit_account_title">"Cuenta de Reddit"</string>
-    <string name="settings_reddit_account_summary">"u/Hostilenemy"</string>
+    <string name="settings_reddit_account_summary">"u/example"</string>
     <string name="settings_subreddit_title">"Subreddit"</string>
     <string name="settings_subreddit_summary">"r/Infinity_For_Reddit"</string>
     <string name="settings_share_title">"Compartir"</string>
     <string name="settings_share_summary">"Si te gusta esta aplicación ¡Compártela!"</string>
-    <string name="settings_version_title">"Infinity for Reddit"</string>
+    <string name="settings_version_title">"Omega for Reddit"</string>
     <string name="settings_version_summary">"Versión %s"</string>
     <string name="settings_category_customization_title">"Personalización"</string>
     <string name="settings_customize_light_theme_title">"Tema Claro"</string>
@@ -508,7 +508,7 @@ Premio means prize, so it's better suited the first word instead of the second o
     <string name="error_getting_multi_reddit_data">"No fue posible obtener los datos del multireddit"</string>
     <string name="error_loading_multi_reddit_list">"No fue posible sincronizar los multireddit"</string>
     <string name="error_loading_subscriptions">"No fue posible sincronizar las suscripciones"</string>
-    <string name="share_this_app">"Conoce Infinity para Reddit ¡Un cliente de Reddit increíble!
+    <string name="share_this_app">"Conoce Omega para Reddit ¡Un cliente de Reddit increíble!
 https://play.google.com/store/apps/details?id=ml.docilealligator.infinityforreddit"</string>
     <string name="error_getting_subreddit_name">"No fue posible obtener el nombre del subreddit"</string>
     <string name="share_post_link">"Compartir enlace de la publicación"</string>
@@ -771,7 +771,7 @@ Basado en Tema Índigo AMOLED"</string>
     <!-- Fuzzy -->
     <string name="delete_all_front_page_scrolled_positions_success">"Se han eliminado todas las posiciones de la página principal"</string>
     <string name="reset_all_settings_success">"Se ha restablecido la configuración"</string>
-    <string name="username_preview">"u/Hostilenemy"</string>
+    <string name="username_preview">"u/example"</string>
     <string name="subreddit_preview">"r/Infinity_For_Reddit"</string>
     <string name="primary_text_preview">"Texto primario"</string>
     <string name="secondary_text_preview">"Texto secundario"</string>
@@ -993,7 +993,7 @@ Mensaje: %2$s"</string>
     <string name="title_excludes_strings_hint">"Título: Excluir palabras clave (palabra1, palabra2)"</string>
     <string name="title_excludes_regex_hint">"Título: Excluye Regex"</string>
     <string name="exclude_subreddits_hint">"Excluir subreddits (p.ej. funny, AskReddit)"</string>
-    <string name="exclude_users_hint">"Excluir usuarios (p.ej. Hostilenemy, random)"</string>
+    <string name="exclude_users_hint">"Excluir usuarios (p.ej. example, random)"</string>
     <string name="exclude_flairs_hint">"Excluir etiquetas de usuario (p.ej. etiqueta1, etiqueta2)"</string>
     <string name="contain_flairs_hint">"Contiene etiquetas (p.ej. etiqueta1, etiqueta2)"</string>
     <string name="min_vote_hint">"Votos mínimos (-1: sin restricción)"</string>
@@ -1139,9 +1139,9 @@ Mensaje: %2$s"</string>
 \"Material You Amoled\".
 De lo contrario, cambia el nombre antes de habilitar Material You."</string>
     <string name="settings_enable_material_you_title">"Habilitar Material You"</string>
-    <string name="settings_enable_material_you_summary">"Personalizar Infinity basado en tu fondo de pantalla"</string>
+    <string name="settings_enable_material_you_summary">"Personalizar Omega basado en tu fondo de pantalla"</string>
     <string name="settings_apply_material_you_title">"Aplicar Material You"</string>
-    <string name="settings_apply_material_you_summary">"En caso que Infinity no haya cambiado el tema"</string>
+    <string name="settings_apply_material_you_summary">"En caso que Omega no haya cambiado el tema"</string>
     <string name="settings_more_tabs_show_favorite_multireddits_title">"Mostrar multireddits favoritos"</string>
     <string name="settings_more_tabs_show_multireddits_title">"Mostrar multireddits"</string>
     <string name="settings_collapse_reddit_section_title">"Contraer sección de Reddit"</string>
@@ -1293,7 +1293,7 @@ Toque para volver a intentarlo."</string>
     <string name="reddit_gallery_item_caption_hint">"Subtítulo (máximo 180 caracteres)"</string>
     <string name="reddit_gallery_item_url_hint">"Url"</string>
     <string name="user_agreement_dialog_title">"Acuerdo del usuario"</string>
-    <string name="user_agreement_message">"Tienes que aceptar el Acuerdo de usuario de Reddit (%1$s) y la Política de privacidad de Infinity para Reddit (%2$s) antes de iniciar sesión."</string>
+    <string name="user_agreement_message">"Tienes que aceptar el Acuerdo de usuario de Reddit (%1$s) y la Política de privacidad de Omega para Reddit (%2$s) antes de iniciar sesión."</string>
     <string name="agree">"Aceptar"</string>
     <string name="do_not_agree">"Rechazar"</string>
     <string name="option_1_hint">"Opción 1 (Obligatorio)"</string>

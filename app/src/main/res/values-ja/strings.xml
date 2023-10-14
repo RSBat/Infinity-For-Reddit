@@ -160,7 +160,7 @@
     <string name="unfollowed">"フォローを解除しました"</string>
     <string name="unfollow_failed">"フォローの解除に失敗しました"</string>
     <string name="content_description_banner_imageview">"Subredditのバナー画像"</string>
-    <string name="app_label">"ホーム - Infinity"</string>
+    <string name="app_label">"ホーム - Omega"</string>
     <string name="search_hint">"何でも検索してみてください"</string>
     <string name="no_posts_no_lazy_mode">"投稿がありません"</string>
     <string name="lazy_mode_start">"%1$.1f秒後に自動スクロールが始まります"</string>
@@ -457,12 +457,12 @@
     <string name="settings_email_title">"Email"</string>
     <string name="settings_email_summary">"docilealligator.app@gmail.com"</string>
     <string name="settings_reddit_account_title">"Redditアカウント"</string>
-    <string name="settings_reddit_account_summary">"u/Hostilenemy"</string>
+    <string name="settings_reddit_account_summary">"u/example"</string>
     <string name="settings_subreddit_title">"Subreddit"</string>
     <string name="settings_subreddit_summary">"r/Infinity_For_Reddit"</string>
     <string name="settings_share_title">"共有"</string>
     <string name="settings_share_summary">"このアプリが気に入ったようでしたら、ぜひ他の方々にもご紹介ください"</string>
-    <string name="settings_version_title">"Infinity For Reddit"</string>
+    <string name="settings_version_title">"Omega For Reddit"</string>
     <string name="settings_version_summary">"Version %s"</string>
     <string name="settings_category_customization_title">"カスタマイズ"</string>
     <string name="settings_customize_light_theme_title">"ライトテーマ"</string>
@@ -538,7 +538,7 @@
     <string name="error_getting_multi_reddit_data">"カスタムフィードのデータを取得中にエラーが発生しました"</string>
     <string name="error_loading_multi_reddit_list">"カスタムフィードの同期ができませんでした"</string>
     <string name="error_loading_subscriptions">"登録済み情報を同期できませんでした"</string>
-    <string name="share_this_app">"便利なRedditアプリを見つけました。Infinity for Redditを試してみて！
+    <string name="share_this_app">"便利なRedditアプリを見つけました。Omega for Redditを試してみて！
 https://play.google.com/store/apps/details?id=ml.docilealligator.infinityforreddit"</string>
     <string name="error_getting_subreddit_name">"Subreddit名を取得中にエラーが発生しました"</string>
     <string name="share_post_link">"投稿リンクを共有"</string>
@@ -810,7 +810,7 @@ https://play.google.com/store/apps/details?id=ml.docilealligator.infinityforredd
 
     <!-- Fuzzy -->
     <string name="reset_all_settings_success">"全ての設定をリセットしました"</string>
-    <string name="username_preview">"u/Hostilenemy"</string>
+    <string name="username_preview">"u/example"</string>
     <string name="subreddit_preview">"r/Infinity_For_Reddit"</string>
     <string name="primary_text_preview">"プライマリーテキスト"</string>
     <string name="secondary_text_preview">"セカンダリーテキスト"</string>
@@ -1025,7 +1025,7 @@ https://play.google.com/store/apps/details?id=ml.docilealligator.infinityforredd
     <string name="title_excludes_strings_hint">"タイトル: 除外するキーワード (key1,key2)"</string>
     <string name="title_excludes_regex_hint">"タイトル: 除外する正規表現"</string>
     <string name="exclude_subreddits_hint">"除外するSubreddit (例: funny,AskReddit)"</string>
-    <string name="exclude_users_hint">"除外するユーザー（例: Hostilenemy,random)"</string>
+    <string name="exclude_users_hint">"除外するユーザー（例: example,random)"</string>
     <string name="exclude_flairs_hint">"除外するFlair (例: flair1,flair2)"</string>
     <string name="contain_flairs_hint">"含めるFlair (例: flair1,flair2)"</string>
     <string name="min_comments_hint">"最小のコメント数 (-1: 制限なし)"</string>

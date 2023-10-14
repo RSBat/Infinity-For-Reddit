@@ -346,7 +346,7 @@
     <string name="settings_rate_summary">"எனக்கு 5-நட்சத்திர மதிப்பீடு கொடுங்கள் நான் உண்மையில் மகிழ்ச்சியாக இருப்பேன்"</string>
     <string name="settings_email_title">"மின்னஞ்சல்"</string>
     <string name="settings_reddit_account_title">"ரெட்டிட் கணக்கு"</string>
-    <string name="settings_reddit_account_summary">"u/Hostilenemy"</string>
+    <string name="settings_reddit_account_summary">"u/example"</string>
     <string name="settings_subreddit_title">"துணைரெட்டிட்"</string>
     <string name="settings_subreddit_summary">"r/Infinity_For_Reddit"</string>
     <string name="settings_share_title">"பகிர்"</string>

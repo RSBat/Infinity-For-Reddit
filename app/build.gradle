@@ -5,11 +5,12 @@ plugins {
 android {
     compileSdk 33
     defaultConfig {
-        applicationId "ml.docilealligator.infinityforreddit"
+        applicationId "dev.tabasar.omegaforreddit.demo"
+        namespace "ml.docilealligator.infinityforreddit"
         minSdk 21
         targetSdk 33
         versionCode 133
-        versionName "6.2.5"
+        versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {

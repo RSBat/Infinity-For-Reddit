@@ -129,7 +129,7 @@ Tocca per riprovare."</string>
     <string name="unfollowed">"Smesso di seguire"</string>
     <string name="unfollow_failed">"Disiscrizione non riuscita"</string>
     <string name="content_description_banner_imageview">"Banner subreddit"</string>
-    <string name="app_label">"Infinity"</string>
+    <string name="app_label">"Omega"</string>
     <string name="search_hint">"Cerca qualcosa"</string>
     <string name="no_posts_no_lazy_mode">"Nessun post disponibile"</string>
     <string name="lazy_mode_start">"Modalità di scorrimento automatico partirà tra %1$.1fs"</string>
@@ -375,12 +375,12 @@ Tocca per riprovare."</string>
     <string name="settings_email_title">"Email"</string>
     <string name="settings_email_summary">"docilealligator.app@gmail.com"</string>
     <string name="settings_reddit_account_title">"Account Reddit"</string>
-    <string name="settings_reddit_account_summary">"u/Hostilenemy"</string>
+    <string name="settings_reddit_account_summary">"u/example"</string>
     <string name="settings_subreddit_title">"Subreddit"</string>
     <string name="settings_subreddit_summary">"r/Infinity_For_Reddit"</string>
     <string name="settings_share_title">"Condividi"</string>
     <string name="settings_share_summary">"Condividi questa app con altre persone se la apprezzi"</string>
-    <string name="settings_version_title">"Infinity For Reddit"</string>
+    <string name="settings_version_title">"Omega For Reddit"</string>
     <string name="settings_version_summary">"Versione %s"</string>
     <string name="settings_category_customization_title">"Personalizzazione"</string>
     <string name="settings_customize_light_theme_title">"Tema Chiaro"</string>
@@ -442,7 +442,7 @@ Tocca per riprovare."</string>
     <string name="error_getting_multi_reddit_data">"Errore durante il recupero dei dati multireddit"</string>
     <string name="error_loading_multi_reddit_list">"Impossibile sincronizzare multireddit"</string>
     <string name="error_loading_subscriptions">"Impossibile sincronizzare iscrizioni"</string>
-    <string name="share_this_app">"Dai un'occhiata a Infinity per Reddit, un fantastico client Reddit!
+    <string name="share_this_app">"Dai un'occhiata a Omega per Reddit, un fantastico client Reddit!
 https://play.google.com/store/apps/details?id=ml.docilealligator.infinityforreddit"</string>
     <string name="error_getting_subreddit_name">"Errore durante il recupero dei nomi subreddit"</string>
     <string name="share_post_link">"Condividi il link al post"</string>
@@ -683,7 +683,7 @@ https://play.google.com/store/apps/details?id=ml.docilealligator.infinityforredd
     <string name="delete_all_themes_success">"Tutti i temi eliminati con successo"</string>
     <string name="delete_all_front_page_scrolled_positions_success">"Tutte le posizioni fatte scorrere in prima pagina eliminate con successo"</string>
     <string name="reset_all_settings_success">"Reset delle impostazioni avvenuto con successo"</string>
-    <string name="username_preview">"u/Hostilenemy"</string>
+    <string name="username_preview">"u/example"</string>
     <string name="subreddit_preview">"r/Infinity_For_Reddit"</string>
     <string name="primary_text_preview">"Testo Principale"</string>
     <string name="secondary_text_preview">"Testo Secondario"</string>
@@ -893,7 +893,7 @@ Messaggio: %2$s"</string>
     <string name="title_excludes_strings_hint">"Titolo: escludi parole chiave (key1,key2)"</string>
     <string name="title_excludes_regex_hint">"Escludi regex"</string>
     <string name="exclude_subreddits_hint">"Escludi subreddit (es. funny,AskReddit)"</string>
-    <string name="exclude_users_hint">"Escludi utenti (es. Hostilenemy,random)"</string>
+    <string name="exclude_users_hint">"Escludi utenti (es. example,random)"</string>
     <string name="exclude_flairs_hint">"Escludi flair (es. flair1,flair2)"</string>
     <string name="contain_flairs_hint">"Contiene flair (es. flair1,flair2)"</string>
     <string name="min_vote_hint">"Voto minimo (-1: nessuna restrizione)"</string>
@@ -1029,9 +1029,9 @@ Vuoi comunque abilitare l'opzione?"</string>
 \"Material You Amoled\".
 Se hai dei temi con questi nomi devi cambiarli prima di attivare la Personalizzazione automatica."</string>
     <string name="settings_enable_material_you_title">"Attiva personalizzazione automatica"</string>
-    <string name="settings_enable_material_you_summary">"Personalizza Infinity in base al tuo sfondo"</string>
+    <string name="settings_enable_material_you_summary">"Personalizza Omega in base al tuo sfondo"</string>
     <string name="settings_apply_material_you_title">"Applica personalizzazione"</string>
-    <string name="settings_apply_material_you_summary">"Nel caso Infinity non abbia cambiato il tema"</string>
+    <string name="settings_apply_material_you_summary">"Nel caso Omega non abbia cambiato il tema"</string>
     <string name="settings_more_tabs_show_favorite_multireddits_title">"Mostra Multireddit preferiti"</string>
     <string name="settings_more_tabs_show_multireddits_title">"Mostra Multireddit"</string>
     <string name="settings_collapse_reddit_section_title">"Comprimi la sezione Reddit"</string>
@@ -1175,7 +1175,7 @@ Premi per riprovare."</string>
     <string name="reddit_gallery_item_caption_hint">"Didascalia (max 180 caratteri)"</string>
     <string name="reddit_gallery_item_url_hint">"URL"</string>
     <string name="user_agreement_dialog_title">"Accordo per gli utenti"</string>
-    <string name="user_agreement_message">"Devi accettare l'Accordo per l'utente di Reddit (%1$s) e l'Informativa sulla privacy di Infinity for Reddit (%2$s) prima di accedere."</string>
+    <string name="user_agreement_message">"Devi accettare l'Accordo per l'utente di Reddit (%1$s) e l'Informativa sulla privacy di Omega for Reddit (%2$s) prima di accedere."</string>
     <string name="agree">"Accetto"</string>
     <string name="do_not_agree">"Non accetto"</string>
     <string name="option_1_hint">"Opzione 1 (richiesta)"</string>

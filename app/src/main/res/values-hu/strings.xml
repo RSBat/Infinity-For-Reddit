@@ -127,7 +127,7 @@
     <string name="unfollowed">"Követés megszüntetve"</string>
     <string name="unfollow_failed">"Követés megszüntetése sikertelen"</string>
     <string name="content_description_banner_imageview">"Subreddit borítóképe"</string>
-    <string name="app_label">"Infinity"</string>
+    <string name="app_label">"Omega"</string>
     <string name="search_hint">"Keressen bármire"</string>
     <string name="no_posts_no_lazy_mode">"Nincs rendelkezésre álló bejegyzés"</string>
     <string name="lazy_mode_start">"Lusta mód kezdete: %1$.1fs"</string>
@@ -375,7 +375,7 @@
     <string name="settings_email_title">"Email"</string>
     <string name="settings_email_summary">"docilealligator.app@gmail.com"</string>
     <string name="settings_reddit_account_title">"Reddit fiók"</string>
-    <string name="settings_reddit_account_summary">"u/Hostilenemy"</string>
+    <string name="settings_reddit_account_summary">"u/example"</string>
     <string name="settings_subreddit_title">"Subreddit"</string>
     <string name="settings_subreddit_summary">"r/Infinity_For_Reddit"</string>
     <string name="settings_share_title">"Megosztás"</string>
@@ -703,7 +703,7 @@ Az alap az indigó amoled téma"</string>
     <string name="delete_all_themes_success">"Összes téma törlése sikeres"</string>
     <string name="delete_all_front_page_scrolled_positions_success">"A Kezdőlap összes görgetési pozíciójának törlése sikeres"</string>
     <string name="reset_all_settings_success">"Összes beállítás visszaállítása sikeres"</string>
-    <string name="username_preview">"u/Hostilenemy"</string>
+    <string name="username_preview">"u/example"</string>
     <string name="subreddit_preview">"r/Infinity_For_Reddit"</string>
     <string name="primary_text_preview">"Elsődleges szöveg"</string>
     <string name="secondary_text_preview">"Másodlagos szöveg"</string>
@@ -922,7 +922,7 @@ Videó autómatikus lejátszása le van tiltva."</string>
     <string name="title_excludes_strings_hint">"Cím: kulcsszavak (kulcs1,kulcs2) kizárása"</string>
     <string name="title_excludes_regex_hint">"Cím: regex kizárása"</string>
     <string name="exclude_subreddits_hint">"Subredditek (pl. funny,AskReddit) kizárása"</string>
-    <string name="exclude_users_hint">"Felhasználók (pl. Hostileenemy,random) kizárása"</string>
+    <string name="exclude_users_hint">"Felhasználók (pl. example,random) kizárása"</string>
     <string name="exclude_flairs_hint">"Flairek (pl. flair1,flair2) kizárása"</string>
     <string name="contain_flairs_hint">"Tartalmazzon flaireket (pl. flair1,flair2)"</string>
     <string name="min_vote_hint">"Min szavazás (-1: nincsen korlátozás)"</string>

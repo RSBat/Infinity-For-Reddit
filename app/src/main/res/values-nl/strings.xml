@@ -144,7 +144,7 @@ Druk om opnieuw te proberen."</string>
     <string name="unfollowed">"Ontvolgd"</string>
     <string name="unfollow_failed">"Het ontvolgen is mislukt"</string>
     <string name="content_description_banner_imageview">"Omslagfoto van subreddit"</string>
-    <string name="app_label">"Infinity"</string>
+    <string name="app_label">"Omega"</string>
     <string name="search_hint">"Zoek iets"</string>
     <string name="no_posts_no_lazy_mode">"Geen berichten beschikbaar"</string>
     <string name="lazy_mode_start">"De luie modus start over %1$.1fs"</string>
@@ -408,12 +408,12 @@ Druk om opnieuw te proberen."</string>
     <string name="settings_email_title">"E-mailadres"</string>
     <string name="settings_email_summary">"docilealligator.app@gmail.com"</string>
     <string name="settings_reddit_account_title">"Reddit-account"</string>
-    <string name="settings_reddit_account_summary">"u/Hostilenemy"</string>
+    <string name="settings_reddit_account_summary">"u/example"</string>
     <string name="settings_subreddit_title">"Subreddit"</string>
     <string name="settings_subreddit_summary">"r/Infinity_For_Reddit"</string>
     <string name="settings_share_title">"Delen"</string>
     <string name="settings_share_summary">"Deel deze app met anderen als je hem graag gebruikt"</string>
-    <string name="settings_version_title">"Infinity For Reddit"</string>
+    <string name="settings_version_title">"Omega For Reddit"</string>
     <string name="settings_version_summary">"Versie %s"</string>
     <string name="settings_category_customization_title">"Vormgeving"</string>
     <string name="settings_customize_light_theme_title">"Licht thema"</string>
@@ -492,7 +492,7 @@ not: "5 uren" -->
     <string name="error_getting_multi_reddit_data">"De multiredditgegevens kunnen niet worden opgehaald"</string>
     <string name="error_loading_multi_reddit_list">"De multireddits kunnen niet worden gesynchroniseerd"</string>
     <string name="error_loading_subscriptions">"De abonnementen kunnen niet worden gesynchroniseerd"</string>
-    <string name="share_this_app">"Probeer Infinity voor Reddit, een geweldige Reddit-app!
+    <string name="share_this_app">"Probeer Omega voor Reddit, een geweldige Reddit-app!
 https://play.google.com/store/apps/details?id=ml.docilealligator.infinityforreddit"</string>
     <string name="error_getting_subreddit_name">"De subredditnaam kan niet worden opgehaald"</string>
     <string name="share_post_link">"Berichtlink delen"</string>
@@ -738,7 +738,7 @@ Gebaseerd op een Indigo Amoled Thema"</string>
     <string name="delete_all_themes_success">"Verwijder alle themas gelukt"</string>
     <string name="delete_all_front_page_scrolled_positions_success">"Verwijder alle gescrolde posities op de voorpagina gelukt"</string>
     <string name="reset_all_settings_success">"Reset alle instellingen gelukt"</string>
-    <string name="username_preview">"u/Hostilenemy"</string>
+    <string name="username_preview">"u/example"</string>
     <string name="subreddit_preview">"r/Infinity_For_Reddit"</string>
     <string name="primary_text_preview">"Primaire Tekst"</string>
     <string name="secondary_text_preview">"Secundaire Tekst"</string>

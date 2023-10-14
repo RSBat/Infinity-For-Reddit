@@ -8,8 +8,7 @@ updates:
     commit-message:
       prefix: "⬆[Gradle]"
     reviewers:
-      - "Wladefant"
-      - "Docile-Alligator"
+      - "tabasavr"
 
   # Updates for GitHub Actions used in the repository
   - package-ecosystem: github-actions
@@ -19,5 +18,4 @@ updates:
     commit-message:
       prefix: "⬆[GitHub Actions]"
     reviewers:
-      - "Wladefant"
-      - "Docile-Alligator"
+      - "tabasavr"

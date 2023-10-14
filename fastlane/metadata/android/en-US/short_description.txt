@@ -1,1 +1,0 @@
-A beautiful, feature-rich Reddit client.

@@ -1,5 +1,5 @@
 <resources>
-    <string name="application_name" translatable="false">Infinity</string>
+    <string name="application_name" translatable="false">Omega</string>
     <string name="login_activity_label">Login</string>
     <string name="search_activity_label" translatable="false"> </string>
     <string name="comment_activity_label">Send Comment</string>
@@ -170,7 +170,7 @@
 
     <string name="content_description_banner_imageview">Subreddit Banner Image</string>
 
-    <string name="app_label">Infinity</string>
+    <string name="app_label">Omega</string>
     <string name="search_hint">Search anything</string>
     <string name="search_only_subreddits_hint">Search subreddits</string>
     <string name="search_only_users_hint">Search users</string>
@@ -476,13 +476,13 @@
     <string name="settings_email_title">Email</string>
     <string name="settings_email_summary">docilealligator.app@gmail.com</string>
     <string name="settings_reddit_account_title">Reddit Account</string>
-    <string name="settings_reddit_account_summary">u/Hostilenemy</string>
+    <string name="settings_reddit_account_summary">u/example</string>
     <string name="settings_subreddit_title">Subreddit</string>
     <string name="settings_subreddit_summary">r/Infinity_For_Reddit</string>
     <string name="settings_share_title">Share</string>
     <string name="settings_share_summary">Share this app to other people if you enjoy it</string>
     <string name="settings_privacy_policy_title">Privacy Policy</string>
-    <string name="settings_version_title">Infinity For Reddit</string>
+    <string name="settings_version_title">Omega For Reddit</string>
     <string name="settings_version_summary">Version %s</string>
     <string name="settings_category_customization_title">Customization</string>
     <string name="settings_customize_light_theme_title">Light Theme</string>
@@ -492,9 +492,9 @@
     <string name="settings_category_material_you_title">Material You</string>
     <string name="settings_enable_material_you_warning_summary">Make sure you don\'t have themes named\n\"Material You\",\n\"Material You Dark\" or\n\"Material You Amoled\".\nOtherwise, rename them before enabling Material You.</string>
     <string name="settings_enable_material_you_title">Enable Material You</string>
-    <string name="settings_enable_material_you_summary">Personalize Infinity based on Your Wallpaper</string>
+    <string name="settings_enable_material_you_summary">Personalize Omega based on Your Wallpaper</string>
     <string name="settings_apply_material_you_title">Apply Material You</string>
-    <string name="settings_apply_material_you_summary">In case Infinity did not change the theme</string>
+    <string name="settings_apply_material_you_summary">In case Omega did not change the theme</string>
     <string name="settings_advanced_master_title">Advanced</string>
     <string name="settings_delete_all_subreddits_data_in_database_title">Delete All Subreddits in Database</string>
     <string name="settings_delete_all_users_data_in_database_title">Delete All Users in Database</string>
@@ -706,7 +706,7 @@
     <string name="error_loading_multi_reddit_list">Cannot sync multireddits</string>
     <string name="error_loading_subscriptions">Cannot sync subscriptions</string>
 
-    <string name="share_this_app">Check out Infinity for Reddit, an awesome Reddit client!\nhttps://play.google.com/store/apps/details?id=ml.docilealligator.infinityforreddit</string>
+    <string name="share_this_app">Check out Omega for Reddit, an awesome Reddit client!\nhttps://play.google.com/store/apps/details?id=ml.docilealligator.infinityforreddit</string>
 
     <string name="error_getting_subreddit_name">Error getting subreddit name</string>
 
@@ -982,7 +982,7 @@
     <string name="delete_all_legacy_settings_success">Delete all legacy settings successfully</string>
     <string name="reset_all_settings_success">Reset all settings successfully</string>
 
-    <string name="username_preview">u/Hostilenemy</string>
+    <string name="username_preview">u/example</string>
     <string name="subreddit_preview">r/Infinity_For_Reddit</string>
     <string name="primary_text_preview">Primary Text</string>
     <string name="secondary_text_preview">Secondary Text</string>
@@ -1121,7 +1121,7 @@
     <string name="title_excludes_regex_hint">Title: excludes regex</string>
     <string name="title_contains_regex_hint">Title: contains regex</string>
     <string name="exclude_subreddits_hint">Exclude subreddits (e.g. funny,AskReddit)</string>
-    <string name="exclude_users_hint">Exclude users (e.g. Hostilenemy,random)</string>
+    <string name="exclude_users_hint">Exclude users (e.g. example,random)</string>
     <string name="exclude_flairs_hint">Exclude flairs (e.g. flair1,flair2)</string>
     <string name="contain_flairs_hint">Contain flairs (e.g. flair1,flair2)</string>
     <string name="exclude_domains_hint">Exclude domains</string>
@@ -1286,7 +1286,7 @@
     <string name="reddit_gallery_item_url_hint">Url</string>
 
     <string name="user_agreement_dialog_title">User Agreement</string>
-    <string name="user_agreement_message">You need to agree to Reddit User Agreement (%1$s) and Infinity for Reddit\'s Privacy Policy (%2$s) before logging in.</string>
+    <string name="user_agreement_message">You need to agree to Reddit User Agreement (%1$s) and Omega for Reddit\'s Privacy Policy (%2$s) before logging in.</string>
     <string name="agree">Agree</string>
     <string name="do_not_agree">Don\'t Agree</string>
 
@@ -1323,12 +1323,12 @@
     <string name="denied_notification_permission">Notification permission is not granted</string>
     <string name="go_to_settings">Settings</string>
 
-    <string name="welcome_to_infinity">Welcome to Infinity for Reddit, your gateway to a whole new dimension of Reddit browsing!</string>
+    <string name="welcome_to_infinity">Welcome to Omega for Reddit, your gateway to a whole new dimension of Reddit browsing!</string>
     <string name="subscription_prompt">Before you dive into the countless possibilities this app offers,
         I want to be upfront and transparent about a significant change I\'ve implemented to ensure the best possible service for you.
-        \n\nFrom now on, you will need a monthly subscription to access the Reddit API within Infinity for Reddit and
+        \n\nFrom now on, you will need a monthly subscription to access the Reddit API within Omega for Reddit and
         this is because Reddit has started charging for API access since July 1st, 2023.
-        \n\nAll the tiers work the same. If you want to support Infinity, you can subscribe to a higher tier.
+        \n\nAll the tiers work the same. If you want to support Omega, you can subscribe to a higher tier.
         Most of the money from the lowest tier goes to Reddit.
     </string>
     <string name="monthly">Monthly</string>
@@ -1349,22 +1349,22 @@
     <string name="subscription_plan_description_monthly_499">Gold - Perfect Choice!</string>
     <string name="subscription_plan_description_monthly_699">Platinum</string>
     <string name="subscription_plan_description_monthly_899">Diamond</string>
-    <string name="subscription_plan_description_monthly_999">Infinity</string>
+    <string name="subscription_plan_description_monthly_999">Omega</string>
     <string name="acknowledge_purchase_failed">Cannot acknowledge purchase</string>
     <string name="connect_to_billing_system_failed">Failed to connect to the billing system</string>
     <string name="connecting_to_billing_system">Connecting to the billing system. Please wait.</string>
     <string name="thank_you_for_subscription">Thank you for your subscription</string>
     <string name="load_subscription_options">Load subscription options</string>
     <string name="acknowledging_subscription">Acknowledging your subscription. Please wait.</string>
-    <string name="acknowledgement_purchase_failed_description">Oops, there was an error when acknowledging your purchase. If this problem persists for three days, you will automatically get a refund.\nDon\'t worry, you can still enjoy Infinity for Reddit.</string>
+    <string name="acknowledgement_purchase_failed_description">Oops, there was an error when acknowledging your purchase. If this problem persists for three days, you will automatically get a refund.\nDon\'t worry, you can still enjoy Omega for Reddit.</string>
     <string name="continue_to_app">Continue to app</string>
     <string name="restore_subscription_purchase_details">Already paid for the subscription?</string>
     <string name="restore_subscription_purchase">Restore subscription purchase</string>
 
     <string name="important_info_title">Please re-login your account</string>
-    <string name="important_info">Infinity for Reddit with subscription uses a new API key from Reddit and you have to re-login to continue using the app.\n\nJust
+    <string name="important_info">Omega for Reddit with subscription uses a new API key from Reddit and you have to re-login to continue using the app.\n\nJust
         open the navigation drawer and click your account header and select \"Add an account\" to login to Reddit using the same account again.
-        Otherwise, Infinity may not load posts at all. Sorry for the inconvenience.</string>
+        Otherwise, Omega may not load posts at all. Sorry for the inconvenience.</string>
     <string name="i_understand">I understand</string>
 
 </resources>
