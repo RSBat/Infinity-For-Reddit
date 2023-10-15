@@ -81,6 +81,15 @@ public class AdvancedPreferenceFragment extends CustomFontPreferenceFragmentComp
     @Named("post_history")
     SharedPreferences postHistorySharedPreferences;
     @Inject
+    @Named("navigation_drawer")
+    SharedPreferences navigationDrawerSharedPreferences;
+    @Inject
+    @Named("post_details")
+    SharedPreferences postDetailsSharedPreferences;
+    @Inject
+    @Named("security")
+    SharedPreferences securitySharedPreferences;
+    @Inject
     Executor executor;
 
     @Override
@@ -302,6 +311,7 @@ public class AdvancedPreferenceFragment extends CustomFontPreferenceFragmentComp
                         amoledThemeSharedPreferences, mSortTypeSharedPreferences, mPostLayoutSharedPreferences,
                         postFeedScrolledPositionSharedPreferences, mainActivityTabsSharedPreferences,
                         nsfwAndBlurringSharedPreferences, bottomAppBarSharedPreferences, postHistorySharedPreferences,
+                        navigationDrawerSharedPreferences, postDetailsSharedPreferences, securitySharedPreferences,
                         new BackupSettings.BackupSettingsListener() {
                             @Override
                             public void success() {
@@ -320,10 +330,16 @@ public class AdvancedPreferenceFragment extends CustomFontPreferenceFragmentComp
                         amoledThemeSharedPreferences, mSortTypeSharedPreferences, mPostLayoutSharedPreferences,
                         postFeedScrolledPositionSharedPreferences, mainActivityTabsSharedPreferences,
                         nsfwAndBlurringSharedPreferences, bottomAppBarSharedPreferences, postHistorySharedPreferences,
+                        navigationDrawerSharedPreferences, postDetailsSharedPreferences, securitySharedPreferences,
                         new RestoreSettings.RestoreSettingsListener() {
                             @Override
                             public void success() {
                                 Toast.makeText(activity, R.string.restore_settings_success, Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void securitySettingsNotSupported() {
+                                Toast.makeText(activity, "Skipped restoring security settings: not supported", Toast.LENGTH_LONG).show();
                             }
 
                             @Override

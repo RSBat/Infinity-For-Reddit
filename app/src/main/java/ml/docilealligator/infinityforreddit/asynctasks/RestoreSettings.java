@@ -1,12 +1,17 @@
 package ml.docilealligator.infinityforreddit.asynctasks;
 
+import static androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG;
+import static androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL;
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Handler;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.biometric.BiometricManager;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -57,6 +62,9 @@ public class RestoreSettings {
                                 SharedPreferences nsfwAndSpoilerSharedPreferencs,
                                 SharedPreferences bottomAppBarSharedPreferences,
                                 SharedPreferences postHistorySharedPreferences,
+                                SharedPreferences navigationDrawerSharedPreferences,
+                                SharedPreferences postDetailsSharedPreferences,
+                                SharedPreferences securitySharedPreferences,
                                 RestoreSettingsListener restoreSettingsListener) {
         executor.execute(() -> {
             try {
@@ -119,6 +127,17 @@ public class RestoreSettings {
                                     result = result & importSharedPreferencsFromFile(bottomAppBarSharedPreferences, f.toString());
                                 } else if (f.getName().startsWith(SharedPreferencesUtils.POST_HISTORY_SHARED_PREFERENCES_FILE)) {
                                     result = result & importSharedPreferencsFromFile(postHistorySharedPreferences, f.toString());
+                                } else if (f.getName().startsWith(SharedPreferencesUtils.NAVIGATION_DRAWER_SHARED_PREFERENCES_FILE)) {
+                                    result = result & importSharedPreferencsFromFile(navigationDrawerSharedPreferences, f.toString());
+                                } else if (f.getName().startsWith(SharedPreferencesUtils.POST_DETAILS_SHARED_PREFERENCES_FILE)) {
+                                    result = result & importSharedPreferencsFromFile(postDetailsSharedPreferences, f.toString());
+                                } else if (f.getName().startsWith(SharedPreferencesUtils.SECURITY_SHARED_PREFERENCES_FILE)) {
+                                    BiometricManager biometricManager = BiometricManager.from(context);
+                                    if (biometricManager.canAuthenticate(BIOMETRIC_STRONG | DEVICE_CREDENTIAL) != BiometricManager.BIOMETRIC_SUCCESS) {
+                                        result = result & importSharedPreferencsFromFile(securitySharedPreferences, f.toString());
+                                    } else {
+                                        handler.post(restoreSettingsListener::securitySettingsNotSupported);
+                                    }
                                 }
                             } else if (f.isDirectory() && f.getName().equals("database")) {
                                 if (!redditDataRoomDatabase.accountDao().isAnonymousAccountInserted()) {
@@ -242,6 +261,7 @@ public class RestoreSettings {
 
     public interface RestoreSettingsListener {
         void success();
+        void securitySettingsNotSupported();
         void failed(String errorMessage);
     }
 }

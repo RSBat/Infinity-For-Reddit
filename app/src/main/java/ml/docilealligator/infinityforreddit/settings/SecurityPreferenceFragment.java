@@ -30,11 +30,7 @@ import ml.docilealligator.infinityforreddit.utils.SharedPreferencesUtils;
 
 public class SecurityPreferenceFragment extends CustomFontPreferenceFragmentCompat {
 
-    @Inject
-    @Named("default")
-    SharedPreferences sharedPreferences;
-
-    String rootKey;
+    private String rootKey;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

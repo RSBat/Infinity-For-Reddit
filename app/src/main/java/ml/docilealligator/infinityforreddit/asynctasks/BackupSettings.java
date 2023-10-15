@@ -56,6 +56,9 @@ public class BackupSettings {
                                       SharedPreferences nsfwAndSpoilerSharedPreferencs,
                                       SharedPreferences bottomAppBarSharedPreferences,
                                       SharedPreferences postHistorySharedPreferences,
+                                      SharedPreferences navigationDrawerSharedPreferences,
+                                      SharedPreferences postDetailsSharedPreferences,
+                                      SharedPreferences securitySharedPreferences,
                                       BackupSettingsListener backupSettingsListener) {
         executor.execute(() -> {
             String backupDir = context.getExternalCacheDir() + "/Backup/" + BuildConfig.VERSION_NAME;
@@ -94,6 +97,12 @@ public class BackupSettings {
                     SharedPreferencesUtils.BOTTOM_APP_BAR_SHARED_PREFERENCES_FILE);
             boolean res10 = saveSharedPreferencesToFile(postHistorySharedPreferences, backupDir,
                     SharedPreferencesUtils.POST_HISTORY_SHARED_PREFERENCES_FILE);
+            boolean resNavDrawer = saveSharedPreferencesToFile(navigationDrawerSharedPreferences, backupDir,
+                    SharedPreferencesUtils.NAVIGATION_DRAWER_SHARED_PREFERENCES_FILE);
+            boolean resPostDetaild = saveSharedPreferencesToFile(postDetailsSharedPreferences, backupDir,
+                    SharedPreferencesUtils.POST_DETAILS_SHARED_PREFERENCES_FILE);
+            boolean resSecurity = saveSharedPreferencesToFile(securitySharedPreferences, backupDir,
+                    SharedPreferencesUtils.SECURITY_SHARED_PREFERENCES_FILE);
 
             List<SubscribedSubredditData> anonymousSubscribedSubredditsData = redditDataRoomDatabase.subscribedSubredditDao().getAllSubscribedSubredditsList("-");
             String anonymousSubscribedSubredditsDataJson = new Gson().toJson(anonymousSubscribedSubredditsData);
@@ -133,7 +142,8 @@ public class BackupSettings {
 
             handler.post(() -> {
                 boolean finalResult = res && res1 && res2 && res3 && res4 && res5 && res6 && res7 && res8
-                        && res9 && res10 && res11 && res12 && res13 && res14 && res15 && res16 && res17 && zipRes;
+                        && res9 && res10 && res11 && res12 && res13 && res14 && res15 && res16 && res17
+                        && resNavDrawer && resPostDetaild && resSecurity && zipRes;
                 if (finalResult) {
                     backupSettingsListener.success();
                 } else {
