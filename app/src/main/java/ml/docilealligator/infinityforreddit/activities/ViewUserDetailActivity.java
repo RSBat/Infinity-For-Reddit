@@ -234,7 +234,7 @@ public class ViewUserDetailActivity extends BaseActivity implements SortTypeSele
         setTransparentStatusBarAfterToolbarCollapsed();
 
         super.onCreate(savedInstanceState);
-
+        setupSlidrTheme();
         setContentView(R.layout.activity_view_user_detail);
 
         ButterKnife.bind(this);
@@ -252,9 +252,7 @@ public class ViewUserDetailActivity extends BaseActivity implements SortTypeSele
 
         applyCustomTheme();
 
-        if (mSharedPreferences.getBoolean(SharedPreferencesUtils.SWIPE_RIGHT_TO_GO_BACK, true)) {
-            mSliderPanel = Slidr.attach(this);
-        }
+        setupSlidr();
 
         mViewPager2 = viewPager2;
 

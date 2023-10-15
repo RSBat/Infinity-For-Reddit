@@ -104,7 +104,7 @@ public class LoginActivity extends BaseActivity {
         setImmersiveModeNotApplicable();
 
         super.onCreate(savedInstanceState);
-
+        setupSlidrTheme();
         try {
             setContentView(R.layout.activity_login);
         } catch (InflateException ie) {
@@ -118,9 +118,7 @@ public class LoginActivity extends BaseActivity {
 
         applyCustomTheme();
 
-        if (mSharedPreferences.getBoolean(SharedPreferencesUtils.SWIPE_RIGHT_TO_GO_BACK, true)) {
-            Slidr.attach(this);
-        }
+        setupSlidr();
 
         setSupportActionBar(toolbar);
 

@@ -89,7 +89,7 @@ public class RulesActivity extends BaseActivity {
         ((Infinity) getApplication()).getAppComponent().inject(this);
 
         super.onCreate(savedInstanceState);
-
+        setupSlidrTheme();
         setContentView(R.layout.activity_rules);
 
         ButterKnife.bind(this);
@@ -98,10 +98,7 @@ public class RulesActivity extends BaseActivity {
 
         applyCustomTheme();
 
-        SliderPanel sliderPanel = null;
-        if (mSharedPreferences.getBoolean(SharedPreferencesUtils.SWIPE_RIGHT_TO_GO_BACK, true)) {
-            sliderPanel = Slidr.attach(this);
-        }
+        setupSlidr();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Window window = getWindow();
@@ -132,7 +129,7 @@ public class RulesActivity extends BaseActivity {
 
         mSubredditName = getIntent().getExtras().getString(EXTRA_SUBREDDIT_NAME);
 
-        mAdapter = new RulesRecyclerViewAdapter(this, mCustomThemeWrapper, sliderPanel);
+        mAdapter = new RulesRecyclerViewAdapter(this, mCustomThemeWrapper, mSliderPanel);
         recyclerView.setAdapter(mAdapter);
 
         FetchRules.fetchRules(mExecutor, new Handler(), mAccessToken == null ? mRetrofit : mOauthRetrofit, mAccessToken, mSubredditName, new FetchRules.FetchRulesListener() {

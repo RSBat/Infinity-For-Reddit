@@ -152,6 +152,7 @@ public class ViewMultiRedditDetailActivity extends BaseActivity implements SortT
     protected void onCreate(Bundle savedInstanceState) {
         ((Infinity) getApplication()).getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
+        setupSlidrTheme();
         setContentView(R.layout.activity_view_multi_reddit_detail);
 
         ButterKnife.bind(this);
@@ -169,9 +170,7 @@ public class ViewMultiRedditDetailActivity extends BaseActivity implements SortT
 
         applyCustomTheme();
 
-        if (mSharedPreferences.getBoolean(SharedPreferencesUtils.SWIPE_RIGHT_TO_GO_BACK, true)) {
-            mSliderPanel = Slidr.attach(this);
-        }
+        setupSlidr();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Window window = getWindow();

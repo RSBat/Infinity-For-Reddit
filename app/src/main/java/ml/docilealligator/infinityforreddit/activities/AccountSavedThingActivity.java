@@ -80,6 +80,7 @@ public class AccountSavedThingActivity extends BaseActivity implements ActivityT
         ((Infinity) getApplication()).getAppComponent().inject(this);
 
         super.onCreate(savedInstanceState);
+        setupSlidrTheme();
         binding = ActivityAccountSavedThingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -87,9 +88,7 @@ public class AccountSavedThingActivity extends BaseActivity implements ActivityT
 
         applyCustomTheme();
 
-        if (mSharedPreferences.getBoolean(SharedPreferencesUtils.SWIPE_RIGHT_TO_GO_BACK, true)) {
-            mSliderPanel = Slidr.attach(this);
-        }
+        setupSlidr();
 
         mViewPager2 = binding.accountSavedThingViewPager2;
 

@@ -65,6 +65,7 @@ public class AccountPostsActivity extends BaseActivity implements SortTypeSelect
 
         super.onCreate(savedInstanceState);
 
+        setupSlidrTheme();
         binding = ActivityAccountPostsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -72,9 +73,7 @@ public class AccountPostsActivity extends BaseActivity implements SortTypeSelect
 
         applyCustomTheme();
 
-        if (mSharedPreferences.getBoolean(SharedPreferencesUtils.SWIPE_RIGHT_TO_GO_BACK, true)) {
-            mSliderPanel = Slidr.attach(this);
-        }
+        setupSlidr();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Window window = getWindow();

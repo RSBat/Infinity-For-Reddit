@@ -15,9 +15,12 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +29,7 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -48,6 +52,7 @@ import ml.docilealligator.infinityforreddit.AppBarStateChangeListener;
 import ml.docilealligator.infinityforreddit.CustomFontReceiver;
 import ml.docilealligator.infinityforreddit.R;
 import ml.docilealligator.infinityforreddit.customtheme.CustomThemeWrapper;
+import ml.docilealligator.infinityforreddit.customviews.slidr.Slidr;
 import ml.docilealligator.infinityforreddit.customviews.slidr.widget.SliderPanel;
 import ml.docilealligator.infinityforreddit.font.ContentFontFamily;
 import ml.docilealligator.infinityforreddit.font.ContentFontStyle;
@@ -60,6 +65,8 @@ import ml.docilealligator.infinityforreddit.utils.SharedPreferencesUtils;
 import ml.docilealligator.infinityforreddit.utils.Utils;
 
 public abstract class BaseActivity extends AppCompatActivity implements CustomFontReceiver {
+    private static final String TAG = "BaseActivity";
+
     private boolean immersiveInterface;
     private boolean changeStatusBarIconColor;
     private boolean transparentStatusBarAfterToolbarCollapsed;
@@ -222,6 +229,39 @@ public abstract class BaseActivity extends AppCompatActivity implements CustomFo
             } else if (changeStatusBarIconColor) {
                 systemVisibilityToolbarCollapsed = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
             }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && mSliderPanel != null) {
+            setTranslucent(true);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && mSliderPanel != null && !isFinishing()) {
+            setTranslucent(false);
+        }
+        super.onPause();
+    }
+
+    @CallSuper
+    protected void setupSlidrTheme() {
+        if (!getDefaultSharedPreferences().getBoolean(SharedPreferencesUtils.SWIPE_RIGHT_TO_GO_BACK, true)) {
+            setTheme(R.style.AppTheme_NoActionBar);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                setTranslucent(false);
+            }
+        }
+    }
+
+    @CallSuper
+    protected void setupSlidr() {
+        if (getDefaultSharedPreferences().getBoolean(SharedPreferencesUtils.SWIPE_RIGHT_TO_GO_BACK, true)) {
+            mSliderPanel = Slidr.attach(this);
         }
     }
 

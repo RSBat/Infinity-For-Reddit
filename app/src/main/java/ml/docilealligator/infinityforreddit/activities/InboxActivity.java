@@ -114,7 +114,7 @@ public class InboxActivity extends BaseActivity implements ActivityToolbarInterf
         ((Infinity) getApplication()).getAppComponent().inject(this);
 
         super.onCreate(savedInstanceState);
-
+        setupSlidrTheme();
         setContentView(R.layout.activity_inbox);
 
         ButterKnife.bind(this);
@@ -123,9 +123,7 @@ public class InboxActivity extends BaseActivity implements ActivityToolbarInterf
 
         applyCustomTheme();
 
-        if (mSharedPreferences.getBoolean(SharedPreferencesUtils.SWIPE_RIGHT_TO_GO_BACK, true)) {
-            mSliderPanel = Slidr.attach(this);
-        }
+        setupSlidr();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Window window = getWindow();

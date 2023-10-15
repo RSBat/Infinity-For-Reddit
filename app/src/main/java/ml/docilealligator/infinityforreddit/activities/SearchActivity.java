@@ -147,7 +147,7 @@ public class SearchActivity extends BaseActivity {
         setImmersiveModeNotApplicable();
 
         super.onCreate(savedInstanceState);
-
+        setupSlidrTheme();
         setContentView(R.layout.activity_search);
 
         ButterKnife.bind(this);
@@ -156,9 +156,7 @@ public class SearchActivity extends BaseActivity {
 
         applyCustomTheme();
 
-        if (mSharedPreferences.getBoolean(SharedPreferencesUtils.SWIPE_RIGHT_TO_GO_BACK, true)) {
-            Slidr.attach(this);
-        }
+        setupSlidr();
 
         setSupportActionBar(toolbar);
 

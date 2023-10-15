@@ -84,6 +84,7 @@ public class GiveAwardActivity extends BaseActivity {
         setImmersiveModeNotApplicable();
 
         super.onCreate(savedInstanceState);
+        setupSlidrTheme();
         setContentView(R.layout.activity_give_award);
 
         ButterKnife.bind(this);
@@ -93,9 +94,7 @@ public class GiveAwardActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if (mSharedPreferences.getBoolean(SharedPreferencesUtils.SWIPE_RIGHT_TO_GO_BACK, true)) {
-            Slidr.attach(this);
-        }
+        setupSlidr();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (isChangeStatusBarIconColor()) {

@@ -79,6 +79,7 @@ public class SelectUserFlairActivity extends BaseActivity implements ActivityToo
         setImmersiveModeNotApplicable();
 
         super.onCreate(savedInstanceState);
+        setupSlidrTheme();
         setContentView(R.layout.activity_select_user_flair);
 
         ButterKnife.bind(this);
@@ -89,9 +90,7 @@ public class SelectUserFlairActivity extends BaseActivity implements ActivityToo
             addOnOffsetChangedListener(appBarLayout);
         }
 
-        if (mSharedPreferences.getBoolean(SharedPreferencesUtils.SWIPE_RIGHT_TO_GO_BACK, true)) {
-            Slidr.attach(this);
-        }
+        setupSlidr();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

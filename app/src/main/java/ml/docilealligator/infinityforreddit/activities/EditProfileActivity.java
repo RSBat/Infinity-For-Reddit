@@ -109,6 +109,7 @@ public class EditProfileActivity extends BaseActivity {
         setImmersiveModeNotApplicable();
 
         super.onCreate(savedInstanceState);
+        setupSlidrTheme();
         setContentView(R.layout.activity_edit_profile);
 
         ButterKnife.bind(this);
@@ -123,9 +124,7 @@ public class EditProfileActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
 
-        if (mSharedPreferences.getBoolean(SharedPreferencesUtils.SWIPE_RIGHT_TO_GO_BACK, true)) {
-            Slidr.attach(this);
-        }
+        setupSlidr();
 
         mAccessToken = mCurrentAccountSharedPreferences.getString(SharedPreferencesUtils.ACCESS_TOKEN, null);
         mAccountName = mCurrentAccountSharedPreferences.getString(SharedPreferencesUtils.ACCOUNT_NAME, null);

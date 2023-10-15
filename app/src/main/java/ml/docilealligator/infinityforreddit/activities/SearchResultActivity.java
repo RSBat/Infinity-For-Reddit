@@ -147,7 +147,7 @@ public class SearchResultActivity extends BaseActivity implements SortTypeSelect
         ((Infinity) getApplication()).getAppComponent().inject(this);
 
         super.onCreate(savedInstanceState);
-
+        setupSlidrTheme();
         setContentView(R.layout.activity_search_result);
 
         ButterKnife.bind(this);
@@ -156,9 +156,7 @@ public class SearchResultActivity extends BaseActivity implements SortTypeSelect
 
         applyCustomTheme();
 
-        if (mSharedPreferences.getBoolean(SharedPreferencesUtils.SWIPE_RIGHT_TO_GO_BACK, true)) {
-            mSliderPanel = Slidr.attach(this);
-        }
+        setupSlidr();
 
         mViewPager2 = viewPager2;
 

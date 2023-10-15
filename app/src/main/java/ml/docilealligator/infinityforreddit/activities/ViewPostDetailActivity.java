@@ -187,7 +187,10 @@ public class ViewPostDetailActivity extends BaseActivity implements SortTypeSele
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ((Infinity) getApplication()).getAppComponent().inject(this);
-
+        boolean swipeBetweenPosts = mSharedPreferences.getBoolean(SharedPreferencesUtils.SWIPE_BETWEEN_POSTS, false);
+        if (!swipeBetweenPosts) {
+            setupSlidrTheme();
+        }
         super.onCreate(savedInstanceState);
 
         BigImageViewer.initialize(GlideImageLoader.with(this.getApplicationContext()));
@@ -231,11 +234,8 @@ public class ViewPostDetailActivity extends BaseActivity implements SortTypeSele
             }
         }
 
-        boolean swipeBetweenPosts = mSharedPreferences.getBoolean(SharedPreferencesUtils.SWIPE_BETWEEN_POSTS, false);
         if (!swipeBetweenPosts) {
-            if (mSharedPreferences.getBoolean(SharedPreferencesUtils.SWIPE_RIGHT_TO_GO_BACK, true)) {
-                mSliderPanel = Slidr.attach(this);
-            }
+            setupSlidr();
             viewPager2.setUserInputEnabled(false);
         } else {
             super.mViewPager2 = viewPager2;

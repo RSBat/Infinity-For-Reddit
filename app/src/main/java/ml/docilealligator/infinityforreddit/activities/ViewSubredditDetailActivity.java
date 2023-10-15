@@ -250,8 +250,8 @@ public class ViewSubredditDetailActivity extends BaseActivity implements SortTyp
     protected void onCreate(Bundle savedInstanceState) {
         ((Infinity) getApplication()).getAppComponent().inject(this);
 
+        setupSlidrTheme();
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_view_subreddit_detail);
 
         ButterKnife.bind(this);
@@ -268,9 +268,7 @@ public class ViewSubredditDetailActivity extends BaseActivity implements SortTyp
 
         applyCustomTheme();
 
-        if (mSharedPreferences.getBoolean(SharedPreferencesUtils.SWIPE_RIGHT_TO_GO_BACK, true)) {
-            mSliderPanel = Slidr.attach(this);
-        }
+        setupSlidr();
 
         mViewPager2 = viewPager2;
 

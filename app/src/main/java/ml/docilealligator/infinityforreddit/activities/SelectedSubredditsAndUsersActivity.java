@@ -71,15 +71,14 @@ public class SelectedSubredditsAndUsersActivity extends BaseActivity implements 
         setImmersiveModeNotApplicable();
 
         super.onCreate(savedInstanceState);
+        setupSlidrTheme();
         setContentView(R.layout.activity_selected_subreddits);
 
         ButterKnife.bind(this);
 
         applyCustomTheme();
 
-        if (mSharedPreferences.getBoolean(SharedPreferencesUtils.SWIPE_RIGHT_TO_GO_BACK, true)) {
-            Slidr.attach(this);
-        }
+        setupSlidr();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
