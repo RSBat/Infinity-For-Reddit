@@ -26,6 +26,11 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.button.MaterialButtonToggleGroup;
+
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -55,6 +60,8 @@ import ml.docilealligator.infinityforreddit.customviews.SpoilerOnClickTextView;
 import ml.docilealligator.infinityforreddit.customviews.SwipeLockInterface;
 import ml.docilealligator.infinityforreddit.customviews.SwipeLockLinearLayoutManager;
 import ml.docilealligator.infinityforreddit.markdown.MarkdownUtils;
+import ml.docilealligator.infinityforreddit.markdown.gif.GifPlugin;
+import ml.docilealligator.infinityforreddit.markdown.gif.GiphyGif;
 import ml.docilealligator.infinityforreddit.utils.APIUtils;
 import ml.docilealligator.infinityforreddit.utils.SharedPreferencesUtils;
 import ml.docilealligator.infinityforreddit.utils.Utils;
@@ -79,9 +86,11 @@ public class CommentsListingRecyclerViewAdapter extends PagedListAdapter<Comment
     private Retrofit mOauthRetrofit;
     private Locale mLocale;
     private Markwon mMarkwon;
+    private final RequestManager glide;
     private RecyclerView.RecycledViewPool recycledViewPool;
     private String mAccessToken;
     private String mAccountName;
+    private final CustomThemeWrapper customThemeWrapper;
     private int mColorPrimaryLightTheme;
     private int mSecondaryTextColor;
     private int mCommentBackgroundColor;
@@ -121,6 +130,7 @@ public class CommentsListingRecyclerViewAdapter extends PagedListAdapter<Comment
         mVoteButtonsOnTheRight = sharedPreferences.getBoolean(SharedPreferencesUtils.VOTE_BUTTONS_ON_THE_RIGHT_KEY, false);
         mTimeFormatPattern = sharedPreferences.getString(SharedPreferencesUtils.TIME_FORMAT_KEY, SharedPreferencesUtils.TIME_FORMAT_DEFAULT_VALUE);
         mRetryLoadingMoreCallback = retryLoadingMoreCallback;
+        this.customThemeWrapper = customThemeWrapper;
         mColorPrimaryLightTheme = customThemeWrapper.getColorPrimaryLightTheme();
         mSecondaryTextColor = customThemeWrapper.getSecondaryTextColor();
         mCommentBackgroundColor = customThemeWrapper.getCommentBackgroundColor();
@@ -167,9 +177,10 @@ public class CommentsListingRecyclerViewAdapter extends PagedListAdapter<Comment
             }
             return true;
         };
-        mMarkwon = MarkdownUtils.createFullRedditMarkwon(mActivity,
+        mMarkwon = MarkdownUtils.createCommentsMarkwon(mActivity,
                 miscPlugin, mCommentColor, commentSpoilerBackgroundColor, onLinkLongClickListener);
         recycledViewPool = new RecyclerView.RecycledViewPool();
+        glide = Glide.with(activity);
     }
 
     @NonNull
@@ -213,6 +224,7 @@ public class CommentsListingRecyclerViewAdapter extends PagedListAdapter<Comment
                     Utils.setHTMLWithImageToTextView(((CommentViewHolder) holder).awardsTextView, comment.getAwards(), true);
                 }
 
+                GifPlugin.currentGif = comment.gif;
                 ((CommentViewHolder) holder).markwonAdapter.setMarkdown(mMarkwon, comment.getCommentMarkdown());
                 // noinspection NotifyDataSetChanged
                 ((CommentViewHolder) holder).markwonAdapter.notifyDataSetChanged();
@@ -513,7 +525,7 @@ public class CommentsListingRecyclerViewAdapter extends PagedListAdapter<Comment
                 }
             });
             commentMarkdownView.setLayoutManager(linearLayoutManager);
-            markwonAdapter = MarkdownUtils.createCustomTablesAdapter();
+            markwonAdapter = MarkdownUtils.createCommentsAdapter(glide, customThemeWrapper);
             markwonAdapter.setOnClickListener(view -> {
                 if (view instanceof SpoilerOnClickTextView) {
                     if (((SpoilerOnClickTextView) view).isSpoilerOnClick()) {

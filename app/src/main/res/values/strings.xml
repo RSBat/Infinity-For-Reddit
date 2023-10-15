@@ -1366,5 +1366,6 @@
         open the navigation drawer and click your account header and select \"Add an account\" to login to Reddit using the same account again.
         Otherwise, Omega may not load posts at all. Sorry for the inconvenience.</string>
     <string name="i_understand">I understand</string>
+    <string name="via_giphy">via GIPHY</string>
 
 </resources>

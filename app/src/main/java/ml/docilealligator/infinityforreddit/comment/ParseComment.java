@@ -17,13 +17,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Executor;
 
+import ml.docilealligator.infinityforreddit.markdown.gif.GiphyGif;
 import ml.docilealligator.infinityforreddit.utils.JSONUtils;
 import ml.docilealligator.infinityforreddit.utils.Utils;
 
 public class ParseComment {
+    private static final String TAG = "ParseComment";
+
     public static void parseComment(Executor executor, Handler handler, String response,
                                     boolean expandChildren,
                                     ParseCommentListener parseCommentListener) {
@@ -308,10 +312,43 @@ public class ParseComment {
         // this key can either be a bool (false) or a long (edited timestamp)
         long edited = singleCommentData.optLong(JSONUtils.EDITED_KEY) * 1000;
 
+        GiphyGif gif = null;
+        JSONObject mediaMetadata = singleCommentData.optJSONObject("media_metadata");
+        if (mediaMetadata != null) {
+            Iterator<String> keyIter = mediaMetadata.keys();
+            while (keyIter.hasNext()) {
+                String key = keyIter.next();
+                JSONObject data = mediaMetadata.getJSONObject(key);
+                if ("giphy".equals(data.optString("t"))
+                        && "valid".equals(data.optString("status"))
+                        && "AnimatedImage".equals(data.optString("e"))) {
+                    String gifId = data.optString("id");
+                    int giphyIdIndex = gifId.indexOf("|");
+                    if (giphyIdIndex < 0 || giphyIdIndex + 1 >= gifId.length()) {
+                        Log.w(TAG, "Giphy parse failed: bad id");
+                        continue;
+                    }
+                    String giphyId = gifId.substring(giphyIdIndex + 1);
+
+                    JSONObject gifSize = data.optJSONObject("s");
+                    if (gifSize == null || !gifSize.has("x") || !gifSize.has("y")) {
+                        Log.w(TAG, "Giphy parse failed: bad size");
+                        continue;
+                    }
+
+                    int x = gifSize.optInt("x");
+                    int y = gifSize.optInt("y");
+
+                    gif = new GiphyGif(giphyId, x, y);
+                    break;
+                }
+            }
+        }
+
         return new Comment(id, fullName, author, authorFlair, authorFlairHTMLBuilder.toString(),
                 linkAuthor, submitTime, commentMarkdown, commentRawText,
                 linkId, subredditName, parentId, score, voteType, isSubmitter, distinguished,
-                permalink, awardingsBuilder.toString(), depth, collapsed, hasReply, scoreHidden, saved, edited);
+                permalink, awardingsBuilder.toString(), depth, collapsed, hasReply, scoreHidden, saved, edited, gif);
     }
 
     @Nullable

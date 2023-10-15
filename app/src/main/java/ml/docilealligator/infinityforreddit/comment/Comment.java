@@ -3,9 +3,13 @@ package ml.docilealligator.infinityforreddit.comment;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.Nullable;
+import androidx.core.os.ParcelCompat;
+
 import java.util.ArrayList;
 
 import ml.docilealligator.infinityforreddit.BuildConfig;
+import ml.docilealligator.infinityforreddit.markdown.gif.GiphyGif;
 import ml.docilealligator.infinityforreddit.utils.APIUtils;
 
 public class Comment implements Parcelable {
@@ -59,6 +63,8 @@ public class Comment implements Parcelable {
     private boolean isLoadingMoreChildren;
     private boolean loadMoreChildrenFailed;
     private long editedTimeMillis;
+    @Nullable
+    public final GiphyGif gif;
 
     public Comment(String id, String fullName, String author, String authorFlair,
                    String authorFlairHTML, String linkAuthor,
@@ -66,7 +72,7 @@ public class Comment implements Parcelable {
                    String linkId, String subredditName, String parentId, int score,
                    int voteType, boolean isSubmitter, String distinguished, String permalink,
                    String awards, int depth, boolean collapsed, boolean hasReply,
-                   boolean scoreHidden, boolean saved, long edited) {
+                   boolean scoreHidden, boolean saved, long edited, @Nullable GiphyGif gif) {
         this.id = id;
         this.fullName = fullName;
         this.author = author;
@@ -93,6 +99,7 @@ public class Comment implements Parcelable {
         this.isExpanded = false;
         this.hasExpandedBefore = false;
         this.editedTimeMillis = edited;
+        this.gif = gif;
         placeholderType = NOT_PLACEHOLDER;
     }
 
@@ -105,12 +112,9 @@ public class Comment implements Parcelable {
         }
         this.depth = depth;
         this.placeholderType = placeholderType;
+        this.gif = null;
         isLoadingMoreChildren = false;
         loadMoreChildrenFailed = false;
-    }
-
-    public Comment(String parentFullName) {
-
     }
 
     protected Comment(Parcel in) {
@@ -147,6 +151,7 @@ public class Comment implements Parcelable {
         placeholderType = in.readInt();
         isLoadingMoreChildren = in.readByte() != 0;
         loadMoreChildrenFailed = in.readByte() != 0;
+        gif = ParcelCompat.readParcelable(in, null, GiphyGif.class);
     }
 
     public String getId() {
@@ -404,7 +409,7 @@ public class Comment implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
+    public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeString(id);
         parcel.writeString(fullName);
         parcel.writeString(author);
@@ -436,6 +441,7 @@ public class Comment implements Parcelable {
         parcel.writeInt(placeholderType);
         parcel.writeByte((byte) (isLoadingMoreChildren ? 1 : 0));
         parcel.writeByte((byte) (loadMoreChildrenFailed ? 1 : 0));
+        parcel.writeParcelable(gif, flags);
     }
 
     public boolean isEdited() {
