@@ -3,6 +3,7 @@ package ml.docilealligator.infinityforreddit.fragments;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -44,6 +45,7 @@ import java.io.File;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,6 +58,7 @@ import ml.docilealligator.infinityforreddit.activities.ViewImgurMediaActivity;
 import ml.docilealligator.infinityforreddit.asynctasks.SaveBitmapImageToFile;
 import ml.docilealligator.infinityforreddit.bottomsheetfragments.SetAsWallpaperBottomSheetFragment;
 import ml.docilealligator.infinityforreddit.services.DownloadMediaService;
+import ml.docilealligator.infinityforreddit.services.DownloadUtils;
 import ml.docilealligator.infinityforreddit.utils.Utils;
 
 public class ViewImgurImageFragment extends Fragment {
@@ -83,6 +86,9 @@ public class ViewImgurImageFragment extends Fragment {
     ImageView wallpaperImageView;
     @Inject
     Executor mExecutor;
+    @Inject
+    @Named("default")
+    SharedPreferences sharedPreferences;
 
     private ViewImgurMediaActivity activity;
     private RequestManager glide;
@@ -238,7 +244,8 @@ public class ViewImgurImageFragment extends Fragment {
                 download();
             }
         } else {
-            download();
+            DownloadUtils.checkDownloadLocationPermission(DownloadMediaService.EXTRA_MEDIA_TYPE_IMAGE,
+                    false, sharedPreferences, requireContext(), this::download);
         }
     }
 

@@ -2,6 +2,8 @@ package ml.docilealligator.infinityforreddit.services;
 
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
+import static ml.docilealligator.infinityforreddit.services.DownloadMediaService.EXTRA_MEDIA_TYPE_VIDEO;
+
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -146,12 +148,7 @@ public class DownloadRedditVideoService extends Service {
                     Response<ResponseBody> videoResponse = downloadFileRetrofit.downloadFile(videoUrl).execute();
                     if (videoResponse.isSuccessful() && videoResponse.body() != null) {
                         String externalCacheDirectoryPath = externalCacheDirectory.getAbsolutePath() + "/";
-                        String destinationFileDirectory;
-                        if (isNsfw && sharedPreferences.getBoolean(SharedPreferencesUtils.SAVE_NSFW_MEDIA_IN_DIFFERENT_FOLDER, false)) {
-                            destinationFileDirectory = sharedPreferences.getString(SharedPreferencesUtils.NSFW_DOWNLOAD_LOCATION, "");
-                        } else {
-                            destinationFileDirectory = sharedPreferences.getString(SharedPreferencesUtils.VIDEO_DOWNLOAD_LOCATION, "");
-                        }
+                        String destinationFileDirectory = DownloadUtils.getBaseDownloadDirectory(EXTRA_MEDIA_TYPE_VIDEO, isNsfw, sharedPreferences);
                         String destinationFileUriString;
                         boolean isDefaultDestination;
                         if (destinationFileDirectory.equals("")) {

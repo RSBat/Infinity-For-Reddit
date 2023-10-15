@@ -52,6 +52,7 @@ import ml.docilealligator.infinityforreddit.R;
 import ml.docilealligator.infinityforreddit.activities.ViewImgurMediaActivity;
 import ml.docilealligator.infinityforreddit.bottomsheetfragments.PlaybackSpeedBottomSheetFragment;
 import ml.docilealligator.infinityforreddit.services.DownloadMediaService;
+import ml.docilealligator.infinityforreddit.services.DownloadUtils;
 import ml.docilealligator.infinityforreddit.utils.APIUtils;
 import ml.docilealligator.infinityforreddit.utils.SharedPreferencesUtils;
 import ml.docilealligator.infinityforreddit.utils.Utils;
@@ -221,7 +222,8 @@ public class ViewImgurVideoFragment extends Fragment {
                 download();
             }
         } else {
-            download();
+            DownloadUtils.checkDownloadLocationPermission(DownloadMediaService.EXTRA_MEDIA_TYPE_VIDEO,
+                    false, mSharedPreferences, requireContext(), this::download);
         }
     }
 

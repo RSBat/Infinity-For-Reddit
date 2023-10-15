@@ -3,6 +3,7 @@ package ml.docilealligator.infinityforreddit.fragments;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -52,6 +53,7 @@ import java.io.File;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,6 +70,7 @@ import ml.docilealligator.infinityforreddit.bottomsheetfragments.SetAsWallpaperB
 import ml.docilealligator.infinityforreddit.bottomsheetfragments.UrlMenuBottomSheetFragment;
 import ml.docilealligator.infinityforreddit.post.Post;
 import ml.docilealligator.infinityforreddit.services.DownloadMediaService;
+import ml.docilealligator.infinityforreddit.services.DownloadUtils;
 import ml.docilealligator.infinityforreddit.utils.Utils;
 
 public class ViewRedditGalleryImageOrGifFragment extends Fragment {
@@ -105,6 +108,9 @@ public class ViewRedditGalleryImageOrGifFragment extends Fragment {
     ImageView wallpaperImageView;
     @Inject
     Executor mExecutor;
+    @Inject
+    @Named("default")
+    SharedPreferences sharedPreferences;
 
     private ViewRedditGalleryActivity activity;
     private RequestManager glide;
@@ -398,7 +404,8 @@ public class ViewRedditGalleryImageOrGifFragment extends Fragment {
                 download();
             }
         } else {
-            download();
+            int mediaType = media.mediaType == Post.Gallery.TYPE_GIF ? DownloadMediaService.EXTRA_MEDIA_TYPE_GIF: DownloadMediaService.EXTRA_MEDIA_TYPE_IMAGE;
+            DownloadUtils.checkDownloadLocationPermission(mediaType, isNsfw, sharedPreferences, requireContext(), this::download);
         }
     }
 

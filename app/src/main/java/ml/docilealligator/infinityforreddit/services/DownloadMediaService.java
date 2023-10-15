@@ -486,16 +486,6 @@ public class DownloadMediaService extends Service {
     }
 
     private String getDownloadLocation(int mediaType, boolean isNsfw) {
-        if (isNsfw && mSharedPreferences.getBoolean(SharedPreferencesUtils.SAVE_NSFW_MEDIA_IN_DIFFERENT_FOLDER, false)) {
-            return mSharedPreferences.getString(SharedPreferencesUtils.NSFW_DOWNLOAD_LOCATION, "");
-        }
-        switch (mediaType) {
-            case EXTRA_MEDIA_TYPE_GIF:
-                return mSharedPreferences.getString(SharedPreferencesUtils.GIF_DOWNLOAD_LOCATION, "");
-            case EXTRA_MEDIA_TYPE_VIDEO:
-                return mSharedPreferences.getString(SharedPreferencesUtils.VIDEO_DOWNLOAD_LOCATION, "");
-            default:
-                return mSharedPreferences.getString(SharedPreferencesUtils.IMAGE_DOWNLOAD_LOCATION, "");
-        }
+        return DownloadUtils.getBaseDownloadDirectory(mediaType, isNsfw, mSharedPreferences);
     }
 }

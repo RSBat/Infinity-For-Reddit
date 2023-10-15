@@ -76,6 +76,7 @@ import ml.docilealligator.infinityforreddit.font.FontStyle;
 import ml.docilealligator.infinityforreddit.font.TitleFontFamily;
 import ml.docilealligator.infinityforreddit.font.TitleFontStyle;
 import ml.docilealligator.infinityforreddit.services.DownloadMediaService;
+import ml.docilealligator.infinityforreddit.services.DownloadUtils;
 import ml.docilealligator.infinityforreddit.utils.SharedPreferencesUtils;
 import ml.docilealligator.infinityforreddit.utils.Utils;
 
@@ -370,7 +371,8 @@ public class ViewImageOrGifActivity extends AppCompatActivity implements SetAsWa
                 download();
             }
         } else {
-            download();
+            int mediaType = isGif ? DownloadMediaService.EXTRA_MEDIA_TYPE_GIF : DownloadMediaService.EXTRA_MEDIA_TYPE_IMAGE;
+            DownloadUtils.checkDownloadLocationPermission(mediaType, isNsfw, mSharedPreferences, this, this::download);
         }
     }
 
