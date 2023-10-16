@@ -34,7 +34,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:replace="android:label">
+        android:localeConfig="@xml/locale_config"
+        tools:replace="android:label"
+        tools:targetApi="tiramisu">
         <activity
             android:name=".activities.HistoryActivity"
             android:exported="false"
@@ -442,6 +444,15 @@
             android:exported="false" />
 
         <receiver android:name=".broadcastreceivers.DownloadedMediaDeleteActionBroadcastReceiver" />
+
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
     </application>
 
 </manifest>

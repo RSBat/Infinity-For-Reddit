@@ -478,7 +478,7 @@
 
     <string-array name="settings_language_values">
         <item>auto</item>
-        <item>zh-rCN</item>
+        <item>zh-CN</item>
         <item>hr</item>
         <item>cs</item>
         <item>nl</item>
@@ -492,14 +492,14 @@
         <item>ja</item>
         <item>ko</item>
         <item>pl</item>
-        <item>pt</item>
-        <item>pt-rBR</item>
+        <item>pt-PT</item>
+        <item>pt-BR</item>
         <item>ro</item>
         <item>ru</item>
         <item>so</item>
         <item>es</item>
         <item>ta</item>
-        <item>tr-rTR</item>
+        <item>tr-TR</item>
         <item>uk</item>
         <item>vi</item>
     </string-array>
