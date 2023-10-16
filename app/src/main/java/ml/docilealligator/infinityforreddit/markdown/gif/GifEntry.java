@@ -1,13 +1,19 @@
 package ml.docilealligator.infinityforreddit.markdown.gif;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Consumer;
+import androidx.preference.PreferenceManager;
 
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.DataSource;
@@ -15,22 +21,24 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.DrawableImageViewTarget;
 import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.request.target.ViewTarget;
 
 import io.noties.markwon.Markwon;
 import io.noties.markwon.recycler.MarkwonAdapter;
-import ml.docilealligator.infinityforreddit.Infinity;
 import ml.docilealligator.infinityforreddit.R;
 import ml.docilealligator.infinityforreddit.customtheme.CustomThemeWrapper;
 import ml.docilealligator.infinityforreddit.databinding.AdapterGifEntryBinding;
+import ml.docilealligator.infinityforreddit.utils.SharedPreferencesUtils;
+import ml.docilealligator.infinityforreddit.utils.Utils;
 
 public class GifEntry extends MarkwonAdapter.Entry<GifBlock, GifEntry.Holder> {
     private final RequestManager glide;
     private final CustomThemeWrapper customThemeWrapper;
+    private final Consumer<Uri> onClickListener;
 
-    public GifEntry(RequestManager glide, CustomThemeWrapper customThemeWrapper1) {
+    public GifEntry(RequestManager glide, CustomThemeWrapper customThemeWrapper, Consumer<Uri> onClickListener) {
         this.glide = glide;
-        this.customThemeWrapper = customThemeWrapper1;
+        this.customThemeWrapper = customThemeWrapper;
+        this.onClickListener = onClickListener;
     }
 
     @NonNull
@@ -71,10 +79,28 @@ public class GifEntry extends MarkwonAdapter.Entry<GifBlock, GifEntry.Holder> {
 
             binding.gifProgressBar.setIndeterminateTintList(ColorStateList.valueOf(customThemeWrapper.getColorAccent()));
             binding.giphyWatermark.setTextColor(customThemeWrapper.getCommentColor());
+
+            binding.gifLink.setTextColor(customThemeWrapper.getLinkColor());
+
         }
 
         void bind(GiphyGif gif) {
+            if (!canLoadGif()) {
+                // video autoplay is disabled, don't load gif
+                binding.gifLink.setVisibility(View.VISIBLE);
+                binding.ivGif.setVisibility(View.GONE);
+                binding.gifProgressBar.setVisibility(View.GONE);
+                binding.giphyWatermark.setVisibility(View.GONE);
+
+                binding.gifLink.setOnClickListener(v -> {
+                    onClickListener.accept(Uri.parse(gif.getGifUrl()));
+                });
+                return;
+            }
+            binding.gifLink.setVisibility(View.GONE);
+            binding.ivGif.setVisibility(View.VISIBLE);
             binding.gifProgressBar.setVisibility(View.VISIBLE);
+            binding.giphyWatermark.setVisibility(View.VISIBLE);
 
             ViewGroup.LayoutParams params = binding.ivGif.getLayoutParams();
             if (gif.x > gif.y) {
@@ -98,9 +124,25 @@ public class GifEntry extends MarkwonAdapter.Entry<GifBlock, GifEntry.Holder> {
             glide.clear(binding.ivGif);
         }
 
+        @SuppressWarnings("SameParameterValue")
         private int dpToPx(int dp) {
             float density = itemView.getContext().getResources().getDisplayMetrics().density;
             return (int) (dp * density);
+        }
+
+        private boolean canLoadGif() {
+            // ideally this would be injected, but it is a bit unpleasant to do
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(itemView.getContext());
+            String dataSavingMode = sharedPreferences.getString(SharedPreferencesUtils.DATA_SAVING_MODE, SharedPreferencesUtils.DATA_SAVING_MODE_OFF);
+            Log.i("GIF", dataSavingMode);
+            if (dataSavingMode.equals(SharedPreferencesUtils.DATA_SAVING_MODE_ALWAYS)) {
+                return false;
+            } else if (dataSavingMode.equals(SharedPreferencesUtils.DATA_SAVING_MODE_ONLY_ON_CELLULAR_DATA)) {
+                int networkType = Utils.getConnectedNetwork(itemView.getContext());
+                return networkType != Utils.NETWORK_TYPE_CELLULAR;
+            } else {
+                return true;
+            }
         }
     }
 }

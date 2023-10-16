@@ -1,14 +1,18 @@
 package ml.docilealligator.infinityforreddit.markdown;
 
 import android.content.Context;
+import android.net.Uri;
 import android.text.util.Linkify;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Consumer;
 
 import com.bumptech.glide.RequestManager;
 
 import org.commonmark.ext.gfm.tables.TableBlock;
+
+import javax.inject.Provider;
 
 import io.noties.markwon.Markwon;
 import io.noties.markwon.MarkwonPlugin;
@@ -120,12 +124,14 @@ public class MarkdownUtils {
      * Creates a CustomMarkwonAdapter configured with support for tables and gifs.
      */
     @NonNull
-    public static CustomMarkwonAdapter createCommentsAdapter(RequestManager glide, CustomThemeWrapper customThemeWrapper) {
+    public static CustomMarkwonAdapter createCommentsAdapter(RequestManager glide,
+                                                             CustomThemeWrapper customThemeWrapper,
+                                                             Consumer<Uri> gifOpener) {
         return CustomMarkwonAdapter.builder(R.layout.adapter_default_entry, R.id.text)
                 .include(TableBlock.class, TableEntry.create(builder -> builder
                         .tableLayout(R.layout.adapter_table_block, R.id.table_layout)
                         .textLayoutIsRoot(R.layout.view_table_entry_cell)))
-                .include(GifBlock.class, new GifEntry(glide, customThemeWrapper))
+                .include(GifBlock.class, new GifEntry(glide, customThemeWrapper, gifOpener))
                 .build();
     }
 }

@@ -33,6 +33,8 @@ import com.google.android.material.button.MaterialButtonToggleGroup;
 
 import java.util.Locale;
 
+import javax.inject.Provider;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.noties.markwon.AbstractMarkwonPlugin;
@@ -525,7 +527,11 @@ public class CommentsListingRecyclerViewAdapter extends PagedListAdapter<Comment
                 }
             });
             commentMarkdownView.setLayoutManager(linearLayoutManager);
-            markwonAdapter = MarkdownUtils.createCommentsAdapter(glide, customThemeWrapper);
+            markwonAdapter = MarkdownUtils.createCommentsAdapter(glide, customThemeWrapper, gifUri -> {
+                Intent intent = new Intent(mActivity, LinkResolverActivity.class);
+                intent.setData(gifUri);
+                mActivity.startActivity(intent);
+            });
             markwonAdapter.setOnClickListener(view -> {
                 if (view instanceof SpoilerOnClickTextView) {
                     if (((SpoilerOnClickTextView) view).isSpoilerOnClick()) {

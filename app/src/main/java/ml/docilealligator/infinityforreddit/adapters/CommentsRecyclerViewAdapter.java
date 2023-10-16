@@ -24,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.util.Consumer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -1300,7 +1301,12 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 }
             });
             commentMarkdownView.setLayoutManager(linearLayoutManager);
-            mMarkwonAdapter = MarkdownUtils.createCommentsAdapter(mGlide, customThemeWrapper);
+            mMarkwonAdapter = MarkdownUtils.createCommentsAdapter(mGlide, customThemeWrapper, gifUri -> {
+                Intent intent = new Intent(mActivity, LinkResolverActivity.class);
+                intent.setData(gifUri);
+                intent.putExtra(LinkResolverActivity.EXTRA_IS_NSFW, mPost.isNSFW());
+                mActivity.startActivity(intent);
+            });
             commentMarkdownView.setAdapter(mMarkwonAdapter);
 
             itemView.setBackgroundColor(mCommentBackgroundColor);
