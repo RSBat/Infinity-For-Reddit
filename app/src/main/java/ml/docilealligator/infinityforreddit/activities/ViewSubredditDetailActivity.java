@@ -105,6 +105,7 @@ import ml.docilealligator.infinityforreddit.bottomsheetfragments.SortTypeBottomS
 import ml.docilealligator.infinityforreddit.bottomsheetfragments.UrlMenuBottomSheetFragment;
 import ml.docilealligator.infinityforreddit.customtheme.CustomThemeWrapper;
 import ml.docilealligator.infinityforreddit.customviews.NavigationWrapper;
+import ml.docilealligator.infinityforreddit.customviews.TabsColorSynchronizer;
 import ml.docilealligator.infinityforreddit.customviews.slidr.Slidr;
 import ml.docilealligator.infinityforreddit.customviews.slidr.widget.SliderPanel;
 import ml.docilealligator.infinityforreddit.events.ChangeNSFWEvent;
@@ -234,12 +235,6 @@ public class ViewSubredditDetailActivity extends BaseActivity implements SortTyp
     private String mMessageFullname;
     private String mNewAccountName;
     private RequestManager glide;
-    private int expandedTabTextColor;
-    private int expandedTabBackgroundColor;
-    private int expandedTabIndicatorColor;
-    private int collapsedTabTextColor;
-    private int collapsedTabBackgroundColor;
-    private int collapsedTabIndicatorColor;
     private int unsubscribedColor;
     private int subscribedColor;
     private int fabOption;
@@ -302,49 +297,16 @@ public class ViewSubredditDetailActivity extends BaseActivity implements SortTyp
                     public void onStateChanged(AppBarLayout appBarLayout, AppBarStateChangeListener.State state) {
                         if (state == State.COLLAPSED) {
                             decorView.setSystemUiVisibility(getSystemVisibilityToolbarCollapsed());
-                            tabLayout.setTabTextColors(collapsedTabTextColor, collapsedTabTextColor);
-                            tabLayout.setSelectedTabIndicatorColor(collapsedTabIndicatorColor);
-                            tabLayout.setBackgroundColor(collapsedTabBackgroundColor);
                         } else if (state == State.EXPANDED) {
                             decorView.setSystemUiVisibility(getSystemVisibilityToolbarExpanded());
-                            tabLayout.setTabTextColors(expandedTabTextColor, expandedTabTextColor);
-                            tabLayout.setSelectedTabIndicatorColor(expandedTabIndicatorColor);
-                            tabLayout.setBackgroundColor(expandedTabBackgroundColor);
-                        }
-                    }
-                });
-            } else {
-                appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
-                    @Override
-                    public void onStateChanged(AppBarLayout appBarLayout, State state) {
-                        if (state == State.COLLAPSED) {
-                            tabLayout.setTabTextColors(collapsedTabTextColor, collapsedTabTextColor);
-                            tabLayout.setSelectedTabIndicatorColor(collapsedTabIndicatorColor);
-                            tabLayout.setBackgroundColor(collapsedTabBackgroundColor);
-                        } else if (state == State.EXPANDED) {
-                            tabLayout.setTabTextColors(expandedTabTextColor, expandedTabTextColor);
-                            tabLayout.setSelectedTabIndicatorColor(expandedTabIndicatorColor);
-                            tabLayout.setBackgroundColor(expandedTabBackgroundColor);
                         }
                     }
                 });
             }
-        } else {
-            appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
-                @Override
-                public void onStateChanged(AppBarLayout appBarLayout, State state) {
-                    if (state == State.EXPANDED) {
-                        tabLayout.setTabTextColors(expandedTabTextColor, expandedTabTextColor);
-                        tabLayout.setSelectedTabIndicatorColor(expandedTabIndicatorColor);
-                        tabLayout.setBackgroundColor(expandedTabBackgroundColor);
-                    } else if (state == State.COLLAPSED) {
-                        tabLayout.setTabTextColors(collapsedTabTextColor, collapsedTabTextColor);
-                        tabLayout.setSelectedTabIndicatorColor(collapsedTabIndicatorColor);
-                        tabLayout.setBackgroundColor(collapsedTabBackgroundColor);
-                    }
-                }
-            });
         }
+        // sync tabs colors with collapsing toolbar scrim
+        appBarLayout.addOnOffsetChangedListener(new TabsColorSynchronizer(collapsingToolbarLayout, tabLayout, customThemeWrapper));
+        collapsingToolbarLayout.setScrimAnimationDuration(0); // disable animation so color sync looks good
 
         lockBottomAppBar = mSharedPreferences.getBoolean(SharedPreferencesUtils.LOCK_BOTTOM_APP_BAR, false);
         boolean hideSubredditDescription = mSharedPreferences.getBoolean(SharedPreferencesUtils.HIDE_SUBREDDIT_DESCRIPTION, false);
@@ -534,12 +496,7 @@ public class ViewSubredditDetailActivity extends BaseActivity implements SortTyp
             }
         });
         applyAppBarLayoutAndCollapsingToolbarLayoutAndToolbarTheme(appBarLayout, collapsingToolbarLayout, toolbar, false);
-        expandedTabTextColor = mCustomThemeWrapper.getTabLayoutWithExpandedCollapsingToolbarTextColor();
-        expandedTabIndicatorColor = mCustomThemeWrapper.getTabLayoutWithExpandedCollapsingToolbarTabIndicator();
-        expandedTabBackgroundColor = mCustomThemeWrapper.getTabLayoutWithExpandedCollapsingToolbarTabBackground();
-        collapsedTabTextColor = mCustomThemeWrapper.getTabLayoutWithCollapsedCollapsingToolbarTextColor();
-        collapsedTabIndicatorColor = mCustomThemeWrapper.getTabLayoutWithCollapsedCollapsingToolbarTabIndicator();
-        collapsedTabBackgroundColor = mCustomThemeWrapper.getTabLayoutWithCollapsedCollapsingToolbarTabBackground();
+        int expandedTabBackgroundColor = mCustomThemeWrapper.getTabLayoutWithExpandedCollapsingToolbarTabBackground();
         linearLayout.setBackgroundColor(expandedTabBackgroundColor);
         subredditNameTextView.setTextColor(mCustomThemeWrapper.getSubreddit());
         subscribeSubredditChip.setTextColor(mCustomThemeWrapper.getChipTextColor());

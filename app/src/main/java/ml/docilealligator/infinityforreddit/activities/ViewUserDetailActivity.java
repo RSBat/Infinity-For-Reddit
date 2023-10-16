@@ -94,6 +94,7 @@ import ml.docilealligator.infinityforreddit.bottomsheetfragments.UrlMenuBottomSh
 import ml.docilealligator.infinityforreddit.bottomsheetfragments.UserThingSortTypeBottomSheetFragment;
 import ml.docilealligator.infinityforreddit.customtheme.CustomThemeWrapper;
 import ml.docilealligator.infinityforreddit.customviews.NavigationWrapper;
+import ml.docilealligator.infinityforreddit.customviews.TabsColorSynchronizer;
 import ml.docilealligator.infinityforreddit.customviews.slidr.Slidr;
 import ml.docilealligator.infinityforreddit.customviews.slidr.model.SlidrInterface;
 import ml.docilealligator.infinityforreddit.customviews.slidr.widget.SliderPanel;
@@ -319,49 +320,15 @@ public class ViewUserDetailActivity extends BaseActivity implements SortTypeSele
                     public void onStateChanged(AppBarLayout appBarLayout, State state) {
                         if (state == State.COLLAPSED) {
                             decorView.setSystemUiVisibility(getSystemVisibilityToolbarCollapsed());
-                            tabLayout.setTabTextColors(collapsedTabTextColor, collapsedTabTextColor);
-                            tabLayout.setSelectedTabIndicatorColor(collapsedTabIndicatorColor);
-                            tabLayout.setBackgroundColor(collapsedTabBackgroundColor);
                         } else if (state == State.EXPANDED) {
                             decorView.setSystemUiVisibility(getSystemVisibilityToolbarExpanded());
-                            tabLayout.setTabTextColors(expandedTabTextColor, expandedTabTextColor);
-                            tabLayout.setSelectedTabIndicatorColor(expandedTabIndicatorColor);
-                            tabLayout.setBackgroundColor(expandedTabBackgroundColor);
-                        }
-                    }
-                });
-            } else {
-                appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
-                    @Override
-                    public void onStateChanged(AppBarLayout appBarLayout, State state) {
-                        if (state == State.COLLAPSED) {
-                            tabLayout.setTabTextColors(collapsedTabTextColor, collapsedTabTextColor);
-                            tabLayout.setSelectedTabIndicatorColor(collapsedTabIndicatorColor);
-                            tabLayout.setBackgroundColor(collapsedTabBackgroundColor);
-                        } else if (state == State.EXPANDED) {
-                            tabLayout.setTabTextColors(expandedTabTextColor, expandedTabTextColor);
-                            tabLayout.setSelectedTabIndicatorColor(expandedTabIndicatorColor);
-                            tabLayout.setBackgroundColor(expandedTabBackgroundColor);
                         }
                     }
                 });
             }
-        } else {
-            appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
-                @Override
-                public void onStateChanged(AppBarLayout appBarLayout, State state) {
-                    if (state == State.EXPANDED) {
-                        tabLayout.setTabTextColors(expandedTabTextColor, expandedTabTextColor);
-                        tabLayout.setSelectedTabIndicatorColor(expandedTabIndicatorColor);
-                        tabLayout.setBackgroundColor(expandedTabBackgroundColor);
-                    } else if (state == State.COLLAPSED) {
-                        tabLayout.setTabTextColors(collapsedTabTextColor, collapsedTabTextColor);
-                        tabLayout.setSelectedTabIndicatorColor(collapsedTabIndicatorColor);
-                        tabLayout.setBackgroundColor(collapsedTabBackgroundColor);
-                    }
-                }
-            });
         }
+        appBarLayout.addOnOffsetChangedListener(new TabsColorSynchronizer(collapsingToolbarLayout, tabLayout, customThemeWrapper));
+        collapsingToolbarLayout.setScrimAnimationDuration(0); // disable animation so color sync looks good
 
         glide = Glide.with(this);
         Locale locale = getResources().getConfiguration().locale;
