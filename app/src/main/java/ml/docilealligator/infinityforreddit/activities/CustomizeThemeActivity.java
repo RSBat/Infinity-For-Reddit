@@ -194,7 +194,7 @@ public class CustomizeThemeActivity extends BaseActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == android.R.id.home) {
-            finish();
+            confirmExit();
             return true;
         } else if (itemId == R.id.action_preview_customize_theme_activity) {
             Intent intent = new Intent(this, CustomThemePreviewActivity.class);
@@ -236,6 +236,10 @@ public class CustomizeThemeActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        confirmExit();
+    }
+
+    private void confirmExit() {
         new MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogTheme)
                 .setTitle(R.string.discard)
                 .setPositiveButton(R.string.discard_dialog_button, (dialogInterface, i)
