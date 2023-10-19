@@ -16,7 +16,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -178,6 +177,8 @@ public class PostFragment extends Fragment implements FragmentCommunicator {
     ImageView mFetchPostInfoImageView;
     @BindView(R.id.fetch_post_info_text_view_post_fragment)
     TextView mFetchPostInfoTextView;
+    @BindView(R.id.load_data_failed_small)
+    TextView mLoadDataFailedSmall;
     PostViewModel mPostViewModel;
     @Inject
     @Named("no_oauth")
@@ -1164,6 +1165,8 @@ public class PostFragment extends Fragment implements FragmentCommunicator {
             return new PlaybackInfo(INDEX_UNSET, TIME_UNSET, volumeInfo);
         });
 
+        mLoadDataFailedSmall.setOnClickListener(view -> refresh());
+
         return rootView;
     }
 
@@ -1286,8 +1289,13 @@ public class PostFragment extends Fragment implements FragmentCommunicator {
                     hasPost = true;
                 }
             } else if (refreshLoadState instanceof LoadState.Error) {
-                mFetchPostInfoLinearLayout.setOnClickListener(view -> refresh());
-                showErrorView(R.string.load_posts_error);
+                if (mAdapter.getItemCount() > 0) {
+                    // already have data in the adapter, show error banner
+                    mLoadDataFailedSmall.setVisibility(View.VISIBLE);
+                } else {
+                    mFetchPostInfoLinearLayout.setOnClickListener(view -> refresh());
+                    showErrorView(R.string.load_posts_error);
+                }
             }
             if (!(refreshLoadState instanceof LoadState.Loading) && appendLoadState instanceof LoadState.NotLoading) {
                 if (appendLoadState.getEndOfPaginationReached() && mAdapter.getItemCount() < 1) {
@@ -1483,6 +1491,7 @@ public class PostFragment extends Fragment implements FragmentCommunicator {
     @Override
     public void refresh() {
         mFetchPostInfoLinearLayout.setVisibility(View.GONE);
+        mLoadDataFailedSmall.setVisibility(View.GONE);
         hasPost = false;
         if (isInLazyMode) {
             stopLazyMode();
@@ -1664,8 +1673,11 @@ public class PostFragment extends Fragment implements FragmentCommunicator {
         mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(mCustomThemeWrapper.getCircularProgressBarBackground());
         mSwipeRefreshLayout.setColorSchemeColors(mCustomThemeWrapper.getColorAccent());
         mFetchPostInfoTextView.setTextColor(mCustomThemeWrapper.getSecondaryTextColor());
+        mLoadDataFailedSmall.setBackgroundColor(mCustomThemeWrapper.getColorAccent());
+        mLoadDataFailedSmall.setTextColor(mCustomThemeWrapper.getFABIconColor());
         if (activity.typeface != null) {
             mFetchPostInfoTextView.setTypeface(activity.typeface);
+            mLoadDataFailedSmall.setTypeface(activity.typeface);
         }
     }
 

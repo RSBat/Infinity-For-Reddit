@@ -76,6 +76,8 @@ public class CommentsListingFragment extends Fragment implements FragmentCommuni
     ImageView mFetchCommentInfoImageView;
     @BindView(R.id.fetch_comments_info_text_view_comments_listing_fragment)
     TextView mFetchCommentInfoTextView;
+    @BindView(R.id.load_data_failed_small)
+    View mLoadDataFailedSmall;
     CommentViewModel mCommentViewModel;
     @Inject
     @Named("no_oauth")
@@ -254,6 +256,8 @@ public class CommentsListingFragment extends Fragment implements FragmentCommuni
 
         new Handler().postDelayed(() -> bindView(resources), 0);
 
+        mLoadDataFailedSmall.setOnClickListener(view -> refresh());
+
         return rootView;
     }
 
@@ -321,8 +325,12 @@ public class CommentsListingFragment extends Fragment implements FragmentCommuni
                     mSwipeRefreshLayout.setRefreshing(false);
                 } else if (networkState.getStatus().equals(NetworkState.Status.FAILED)) {
                     mSwipeRefreshLayout.setRefreshing(false);
-                    mFetchCommentInfoLinearLayout.setOnClickListener(view -> refresh());
-                    showErrorView(R.string.load_comments_failed);
+                    if (mAdapter.getItemCount() > 0) {
+                        mLoadDataFailedSmall.setVisibility(View.VISIBLE);
+                    } else {
+                        mFetchCommentInfoLinearLayout.setOnClickListener(view -> refresh());
+                        showErrorView(R.string.load_comments_failed);
+                    }
                 } else {
                     mSwipeRefreshLayout.setRefreshing(true);
                 }
@@ -366,6 +374,7 @@ public class CommentsListingFragment extends Fragment implements FragmentCommuni
     @Override
     public void refresh() {
         mFetchCommentInfoLinearLayout.setVisibility(View.GONE);
+        mLoadDataFailedSmall.setVisibility(View.GONE);
         mCommentViewModel.refresh();
         mAdapter.setNetworkState(null);
     }
