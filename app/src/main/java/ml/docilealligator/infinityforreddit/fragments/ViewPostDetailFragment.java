@@ -301,6 +301,11 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
             showToast = true;
         }
 
+        mRecyclerView.setHasFixedSize(true);
+        if (mCommentsRecyclerView != null) {
+            mCommentsRecyclerView.setHasFixedSize(true);
+        }
+
         mLockFab = mSharedPreferences.getBoolean(SharedPreferencesUtils.LOCK_JUMP_TO_NEXT_TOP_LEVEL_COMMENT_BUTTON, false);
         mSwipeUpToHideFab = mSharedPreferences.getBoolean(SharedPreferencesUtils.SWIPE_UP_TO_HIDE_JUMP_TO_NEXT_TOP_LEVEL_COMMENT_BUTTON, false);
         mExpandChildren = !mSharedPreferences.getBoolean(SharedPreferencesUtils.SHOW_TOP_LEVEL_COMMENTS_FIRST, false);

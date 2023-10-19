@@ -265,6 +265,7 @@ public class CommentsListingFragment extends Fragment implements FragmentCommuni
         if (mActivity != null && !mActivity.isFinishing() && !mActivity.isDestroyed()) {
             mLinearLayoutManager = new LinearLayoutManagerBugFixed(mActivity);
             mCommentRecyclerView.setLayoutManager(mLinearLayoutManager);
+            mCommentRecyclerView.setHasFixedSize(true);
 
             mAdapter = new CommentsListingRecyclerViewAdapter(mActivity, mOauthRetrofit, customThemeWrapper,
                     getResources().getConfiguration().locale, mSharedPreferences,

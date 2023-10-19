@@ -909,6 +909,7 @@ public class PostFragment extends Fragment implements FragmentCommunicator {
                     new StaggeredGridLayoutManagerItemOffsetDecoration(activity, R.dimen.staggeredLayoutManagerItemOffset, nColumns);
             mPostRecyclerView.addItemDecoration(itemDecoration);
         }
+        mPostRecyclerView.setHasFixedSize(true);
 
         if (recyclerViewPosition > 0) {
             mPostRecyclerView.scrollToPosition(recyclerViewPosition);
