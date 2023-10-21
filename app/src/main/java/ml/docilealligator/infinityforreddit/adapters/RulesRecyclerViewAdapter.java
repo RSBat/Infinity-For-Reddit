@@ -35,12 +35,12 @@ import ml.docilealligator.infinityforreddit.customviews.slidr.widget.SliderPanel
 import ml.docilealligator.infinityforreddit.markdown.MarkdownUtils;
 
 public class RulesRecyclerViewAdapter extends RecyclerView.Adapter<RulesRecyclerViewAdapter.RuleViewHolder> {
-    private BaseActivity activity;
-    private Markwon markwon;
+    private final BaseActivity activity;
+    private final Markwon markwon;
     @Nullable
     private final SliderPanel sliderPanel;
     private ArrayList<Rule> rules;
-    private int mPrimaryTextColor;
+    private final int mPrimaryTextColor;
 
     public RulesRecyclerViewAdapter(@NonNull BaseActivity activity,
                                     @NonNull CustomThemeWrapper customThemeWrapper,

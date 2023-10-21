@@ -9,32 +9,32 @@ import java.util.ArrayList;
 
 public class RedditGalleryPayload {
     @SerializedName("sr")
-    public String subredditName;
+    public final String subredditName;
     @SerializedName("submit_type")
-    public String submitType;
+    public final String submitType;
     @SerializedName("api_type")
     public String apiType = "json";
     @SerializedName("show_error_list")
     public boolean showErrorList = true;
-    public String title;
+    public final String title;
     @SerializedName("spoiler")
-    public boolean isSpoiler;
+    public final boolean isSpoiler;
     @SerializedName("nsfw")
-    public boolean isNSFW;
+    public final boolean isNSFW;
     public String kind = "self";
     @SerializedName("original_content")
     public boolean originalContent = false;
     @SerializedName("post_to_twitter")
     public boolean postToTwitter = false;
     @SerializedName("sendreplies")
-    public boolean sendReplies;
+    public final boolean sendReplies;
     @SerializedName("validate_on_submit")
     public boolean validateOnSubmit = true;
     @SerializedName("flair_id")
     public String flairId;
     @SerializedName("flair_text")
     public String flairText;
-    public ArrayList<Item> items;
+    public final ArrayList<Item> items;
 
     public RedditGalleryPayload(String subredditName, String submitType, String title,
                                 boolean isSpoiler, boolean isNSFW, boolean sendReplies, Flair flair, ArrayList<Item> items) {
@@ -56,7 +56,7 @@ public class RedditGalleryPayload {
         @SerializedName("outbound_url")
         public String outboundUrl;
         @SerializedName("media_id")
-        public String mediaId;
+        public final String mediaId;
 
         public Item(String caption, String outboundUrl, String mediaId) {
             this.caption = caption;

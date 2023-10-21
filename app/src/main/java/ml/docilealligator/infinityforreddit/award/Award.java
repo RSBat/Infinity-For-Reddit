@@ -3,12 +3,12 @@ package ml.docilealligator.infinityforreddit.award;
 import java.util.ArrayList;
 
 public class Award {
-    private String id;
-    private String awardSubType;
-    private String name;
-    private String description;
-    private String iconUrl;
-    private int coinPrice;
+    private final String id;
+    private final String awardSubType;
+    private final String name;
+    private final String description;
+    private final String iconUrl;
+    private final int coinPrice;
 
     public Award(String id, String awardSubType, String name, String description, String iconUrl, int coinPrice) {
         this.id = id;

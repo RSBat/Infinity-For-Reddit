@@ -21,8 +21,8 @@ public class PostFilterRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
     private static final int VIEW_TYPE_HEADER = 1;
     private static final int VIEW_TYPE_POST_FILTER = 2;
 
-    private BaseActivity activity;
-    private CustomThemeWrapper customThemeWrapper;
+    private final BaseActivity activity;
+    private final CustomThemeWrapper customThemeWrapper;
     private final OnItemClickListener onItemClickListener;
     private List<PostFilter> postFilterList;
 
@@ -73,7 +73,7 @@ public class PostFilterRecyclerViewAdapter extends RecyclerView.Adapter<Recycler
     }
 
     private class PostFilterViewHolder extends RecyclerView.ViewHolder {
-        TextView textView;
+        final TextView textView;
 
         public PostFilterViewHolder(@NonNull View itemView) {
             super(itemView);

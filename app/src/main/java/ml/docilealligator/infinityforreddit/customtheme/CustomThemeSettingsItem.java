@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import ml.docilealligator.infinityforreddit.R;
 
 public class CustomThemeSettingsItem implements Parcelable {
-    public String itemName;
+    public final String itemName;
     public String itemDetails;
     public int colorValue;
     public boolean isEnabled;

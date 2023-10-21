@@ -17,12 +17,12 @@ import ml.docilealligator.infinityforreddit.recentsearchquery.RecentSearchQuery;
 import ml.docilealligator.infinityforreddit.utils.Utils;
 
 public class SearchActivityRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private BaseActivity activity;
+    private final BaseActivity activity;
     private List<RecentSearchQuery> recentSearchQueries;
-    private int primaryTextColor;
-    private Drawable historyIcon;
-    private Drawable deleteIcon;
-    private ItemOnClickListener itemOnClickListener;
+    private final int primaryTextColor;
+    private final Drawable historyIcon;
+    private final Drawable deleteIcon;
+    private final ItemOnClickListener itemOnClickListener;
 
     public interface ItemOnClickListener {
         void onClick(String query);
@@ -64,7 +64,7 @@ public class SearchActivityRecyclerViewAdapter extends RecyclerView.Adapter<Recy
     }
 
     class RecentSearchQueryViewHolder extends RecyclerView.ViewHolder {
-        ItemRecentSearchQueryBinding binding;
+        final ItemRecentSearchQueryBinding binding;
 
         public RecentSearchQueryViewHolder(@NonNull ItemRecentSearchQueryBinding binding) {
             super(binding.getRoot());

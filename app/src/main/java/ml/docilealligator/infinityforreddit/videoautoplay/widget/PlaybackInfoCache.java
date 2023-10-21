@@ -55,7 +55,7 @@ final class PlaybackInfoCache extends RecyclerView.AdapterDataObserver {
   @NonNull private final Container container;
   // Cold cache represents the map between key obtained from CacheManager and PlaybackInfo. If the
   // CacheManager is null, this cache will hold nothing.
-  /* pkg */ HashMap<Object, PlaybackInfo> coldCache = new HashMap<>();
+  /* pkg */ final HashMap<Object, PlaybackInfo> coldCache = new HashMap<>();
 
   // Hot cache represents the map between Player's order and its PlaybackInfo. A key-value map only
   // lives within a Player's attached state.
@@ -63,7 +63,7 @@ final class PlaybackInfoCache extends RecyclerView.AdapterDataObserver {
   /* pkg */ TreeMap<Integer, PlaybackInfo> hotCache; // only cache attached Views.
 
   // Holds the map between Player's order and its key obtain from CacheManager.
-  /* pkg */ TreeMap<Integer, Object> coldKeyToOrderMap = new TreeMap<>(ORDER_COMPARATOR_INT);
+  /* pkg */ final TreeMap<Integer, Object> coldKeyToOrderMap = new TreeMap<>(ORDER_COMPARATOR_INT);
 
   PlaybackInfoCache(@NonNull Container container) {
     this.container = container;

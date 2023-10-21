@@ -4,8 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class UploadedImage implements Parcelable {
-    public String imageName;
-    public String imageUrl;
+    public final String imageName;
+    public final String imageUrl;
 
     public UploadedImage(String imageName, String imageUrl) {
         this.imageName = imageName;

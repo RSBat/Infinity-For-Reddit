@@ -110,7 +110,7 @@ public interface PlayerSelector {
 
   @SuppressWarnings("unused") PlayerSelector BY_AREA = new PlayerSelector() {
 
-    NavigableMap<Float, ToroPlayer> areas = new TreeMap<>(new Comparator<Float>() {
+    final NavigableMap<Float, ToroPlayer> areas = new TreeMap<>(new Comparator<Float>() {
       @Override public int compare(Float o1, Float o2) {
         return Float.compare(o2, o1); // reverse order, from high to low.
       }

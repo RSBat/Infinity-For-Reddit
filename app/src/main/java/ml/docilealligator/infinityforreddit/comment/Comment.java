@@ -31,7 +31,7 @@ public class Comment implements Parcelable {
         }
     };
     private String id;
-    private String fullName;
+    private final String fullName;
     private String author;
     private String authorFlair;
     private String authorFlairHTML;
@@ -49,7 +49,7 @@ public class Comment implements Parcelable {
     private String distinguished;
     private String permalink;
     private String awards;
-    private int depth;
+    private final int depth;
     private int childCount;
     private boolean collapsed;
     private boolean hasReply;
@@ -59,7 +59,7 @@ public class Comment implements Parcelable {
     private boolean hasExpandedBefore;
     private ArrayList<Comment> children;
     private ArrayList<String> moreChildrenIds;
-    private int placeholderType;
+    private final int placeholderType;
     private boolean isLoadingMoreChildren;
     private boolean loadMoreChildrenFailed;
     private long editedTimeMillis;

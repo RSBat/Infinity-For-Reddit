@@ -3,11 +3,11 @@ package ml.docilealligator.infinityforreddit;
 import androidx.annotation.Nullable;
 
 public class StreamableVideo {
-    public String title;
+    public final String title;
     @Nullable
-    public Media mp4;
+    public final Media mp4;
     @Nullable
-    public Media mp4Mobile;
+    public final Media mp4Mobile;
 
     public StreamableVideo(String title, @Nullable Media mp4, @Nullable Media mp4Mobile) {
         this.title = title;
@@ -16,9 +16,9 @@ public class StreamableVideo {
     }
 
     public static class Media {
-        public String url;
-        public int width;
-        public int height;
+        public final String url;
+        public final int width;
+        public final int height;
 
         public Media(String url, int width, int height) {
             this.url = url;

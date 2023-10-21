@@ -185,7 +185,7 @@ public class HistoryPostRecyclerViewAdapter extends PagingDataAdapter<Post, Recy
     private int mVoteAndReplyUnavailableVoteButtonColor;
     private int mPostIconAndInfoColor;
     private int mDividerColor;
-    private float mScale;
+    private int mFixedHeightPx;
     private boolean mDisplaySubredditName;
     private boolean mVoteButtonsOnTheRight;
     private boolean mNeedBlurNsfw;
@@ -220,7 +220,7 @@ public class HistoryPostRecyclerViewAdapter extends PagingDataAdapter<Post, Recy
     private ExoCreator mExoCreator;
     private Callback mCallback;
     private boolean canPlayVideo = true;
-    private RecyclerView.RecycledViewPool mGalleryRecycledViewPool;
+    private final RecyclerView.RecycledViewPool mGalleryRecycledViewPool = new RecyclerView.RecycledViewPool();;
 
     public HistoryPostRecyclerViewAdapter(BaseActivity activity, HistoryPostFragment fragment, Executor executor, Retrofit oauthRetrofit,
                                           Retrofit gfycatRetrofit, Retrofit redgifsRetrofit, Provider<StreamableAPI> streambleApiProvider,
@@ -334,14 +334,13 @@ public class HistoryPostRecyclerViewAdapter extends PagingDataAdapter<Post, Recy
                 mCommentIcon.setTint(mPostIconAndInfoColor);
             }
 
-            mScale = resources.getDisplayMetrics().density;
+            mFixedHeightPx = (int) (400 * resources.getDisplayMetrics().density);
             mGlide = Glide.with(mActivity);
             mMaxResolution = Integer.parseInt(mSharedPreferences.getString(SharedPreferencesUtils.POST_FEED_MAX_RESOLUTION, "5000000"));
             mSaveMemoryCenterInsideDownsampleStrategy = new SaveMemoryCenterInisdeDownsampleStrategy(mMaxResolution);
             mLocale = locale;
             mExoCreator = exoCreator;
             mCallback = callback;
-            mGalleryRecycledViewPool = new RecyclerView.RecycledViewPool();
         }
     }
 
@@ -822,9 +821,8 @@ public class HistoryPostRecyclerViewAdapter extends PagingDataAdapter<Post, Recy
                             if (preview != null) {
                                 ((PostWithPreviewTypeViewHolder) holder).imageWrapperRelativeLayout.setVisibility(View.VISIBLE);
                                 if (mFixedHeightPreviewInCard || (preview.getPreviewWidth() <= 0 || preview.getPreviewHeight() <= 0)) {
-                                    int height = (int) (400 * mScale);
                                     ((PostWithPreviewTypeViewHolder) holder).imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                                    ((PostWithPreviewTypeViewHolder) holder).imageView.getLayoutParams().height = height;
+                                    ((PostWithPreviewTypeViewHolder) holder).imageView.getLayoutParams().height = mFixedHeightPx;
                                 } else {
                                     ((PostWithPreviewTypeViewHolder) holder).imageView
                                             .setRatio((float) preview.getPreviewHeight() / preview.getPreviewWidth());
@@ -1001,9 +999,8 @@ public class HistoryPostRecyclerViewAdapter extends PagingDataAdapter<Post, Recy
                             if (preview != null) {
                                 ((PostCard2WithPreviewViewHolder) holder).imageView.setVisibility(View.VISIBLE);
                                 if (mFixedHeightPreviewInCard || (preview.getPreviewWidth() <= 0 || preview.getPreviewHeight() <= 0)) {
-                                    int height = (int) (400 * mScale);
                                     ((PostCard2WithPreviewViewHolder) holder).imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                                    ((PostCard2WithPreviewViewHolder) holder).imageView.getLayoutParams().height = height;
+                                    ((PostCard2WithPreviewViewHolder) holder).imageView.getLayoutParams().height = mFixedHeightPx;
                                 } else {
                                     ((PostCard2WithPreviewViewHolder) holder).imageView
                                             .setRatio((float) preview.getPreviewHeight() / preview.getPreviewWidth());
@@ -1373,9 +1370,8 @@ public class HistoryPostRecyclerViewAdapter extends PagingDataAdapter<Post, Recy
                             ((PostGalleryViewHolder) holder).progressBar.setVisibility(View.VISIBLE);
 
                             if (mFixedHeightPreviewInCard || (preview.getPreviewWidth() <= 0 || preview.getPreviewHeight() <= 0)) {
-                                int height = (int) (400 * mScale);
                                 ((PostGalleryViewHolder) holder).imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                                ((PostGalleryViewHolder) holder).imageView.getLayoutParams().height = height;
+                                ((PostGalleryViewHolder) holder).imageView.getLayoutParams().height = mFixedHeightPx;
                             } else {
                                 ((PostGalleryViewHolder) holder).imageView
                                         .setRatio((float) preview.getPreviewHeight() / preview.getPreviewWidth());
@@ -1415,9 +1411,8 @@ public class HistoryPostRecyclerViewAdapter extends PagingDataAdapter<Post, Recy
                                 ((PostGalleryViewHolder) holder).videoOrGifIndicatorImageView.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.ic_play_circle_36dp));
 
                                 if (mFixedHeightPreviewInCard || (preview.getPreviewWidth() <= 0 || preview.getPreviewHeight() <= 0)) {
-                                    int height = (int) (400 * mScale);
                                     ((PostGalleryViewHolder) holder).imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                                    ((PostGalleryViewHolder) holder).imageView.getLayoutParams().height = height;
+                                    ((PostGalleryViewHolder) holder).imageView.getLayoutParams().height = mFixedHeightPx;
                                 } else {
                                     ((PostGalleryViewHolder) holder).imageView
                                             .setRatio((float) preview.getPreviewHeight() / preview.getPreviewWidth());
@@ -1446,9 +1441,8 @@ public class HistoryPostRecyclerViewAdapter extends PagingDataAdapter<Post, Recy
                             ((PostGalleryViewHolder) holder).videoOrGifIndicatorImageView.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.ic_play_circle_36dp));
 
                             if (mFixedHeightPreviewInCard || (preview.getPreviewWidth() <= 0 || preview.getPreviewHeight() <= 0)) {
-                                int height = (int) (400 * mScale);
                                 ((PostGalleryViewHolder) holder).imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                                ((PostGalleryViewHolder) holder).imageView.getLayoutParams().height = height;
+                                ((PostGalleryViewHolder) holder).imageView.getLayoutParams().height = mFixedHeightPx;
                             } else {
                                 ((PostGalleryViewHolder) holder).imageView
                                         .setRatio((float) preview.getPreviewHeight() / preview.getPreviewWidth());
@@ -1476,9 +1470,8 @@ public class HistoryPostRecyclerViewAdapter extends PagingDataAdapter<Post, Recy
                             ((PostGalleryViewHolder) holder).videoOrGifIndicatorImageView.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.ic_link_post_type_indicator));
 
                             if (mFixedHeightPreviewInCard || (preview.getPreviewWidth() <= 0 || preview.getPreviewHeight() <= 0)) {
-                                int height = (int) (400 * mScale);
                                 ((PostGalleryViewHolder) holder).imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                                ((PostGalleryViewHolder) holder).imageView.getLayoutParams().height = height;
+                                ((PostGalleryViewHolder) holder).imageView.getLayoutParams().height = mFixedHeightPx;
                             } else {
                                 ((PostGalleryViewHolder) holder).imageView
                                         .setRatio((float) preview.getPreviewHeight() / preview.getPreviewWidth());
@@ -3009,7 +3002,7 @@ public class HistoryPostRecyclerViewAdapter extends PagingDataAdapter<Post, Recy
         ImageView saveButton;
         @BindView(R.id.share_button_item_post_with_preview)
         ImageView shareButton;
-        RequestListener<Drawable> glideRequestListener;
+        final RequestListener<Drawable> glideRequestListener;
 
         PostWithPreviewTypeViewHolder(View itemView) {
             super(itemView);
@@ -3089,12 +3082,12 @@ public class HistoryPostRecyclerViewAdapter extends PagingDataAdapter<Post, Recy
     }
 
     public class PostBaseGalleryTypeViewHolder extends PostBaseViewHolder {
-        FrameLayout frameLayout;
-        RecyclerView galleryRecyclerView;
-        CustomTextView imageIndexTextView;
-        ImageView noPreviewImageView;
+        final FrameLayout frameLayout;
+        final RecyclerView galleryRecyclerView;
+        final CustomTextView imageIndexTextView;
+        final ImageView noPreviewImageView;
 
-        PostGalleryTypeImageRecyclerViewAdapter adapter;
+        final PostGalleryTypeImageRecyclerViewAdapter adapter;
         private boolean swipeLocked;
 
         PostBaseGalleryTypeViewHolder(View rootView,
@@ -3165,7 +3158,7 @@ public class HistoryPostRecyclerViewAdapter extends PagingDataAdapter<Post, Recy
             noPreviewImageView.setColorFilter(mNoPreviewPostTypeIconTint, android.graphics.PorterDuff.Mode.SRC_IN);
 
             adapter = new PostGalleryTypeImageRecyclerViewAdapter(mGlide, mActivity.typeface,
-                    mSaveMemoryCenterInsideDownsampleStrategy, mColorAccent, mPrimaryTextColor, mScale);
+                    mSaveMemoryCenterInsideDownsampleStrategy, mColorAccent, mPrimaryTextColor, mFixedHeightPx);
             galleryRecyclerView.setOnTouchListener((v, motionEvent) -> {
                 if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP || motionEvent.getActionMasked() == MotionEvent.ACTION_CANCEL) {
                     if (mActivity.mSliderPanel != null) {
@@ -4114,7 +4107,7 @@ public class HistoryPostRecyclerViewAdapter extends PagingDataAdapter<Post, Recy
         ImageView noPreviewImageView;
         @BindView(R.id.title_text_view_item_post_gallery)
         TextView titleTextView;
-        RequestListener<Drawable> requestListener;
+        final RequestListener<Drawable> requestListener;
         Post post;
         Post.Preview preview;
 
@@ -4197,13 +4190,13 @@ public class HistoryPostRecyclerViewAdapter extends PagingDataAdapter<Post, Recy
 
     class PostGalleryBaseGalleryTypeViewHolder extends RecyclerView.ViewHolder {
 
-        FrameLayout frameLayout;
-        RecyclerView recyclerView;
-        CustomTextView imageIndexTextView;
-        ImageView noPreviewImageView;
+        final FrameLayout frameLayout;
+        final RecyclerView recyclerView;
+        final CustomTextView imageIndexTextView;
+        final ImageView noPreviewImageView;
 
-        PostGalleryTypeImageRecyclerViewAdapter adapter;
-        private LinearLayoutManagerBugFixed layoutManager;
+        final PostGalleryTypeImageRecyclerViewAdapter adapter;
+        private final LinearLayoutManagerBugFixed layoutManager;
 
         Post post;
         Post.Preview preview;
@@ -4235,7 +4228,7 @@ public class HistoryPostRecyclerViewAdapter extends PagingDataAdapter<Post, Recy
             imageIndexTextView.setBorderColor(mMediaIndicatorBackgroundColor);
 
             adapter = new PostGalleryTypeImageRecyclerViewAdapter(mGlide, mActivity.typeface,
-                    mSaveMemoryCenterInsideDownsampleStrategy, mColorAccent, mPrimaryTextColor, mScale);
+                    mSaveMemoryCenterInsideDownsampleStrategy, mColorAccent, mPrimaryTextColor, mFixedHeightPx);
             recyclerView.setOnTouchListener((v, motionEvent) -> {
                 if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP || motionEvent.getActionMasked() == MotionEvent.ACTION_CANCEL) {
                     if (mActivity.mSliderPanel != null) {
@@ -4751,7 +4744,7 @@ public class HistoryPostRecyclerViewAdapter extends PagingDataAdapter<Post, Recy
         ImageView shareButton;
         @BindView(R.id.divider_item_post_card_2_with_preview)
         View divider;
-        RequestListener<Drawable> requestListener;
+        final RequestListener<Drawable> requestListener;
 
         PostCard2WithPreviewViewHolder(@NonNull View itemView) {
             super(itemView);

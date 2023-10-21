@@ -3,8 +3,8 @@ package ml.docilealligator.infinityforreddit.events;
 import ml.docilealligator.infinityforreddit.Flair;
 
 public class FlairSelectedEvent {
-    public long viewPostDetailFragmentId;
-    public Flair flair;
+    public final long viewPostDetailFragmentId;
+    public final Flair flair;
 
     public FlairSelectedEvent(long viewPostDetailFragmentId, Flair flair) {
         this.viewPostDetailFragmentId = viewPostDetailFragmentId;

@@ -29,11 +29,11 @@ import pl.droidsonroids.gif.GifImageView;
 
 public class SubredditMultiselectionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private BaseActivity activity;
+    private final BaseActivity activity;
     private ArrayList<SubredditWithSelection> subscribedSubreddits;
-    private RequestManager glide;
-    private int primaryTextColor;
-    private int colorAccent;
+    private final RequestManager glide;
+    private final int primaryTextColor;
+    private final int colorAccent;
 
     public SubredditMultiselectionRecyclerViewAdapter(BaseActivity activity, CustomThemeWrapper customThemeWrapper) {
         this.activity = activity;
@@ -102,7 +102,7 @@ public class SubredditMultiselectionRecyclerViewAdapter extends RecyclerView.Ada
     }
 
     class SubscribedSubredditViewHolder extends RecyclerView.ViewHolder {
-        View itemView;
+        final View itemView;
         @BindView(R.id.icon_gif_image_view_item_subscribed_subreddit_multiselection)
         GifImageView iconImageView;
         @BindView(R.id.name_text_view_item_subscribed_subreddit_multiselection)

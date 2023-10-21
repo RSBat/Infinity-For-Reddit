@@ -13,7 +13,7 @@ import retrofit2.Converter;
  * {@link String} parameters
  */
 public class SortTypeConverter<T> implements Converter<T, String> {
-    /* package */ static SortTypeConverter<Object> INSTANCE = new SortTypeConverter<>();
+    /* package */ static final SortTypeConverter<Object> INSTANCE = new SortTypeConverter<>();
 
     @Nullable
     @Override

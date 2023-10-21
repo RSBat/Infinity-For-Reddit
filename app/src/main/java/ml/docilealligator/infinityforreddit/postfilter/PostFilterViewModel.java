@@ -9,7 +9,7 @@ import java.util.List;
 import ml.docilealligator.infinityforreddit.RedditDataRoomDatabase;
 
 public class PostFilterViewModel extends ViewModel {
-    private LiveData<List<PostFilter>> mPostFilterListLiveData;
+    private final LiveData<List<PostFilter>> mPostFilterListLiveData;
 
     public PostFilterViewModel(RedditDataRoomDatabase redditDataRoomDatabase) {
         mPostFilterListLiveData = redditDataRoomDatabase.postFilterDao().getAllPostFiltersLiveData();

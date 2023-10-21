@@ -1,8 +1,8 @@
 package ml.docilealligator.infinityforreddit.events;
 
 public class ChangeAppLockEvent {
-    public boolean appLock;
-    public long appLockTimeout;
+    public final boolean appLock;
+    public final long appLockTimeout;
 
     public ChangeAppLockEvent(boolean appLock, long appLockTimeout) {
         this.appLock = appLock;

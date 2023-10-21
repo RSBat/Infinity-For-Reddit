@@ -25,10 +25,10 @@ public class PostFilterUsage implements Parcelable {
     @ColumnInfo(name = "name")
     public String name;
     @ColumnInfo(name = "usage")
-    public int usage;
+    public final int usage;
     @NonNull
     @ColumnInfo(name = "name_of_usage")
-    public String nameOfUsage;
+    public final String nameOfUsage;
 
     public PostFilterUsage(@NonNull String name, int usage, String nameOfUsage) {
         this.name = name;

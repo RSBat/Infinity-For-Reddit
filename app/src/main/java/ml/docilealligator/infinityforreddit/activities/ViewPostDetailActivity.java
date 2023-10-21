@@ -173,7 +173,7 @@ public class ViewPostDetailActivity extends BaseActivity implements SortTypeSele
     @State
     @LoadingMorePostsStatus
     int loadingMorePostsStatus = LoadingMorePostsStatus.NOT_LOADING;
-    public Map<String, String> authorIcons = new HashMap<>();
+    public final Map<String, String> authorIcons = new HashMap<>();
     private FragmentManager fragmentManager;
     private SectionsPagerAdapter sectionsPagerAdapter;
     private String mAccessToken;

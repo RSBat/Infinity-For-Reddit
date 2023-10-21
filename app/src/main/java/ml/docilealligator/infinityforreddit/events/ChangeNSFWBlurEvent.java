@@ -1,8 +1,8 @@
 package ml.docilealligator.infinityforreddit.events;
 
 public class ChangeNSFWBlurEvent {
-    public boolean needBlurNSFW;
-    public boolean doNotBlurNsfwInNsfwSubreddits;
+    public final boolean needBlurNSFW;
+    public final boolean doNotBlurNsfwInNsfwSubreddits;
 
     public ChangeNSFWBlurEvent(boolean needBlurNSFW, boolean doNotBlurNsfwInNsfwSubreddits) {
         this.needBlurNSFW = needBlurNSFW;

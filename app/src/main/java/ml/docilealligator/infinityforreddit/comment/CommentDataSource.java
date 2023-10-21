@@ -27,17 +27,17 @@ import retrofit2.Retrofit;
 
 public class CommentDataSource extends PageKeyedDataSource<String, Comment> {
 
-    private Retrofit retrofit;
-    private Locale locale;
+    private final Retrofit retrofit;
+    private final Locale locale;
     @Nullable
-    private String accessToken;
-    private String username;
-    private SortType sortType;
-    private boolean areSavedComments;
+    private final String accessToken;
+    private final String username;
+    private final SortType sortType;
+    private final boolean areSavedComments;
 
-    private MutableLiveData<NetworkState> paginationNetworkStateLiveData;
-    private MutableLiveData<NetworkState> initialLoadStateLiveData;
-    private MutableLiveData<Boolean> hasPostLiveData;
+    private final MutableLiveData<NetworkState> paginationNetworkStateLiveData;
+    private final MutableLiveData<NetworkState> initialLoadStateLiveData;
+    private final MutableLiveData<Boolean> hasPostLiveData;
 
     private LoadParams<String> params;
     private LoadCallback<String, Comment> callback;
@@ -188,10 +188,10 @@ public class CommentDataSource extends PageKeyedDataSource<String, Comment> {
 
     private static class ParseCommentAsyncTask extends AsyncTask<Void, ArrayList<Comment>, ArrayList<Comment>> {
         private String after;
-        private Locale locale;
+        private final Locale locale;
         private JSONArray commentsJSONArray;
         private boolean parseFailed;
-        private ParseCommentAsyncTaskListener parseCommentAsyncTaskListener;
+        private final ParseCommentAsyncTaskListener parseCommentAsyncTaskListener;
 
         ParseCommentAsyncTask(String response, Locale locale, ParseCommentAsyncTaskListener parseCommentAsyncTaskListener) {
             this.locale = locale;

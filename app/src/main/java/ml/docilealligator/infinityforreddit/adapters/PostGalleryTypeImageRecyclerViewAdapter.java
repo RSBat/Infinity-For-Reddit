@@ -31,29 +31,29 @@ import ml.docilealligator.infinityforreddit.databinding.ItemGalleryImageInPostFe
 import ml.docilealligator.infinityforreddit.post.Post;
 
 public class PostGalleryTypeImageRecyclerViewAdapter extends RecyclerView.Adapter<PostGalleryTypeImageRecyclerViewAdapter.ImageViewHolder> {
-    private RequestManager glide;
-    private Typeface typeface;
+    private final RequestManager glide;
+    private final Typeface typeface;
     private Markwon mPostDetailMarkwon;
-    private SaveMemoryCenterInisdeDownsampleStrategy saveMemoryCenterInisdeDownsampleStrategy;
-    private int mColorAccent;
-    private int mPrimaryTextColor;
+    private final SaveMemoryCenterInisdeDownsampleStrategy saveMemoryCenterInisdeDownsampleStrategy;
+    private final int mColorAccent;
+    private final int mPrimaryTextColor;
     private int mCardViewColor;
     private int mCommentColor;
-    private float mScale;
+    private final int mFixedHeightPx;
     private ArrayList<Post.Gallery> galleryImages;
     private boolean blurImage;
     private float ratio;
-    private boolean showCaption;
+    private final boolean showCaption;
 
     public PostGalleryTypeImageRecyclerViewAdapter(RequestManager glide, Typeface typeface,
                                                    SaveMemoryCenterInisdeDownsampleStrategy saveMemoryCenterInisdeDownsampleStrategy,
-                                                   int mColorAccent, int mPrimaryTextColor, float scale) {
+                                                   int mColorAccent, int mPrimaryTextColor, int fixedHeightPx) {
         this.glide = glide;
         this.typeface = typeface;
         this.saveMemoryCenterInisdeDownsampleStrategy = saveMemoryCenterInisdeDownsampleStrategy;
         this.mColorAccent = mColorAccent;
         this.mPrimaryTextColor = mPrimaryTextColor;
-        this.mScale = scale;
+        this.mFixedHeightPx = fixedHeightPx;
         showCaption = false;
     }
 
@@ -69,7 +69,7 @@ public class PostGalleryTypeImageRecyclerViewAdapter extends RecyclerView.Adapte
         this.mPrimaryTextColor = mPrimaryTextColor;
         this.mCardViewColor = mCardViewColor;
         this.mCommentColor = mCommentColor;
-        this.mScale = scale;
+        this.mFixedHeightPx = (int) (400 * scale);
         showCaption = true;
     }
 
@@ -82,9 +82,8 @@ public class PostGalleryTypeImageRecyclerViewAdapter extends RecyclerView.Adapte
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         if (ratio < 0) {
-            int height = (int) (400 * mScale);
             holder.binding.imageViewItemGalleryImageInPostFeed.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            holder.binding.imageViewItemGalleryImageInPostFeed.getLayoutParams().height = height;
+            holder.binding.imageViewItemGalleryImageInPostFeed.getLayoutParams().height = mFixedHeightPx;
         } else {
             holder.binding.imageViewItemGalleryImageInPostFeed.setRatio(ratio);
         }
@@ -196,7 +195,7 @@ public class PostGalleryTypeImageRecyclerViewAdapter extends RecyclerView.Adapte
 
     class ImageViewHolder extends RecyclerView.ViewHolder {
 
-        ItemGalleryImageInPostFeedBinding binding;
+        final ItemGalleryImageInPostFeedBinding binding;
 
         public ImageViewHolder(ItemGalleryImageInPostFeedBinding binding) {
             super(binding.getRoot());

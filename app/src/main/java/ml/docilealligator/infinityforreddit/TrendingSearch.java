@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import ml.docilealligator.infinityforreddit.post.Post;
 
 public class TrendingSearch implements Parcelable {
-    public String queryString;
-    public String displayString;
-    public String title;
-    public ArrayList<Post.Preview> previews;
+    public final String queryString;
+    public final String displayString;
+    public final String title;
+    public final ArrayList<Post.Preview> previews;
 
     public TrendingSearch(String queryString, String displayString, String title, ArrayList<Post.Preview> previews) {
         this.queryString = queryString;

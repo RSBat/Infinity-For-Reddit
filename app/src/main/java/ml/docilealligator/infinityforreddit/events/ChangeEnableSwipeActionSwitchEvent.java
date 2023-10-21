@@ -1,7 +1,7 @@
 package ml.docilealligator.infinityforreddit.events;
 
 public class ChangeEnableSwipeActionSwitchEvent {
-    public boolean enableSwipeAction;
+    public final boolean enableSwipeAction;
 
     public ChangeEnableSwipeActionSwitchEvent(boolean enableSwipeAction) {
         this.enableSwipeAction = enableSwipeAction;

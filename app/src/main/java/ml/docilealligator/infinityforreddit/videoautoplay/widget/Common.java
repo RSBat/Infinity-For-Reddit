@@ -61,7 +61,7 @@ final class Common {
     return Collections.<Long>max(list);
   }
 
-  static Comparator<ToroPlayer> ORDER_COMPARATOR = new Comparator<ToroPlayer>() {
+  static final Comparator<ToroPlayer> ORDER_COMPARATOR = new Comparator<ToroPlayer>() {
     @Override public int compare(ToroPlayer o1, ToroPlayer o2) {
       return Common.compare(o1.getPlayerOrder(), o2.getPlayerOrder());
     }

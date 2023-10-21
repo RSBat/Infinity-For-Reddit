@@ -7,18 +7,18 @@ import ml.docilealligator.infinityforreddit.post.Post;
 import ml.docilealligator.infinityforreddit.postfilter.PostFilter;
 
 public class ProvidePostListToViewPostDetailActivityEvent {
-    public long postFragmentId;
-    public ArrayList<Post> posts;
-    public int postType;
-    public String subredditName;
-    public String username;
-    public String userWhere;
-    public String multiPath;
-    public String query;
-    public String trendingSource;
-    public PostFilter postFilter;
-    public SortType sortType;
-    public ArrayList<String> readPostList;
+    public final long postFragmentId;
+    public final ArrayList<Post> posts;
+    public final int postType;
+    public final String subredditName;
+    public final String username;
+    public final String userWhere;
+    public final String multiPath;
+    public final String query;
+    public final String trendingSource;
+    public final PostFilter postFilter;
+    public final SortType sortType;
+    public final ArrayList<String> readPostList;
 
     public ProvidePostListToViewPostDetailActivityEvent(long postFragmentId, ArrayList<Post> posts, int postType,
                                                         String subredditName, String username, String userWhere,

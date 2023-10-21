@@ -3,8 +3,8 @@ package ml.docilealligator.infinityforreddit.events;
 import ml.docilealligator.infinityforreddit.message.Message;
 
 public class RepliedToPrivateMessageEvent {
-    public Message newReply;
-    public int messagePosition;
+    public final Message newReply;
+    public final int messagePosition;
 
     public RepliedToPrivateMessageEvent(Message newReply, int messagePosition) {
         this.newReply = newReply;

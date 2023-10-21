@@ -24,12 +24,12 @@ public class RedditSectionRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
     private static final int VIEW_TYPE_MENU_ITEM = 2;
     private static final int REDDIT_SECTION_ITEMS = 1;
 
-    private BaseActivity baseActivity;
-    private int primaryTextColor;
-    private int secondaryTextColor;
-    private int primaryIconColor;
+    private final BaseActivity baseActivity;
+    private final int primaryTextColor;
+    private final int secondaryTextColor;
+    private final int primaryIconColor;
     private boolean collapseRedditSection;
-    private NavigationDrawerRecyclerViewMergedAdapter.ItemClickListener itemClickListener;
+    private final NavigationDrawerRecyclerViewMergedAdapter.ItemClickListener itemClickListener;
 
     public RedditSectionRecyclerViewAdapter(BaseActivity baseActivity, CustomThemeWrapper customThemeWrapper,
                                             SharedPreferences navigationDrawerSharedPreferences,

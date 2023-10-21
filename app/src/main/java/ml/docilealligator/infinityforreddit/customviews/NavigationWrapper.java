@@ -18,15 +18,15 @@ import com.google.android.material.navigationrail.NavigationRailView;
 import ml.docilealligator.infinityforreddit.R;
 
 public class NavigationWrapper {
-    public BottomAppBar bottomAppBar;
-    public LinearLayout linearLayoutBottomAppBar;
-    public ImageView option1BottomAppBar;
-    public ImageView option2BottomAppBar;
-    public ImageView option3BottomAppBar;
-    public ImageView option4BottomAppBar;
+    public final BottomAppBar bottomAppBar;
+    public final LinearLayout linearLayoutBottomAppBar;
+    public final ImageView option1BottomAppBar;
+    public final ImageView option2BottomAppBar;
+    public final ImageView option3BottomAppBar;
+    public final ImageView option4BottomAppBar;
 
-    public NavigationRailView navigationRailView;
-    public FloatingActionButton floatingActionButton;
+    public final NavigationRailView navigationRailView;
+    public final FloatingActionButton floatingActionButton;
 
     public NavigationWrapper(BottomAppBar bottomAppBar, LinearLayout linearLayoutBottomAppBar,
                              ImageView option1BottomAppBar, ImageView option2BottomAppBar,

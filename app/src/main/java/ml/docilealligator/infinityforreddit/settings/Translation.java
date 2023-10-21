@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import ml.docilealligator.infinityforreddit.R;
 
 public class Translation {
-    public String language;
-    public String contributors;
-    public int flagDrawableId;
+    public final String language;
+    public final String contributors;
+    public final int flagDrawableId;
 
     public Translation(String language, String contributors, int flagDrawableId) {
         this.language = language;

@@ -6,10 +6,10 @@ public class PollPayload {
     @SerializedName("api_type")
     public String apiType = "json";
     @SerializedName("duration")
-    public int duration;
+    public final int duration;
     @SerializedName("nsfw")
-    public boolean isNsfw;
-    public String[] options;
+    public final boolean isNsfw;
+    public final String[] options;
     @SerializedName("flair_id")
     public String flairId;
     @SerializedName("flair_text")
@@ -17,16 +17,16 @@ public class PollPayload {
     @SerializedName("post_to_twitter")
     public boolean postToTwitter = false;
     @SerializedName("sendreplies")
-    public boolean sendReplies;
+    public final boolean sendReplies;
     @SerializedName("show_error_list")
     public boolean showErrorList = true;
     @SerializedName("spoiler")
-    public boolean isSpoiler;
+    public final boolean isSpoiler;
     @SerializedName("sr")
-    public String subredditName;
+    public final String subredditName;
     @SerializedName("submit_type")
-    public String submitType;
-    public String title;
+    public final String submitType;
+    public final String title;
     @SerializedName("validate_on_submit")
     public boolean validateOnSubmit = true;
 

@@ -1539,11 +1539,11 @@ public class MainActivity extends BaseActivity implements SortTypeSelectionCallb
     }
 
     private class SectionsPagerAdapter extends FragmentStateAdapter {
-        int tabCount;
-        boolean showFavoriteMultiReddits;
-        boolean showMultiReddits;
-        boolean showFavoriteSubscribedSubreddits;
-        boolean showSubscribedSubreddits;
+        final int tabCount;
+        final boolean showFavoriteMultiReddits;
+        final boolean showMultiReddits;
+        final boolean showFavoriteSubscribedSubreddits;
+        final boolean showSubscribedSubreddits;
         List<MultiReddit> favoriteMultiReddits;
         List<MultiReddit> multiReddits;
         List<SubscribedSubredditData> favoriteSubscribedSubreddits;
