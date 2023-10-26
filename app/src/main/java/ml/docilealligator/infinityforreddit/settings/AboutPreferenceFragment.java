@@ -14,6 +14,7 @@ import ml.docilealligator.infinityforreddit.BuildConfig;
 import ml.docilealligator.infinityforreddit.R;
 import ml.docilealligator.infinityforreddit.activities.LinkResolverActivity;
 import ml.docilealligator.infinityforreddit.customviews.CustomFontPreferenceFragmentCompat;
+import ml.docilealligator.infinityforreddit.utils.APIUtils;
 import ml.docilealligator.infinityforreddit.utils.SharedPreferencesUtils;
 
 /**
@@ -27,6 +28,9 @@ public class AboutPreferenceFragment extends CustomFontPreferenceFragmentCompat 
 
         Preference openSourcePreference = findPreference(SharedPreferencesUtils.OPEN_SOURCE_KEY);
         Preference versionPreference = findPreference(SharedPreferencesUtils.VERSION_KEY);
+        Preference apiKeyPreference = findPreference("api_key");
+        Preference redirectUrlPreference = findPreference("redirect_url");
+        Preference userAgentPreference = findPreference("user_agent");
 
         if (openSourcePreference != null) {
             openSourcePreference.setOnPreferenceClickListener(preference -> {
@@ -53,6 +57,18 @@ public class AboutPreferenceFragment extends CustomFontPreferenceFragmentCompat 
                     return true;
                 }
             });
+        }
+
+        if (apiKeyPreference != null) {
+            apiKeyPreference.setSummary(APIUtils.CLIENT_ID);
+        }
+
+        if (redirectUrlPreference != null) {
+            redirectUrlPreference.setSummary(APIUtils.REDIRECT_URI);
+        }
+
+        if (userAgentPreference != null) {
+            userAgentPreference.setSummary(APIUtils.USER_AGENT);
         }
     }
 }

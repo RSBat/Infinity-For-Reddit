@@ -21,4 +21,16 @@
         app:title="@string/settings_version_title"
         app:summary="@string/settings_version_summary" />
 
+    <ml.docilealligator.infinityforreddit.customviews.CustomFontPreference
+        android:key="api_key"
+        app:title="API key" />
+
+    <ml.docilealligator.infinityforreddit.customviews.CustomFontPreference
+        android:key="redirect_url"
+        app:title="Redirect url" />
+
+    <ml.docilealligator.infinityforreddit.customviews.CustomFontPreference
+        android:key="user_agent"
+        app:title="User-Agent" />
+
 </PreferenceScreen>
