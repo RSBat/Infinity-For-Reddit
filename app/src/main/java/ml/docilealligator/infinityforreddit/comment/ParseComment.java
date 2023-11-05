@@ -6,22 +6,22 @@ import static ml.docilealligator.infinityforreddit.comment.Comment.VOTE_TYPE_UPV
 
 import android.os.Handler;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.checkerframework.checker.units.qual.A;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-import ml.docilealligator.infinityforreddit.markdown.gif.GiphyGif;
 import ml.docilealligator.infinityforreddit.utils.JSONUtils;
 import ml.docilealligator.infinityforreddit.utils.Utils;
 
@@ -312,43 +312,68 @@ public class ParseComment {
         // this key can either be a bool (false) or a long (edited timestamp)
         long edited = singleCommentData.optLong(JSONUtils.EDITED_KEY) * 1000;
 
-        GiphyGif gif = null;
-        JSONObject mediaMetadata = singleCommentData.optJSONObject("media_metadata");
-        if (mediaMetadata != null) {
-            Iterator<String> keyIter = mediaMetadata.keys();
-            while (keyIter.hasNext()) {
-                String key = keyIter.next();
-                JSONObject data = mediaMetadata.getJSONObject(key);
-                if ("giphy".equals(data.optString("t"))
-                        && "valid".equals(data.optString("status"))
-                        && "AnimatedImage".equals(data.optString("e"))) {
-                    String gifId = data.optString("id");
-                    int giphyIdIndex = gifId.indexOf("|");
-                    if (giphyIdIndex < 0 || giphyIdIndex + 1 >= gifId.length()) {
-                        Log.w(TAG, "Giphy parse failed: bad id");
-                        continue;
-                    }
-                    String giphyId = gifId.substring(giphyIdIndex + 1);
-
-                    JSONObject gifSize = data.optJSONObject("s");
-                    if (gifSize == null || !gifSize.has("x") || !gifSize.has("y")) {
-                        Log.w(TAG, "Giphy parse failed: bad size");
-                        continue;
-                    }
-
-                    int x = gifSize.optInt("x");
-                    int y = gifSize.optInt("y");
-
-                    gif = new GiphyGif(giphyId, x, y);
-                    break;
-                }
-            }
-        }
+        List<CommentMediaMetadata> mediaMetadata = parseMediaMetadata(singleCommentData.optJSONObject("media_metadata"));
 
         return new Comment(id, fullName, author, authorFlair, authorFlairHTMLBuilder.toString(),
                 linkAuthor, submitTime, commentMarkdown, commentRawText,
                 linkId, subredditName, parentId, score, voteType, isSubmitter, distinguished,
-                permalink, awardingsBuilder.toString(), depth, collapsed, hasReply, scoreHidden, saved, edited, gif);
+                permalink, awardingsBuilder.toString(), depth, collapsed, hasReply, scoreHidden, saved, edited, mediaMetadata);
+    }
+
+    @NonNull
+    private static List<CommentMediaMetadata> parseMediaMetadata(@Nullable JSONObject json) throws JSONException {
+        if (json == null) {
+            return Collections.emptyList();
+        }
+        List<CommentMediaMetadata> metadata = new ArrayList<>();
+
+        Iterator<String> keyIter = json.keys();
+        while (keyIter.hasNext()) {
+            String key = keyIter.next();
+            JSONObject data = json.getJSONObject(key);
+            if (!"valid".equals(data.optString("status"))) {
+                continue;
+            }
+
+            if ("giphy".equals(data.optString("t"))
+                    && "AnimatedImage".equals(data.optString("e"))) {
+                String gifId = data.optString("id");
+                int giphyIdIndex = gifId.indexOf("|");
+                if (giphyIdIndex < 0 || giphyIdIndex + 1 >= gifId.length()) {
+                    Log.w(TAG, "Giphy parse failed: bad id");
+                    continue;
+                }
+                String giphyId = gifId.substring(giphyIdIndex + 1);
+
+                JSONObject gifSize = data.optJSONObject("s");
+                if (gifSize == null || !gifSize.has("x") || !gifSize.has("y")) {
+                    Log.w(TAG, "Giphy parse failed: bad size");
+                    continue;
+                }
+
+                int x = gifSize.optInt("x");
+                int y = gifSize.optInt("y");
+
+                metadata.add(new GiphyGifMetadata(giphyId, x, y));
+            } else if ("Image".equals(data.optString("e"))) {
+                String id = data.optString("id");
+
+                JSONObject size = data.optJSONObject("s");
+                if (size == null || !size.has("x") || !size.has("y") || TextUtils.isEmpty(size.optString("u"))) {
+                    Log.w(TAG, "Image parse failed: bad size");
+                    continue;
+                }
+
+                int x = size.optInt("x");
+                int y = size.optInt("y");
+                // todo: parse all previews and select the best one based on size
+                String url = size.optString("u");
+
+                metadata.add(new ImageMetadata(id, x, y, url));
+            }
+        }
+
+        return metadata;
     }
 
     @Nullable

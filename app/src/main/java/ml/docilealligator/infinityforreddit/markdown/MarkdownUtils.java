@@ -12,8 +12,6 @@ import com.bumptech.glide.RequestManager;
 
 import org.commonmark.ext.gfm.tables.TableBlock;
 
-import javax.inject.Provider;
-
 import io.noties.markwon.Markwon;
 import io.noties.markwon.MarkwonPlugin;
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
@@ -29,9 +27,9 @@ import me.saket.bettermovementmethod.BetterLinkMovementMethod;
 import ml.docilealligator.infinityforreddit.R;
 import ml.docilealligator.infinityforreddit.customtheme.CustomThemeWrapper;
 import ml.docilealligator.infinityforreddit.customviews.CustomMarkwonAdapter;
-import ml.docilealligator.infinityforreddit.markdown.gif.GifBlock;
-import ml.docilealligator.infinityforreddit.markdown.gif.GifEntry;
-import ml.docilealligator.infinityforreddit.markdown.gif.GifPlugin;
+import ml.docilealligator.infinityforreddit.markdown.gif.CommentMediaBlock;
+import ml.docilealligator.infinityforreddit.markdown.gif.MediaEntry;
+import ml.docilealligator.infinityforreddit.markdown.gif.CommentMediaPlugin;
 
 public class MarkdownUtils {
     /**
@@ -77,7 +75,7 @@ public class MarkdownUtils {
                     plugin.excludeInlineProcessor(BangInlineProcessor.class);
                 }))
                 .usePlugin(miscPlugin)
-                .usePlugin(GifPlugin.create())
+                .usePlugin(CommentMediaPlugin.create())
                 .usePlugin(SuperscriptPlugin.create())
                 .usePlugin(SpoilerParserPlugin.create(markdownColor, spoilerBackgroundColor))
                 .usePlugin(RedditHeadingPlugin.create())
@@ -131,7 +129,7 @@ public class MarkdownUtils {
                 .include(TableBlock.class, TableEntry.create(builder -> builder
                         .tableLayout(R.layout.adapter_table_block, R.id.table_layout)
                         .textLayoutIsRoot(R.layout.view_table_entry_cell)))
-                .include(GifBlock.class, new GifEntry(glide, customThemeWrapper, gifOpener))
+                .include(CommentMediaBlock.class, new MediaEntry(glide, customThemeWrapper, gifOpener))
                 .build();
     }
 }

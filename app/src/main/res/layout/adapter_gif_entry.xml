@@ -9,17 +9,17 @@
     tools:ignore="UseCompoundDrawables">
 
     <ProgressBar
-        android:id="@+id/gif_progress_bar"
+        android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminateOnly="true"
-        app:layout_constraintTop_toTopOf="@id/iv_gif"
-        app:layout_constraintBottom_toBottomOf="@id/iv_gif"
-        app:layout_constraintStart_toStartOf="@id/iv_gif"
-        app:layout_constraintEnd_toEndOf="@id/iv_gif"/>
+        app:layout_constraintTop_toTopOf="@id/iv"
+        app:layout_constraintBottom_toBottomOf="@id/iv"
+        app:layout_constraintStart_toStartOf="@id/iv"
+        app:layout_constraintEnd_toEndOf="@id/iv"/>
 
     <ImageView
-        android:id="@+id/iv_gif"
+        android:id="@+id/iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +33,7 @@
         android:text="@string/via_giphy"
         android:textSize="?attr/content_font_12"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_gif"
+        app:layout_constraintTop_toBottomOf="@id/iv"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView

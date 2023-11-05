@@ -1,6 +1,5 @@
 package ml.docilealligator.infinityforreddit.markdown.gif;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
@@ -25,17 +24,19 @@ import com.bumptech.glide.request.target.Target;
 import io.noties.markwon.Markwon;
 import io.noties.markwon.recycler.MarkwonAdapter;
 import ml.docilealligator.infinityforreddit.R;
+import ml.docilealligator.infinityforreddit.comment.GiphyGifMetadata;
+import ml.docilealligator.infinityforreddit.comment.ImageMetadata;
 import ml.docilealligator.infinityforreddit.customtheme.CustomThemeWrapper;
 import ml.docilealligator.infinityforreddit.databinding.AdapterGifEntryBinding;
 import ml.docilealligator.infinityforreddit.utils.SharedPreferencesUtils;
 import ml.docilealligator.infinityforreddit.utils.Utils;
 
-public class GifEntry extends MarkwonAdapter.Entry<GifBlock, GifEntry.Holder> {
+public class MediaEntry extends MarkwonAdapter.Entry<CommentMediaBlock, MediaEntry.Holder> {
     private final RequestManager glide;
     private final CustomThemeWrapper customThemeWrapper;
     private final Consumer<Uri> onClickListener;
 
-    public GifEntry(RequestManager glide, CustomThemeWrapper customThemeWrapper, Consumer<Uri> onClickListener) {
+    public MediaEntry(RequestManager glide, CustomThemeWrapper customThemeWrapper, Consumer<Uri> onClickListener) {
         this.glide = glide;
         this.customThemeWrapper = customThemeWrapper;
         this.onClickListener = onClickListener;
@@ -43,13 +44,17 @@ public class GifEntry extends MarkwonAdapter.Entry<GifBlock, GifEntry.Holder> {
 
     @NonNull
     @Override
-    public GifEntry.Holder createHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+    public MediaEntry.Holder createHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         return new Holder(AdapterGifEntryBinding.inflate(inflater, parent, false));
     }
 
     @Override
-    public void bindHolder(@NonNull Markwon markwon, @NonNull GifEntry.Holder holder, @NonNull GifBlock node) {
-        holder.bind(node.gif);
+    public void bindHolder(@NonNull Markwon markwon, @NonNull MediaEntry.Holder holder, @NonNull CommentMediaBlock node) {
+        if (node.metadata instanceof GiphyGifMetadata) {
+            holder.bindGif((GiphyGifMetadata) node.metadata);
+        } else if (node.metadata instanceof ImageMetadata) {
+            holder.bindImage((ImageMetadata) node.metadata);
+        }
     }
 
     @Override
@@ -62,13 +67,13 @@ public class GifEntry extends MarkwonAdapter.Entry<GifBlock, GifEntry.Holder> {
         private final RequestListener<Drawable> requestListener = new RequestListener<Drawable>() {
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                binding.gifProgressBar.setVisibility(View.GONE);
+                binding.progressBar.setVisibility(View.GONE);
                 return false;
             }
 
             @Override
             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                binding.gifProgressBar.setVisibility(View.GONE);
+                binding.progressBar.setVisibility(View.GONE);
                 return false;
             }
         };
@@ -77,19 +82,44 @@ public class GifEntry extends MarkwonAdapter.Entry<GifBlock, GifEntry.Holder> {
             super(binding.getRoot());
             this.binding = binding;
 
-            binding.gifProgressBar.setIndeterminateTintList(ColorStateList.valueOf(customThemeWrapper.getColorAccent()));
+            binding.progressBar.setIndeterminateTintList(ColorStateList.valueOf(customThemeWrapper.getColorAccent()));
             binding.giphyWatermark.setTextColor(customThemeWrapper.getCommentColor());
 
             binding.gifLink.setTextColor(customThemeWrapper.getLinkColor());
 
         }
 
-        void bind(GiphyGif gif) {
+        void bindImage(ImageMetadata image) {
+            binding.gifLink.setVisibility(View.GONE);
+            binding.iv.setVisibility(View.VISIBLE);
+            binding.progressBar.setVisibility(View.VISIBLE);
+            binding.giphyWatermark.setVisibility(View.GONE);
+
+            ViewGroup.LayoutParams params = binding.iv.getLayoutParams();
+            if (image.x > image.y) {
+                params.height = dpToPx(160);
+                params.width = params.height * image.x / image.y;
+            } else {
+                params.width = dpToPx(160);
+                params.height = params.width * image.y / image.x;
+            }
+            binding.iv.setLayoutParams(params);
+
+            // todo: check if waitForLayout is necessary here since we explicitly set width/height in LP
+            Target<Drawable> target = new DrawableImageViewTarget(binding.iv)
+                    .waitForLayout();
+            glide.load(image.getUrl())
+                    .addListener(requestListener)
+                    .error(R.drawable.ic_error_outline_black_24dp)
+                    .into(target);
+        }
+
+        void bindGif(GiphyGifMetadata gif) {
             if (!canLoadGif()) {
                 // video autoplay is disabled, don't load gif
                 binding.gifLink.setVisibility(View.VISIBLE);
-                binding.ivGif.setVisibility(View.GONE);
-                binding.gifProgressBar.setVisibility(View.GONE);
+                binding.iv.setVisibility(View.GONE);
+                binding.progressBar.setVisibility(View.GONE);
                 binding.giphyWatermark.setVisibility(View.GONE);
 
                 binding.gifLink.setOnClickListener(v -> {
@@ -98,11 +128,11 @@ public class GifEntry extends MarkwonAdapter.Entry<GifBlock, GifEntry.Holder> {
                 return;
             }
             binding.gifLink.setVisibility(View.GONE);
-            binding.ivGif.setVisibility(View.VISIBLE);
-            binding.gifProgressBar.setVisibility(View.VISIBLE);
+            binding.iv.setVisibility(View.VISIBLE);
+            binding.progressBar.setVisibility(View.VISIBLE);
             binding.giphyWatermark.setVisibility(View.VISIBLE);
 
-            ViewGroup.LayoutParams params = binding.ivGif.getLayoutParams();
+            ViewGroup.LayoutParams params = binding.iv.getLayoutParams();
             if (gif.x > gif.y) {
                 params.height = dpToPx(160);
                 params.width = params.height * gif.x / gif.y;
@@ -110,9 +140,10 @@ public class GifEntry extends MarkwonAdapter.Entry<GifBlock, GifEntry.Holder> {
                 params.width = dpToPx(160);
                 params.height = params.width * gif.y / gif.x;
             }
-            binding.ivGif.setLayoutParams(params);
+            binding.iv.setLayoutParams(params);
 
-            Target<Drawable> target = new DrawableImageViewTarget(binding.ivGif)
+            // todo: check if waitForLayout is necessary here since we explicitly set width/height in LP
+            Target<Drawable> target = new DrawableImageViewTarget(binding.iv)
                     .waitForLayout();
             glide.load(gif.getGifUrl())
                     .addListener(requestListener)
@@ -121,7 +152,7 @@ public class GifEntry extends MarkwonAdapter.Entry<GifBlock, GifEntry.Holder> {
         }
 
         void recycle() {
-            glide.clear(binding.ivGif);
+            glide.clear(binding.iv);
         }
 
         @SuppressWarnings("SameParameterValue")
@@ -134,7 +165,7 @@ public class GifEntry extends MarkwonAdapter.Entry<GifBlock, GifEntry.Holder> {
             // ideally this would be injected, but it is a bit unpleasant to do
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(itemView.getContext());
             String dataSavingMode = sharedPreferences.getString(SharedPreferencesUtils.DATA_SAVING_MODE, SharedPreferencesUtils.DATA_SAVING_MODE_OFF);
-            Log.i("GIF", dataSavingMode);
+            Log.i("GifEntry", "datasaving=" + dataSavingMode);
             if (dataSavingMode.equals(SharedPreferencesUtils.DATA_SAVING_MODE_ALWAYS)) {
                 return false;
             } else if (dataSavingMode.equals(SharedPreferencesUtils.DATA_SAVING_MODE_ONLY_ON_CELLULAR_DATA)) {

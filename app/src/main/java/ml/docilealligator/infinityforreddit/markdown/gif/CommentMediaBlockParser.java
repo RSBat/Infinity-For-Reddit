@@ -8,11 +8,15 @@ import org.commonmark.parser.block.BlockStart;
 import org.commonmark.parser.block.MatchedBlockParser;
 import org.commonmark.parser.block.ParserState;
 
-public class GifBlockParser extends AbstractBlockParser {
-    private final GifBlock block;
+import ml.docilealligator.infinityforreddit.comment.GiphyGifMetadata;
+import ml.docilealligator.infinityforreddit.comment.CommentMediaMetadata;
+import ml.docilealligator.infinityforreddit.comment.ImageMetadata;
 
-    private GifBlockParser(GiphyGif gif) {
-        block = new GifBlock(gif);
+public class CommentMediaBlockParser extends AbstractBlockParser {
+    private final CommentMediaBlock block;
+
+    private CommentMediaBlockParser(CommentMediaMetadata gif) {
+        block = new CommentMediaBlock(gif);
     }
 
     @Override
@@ -22,7 +26,7 @@ public class GifBlockParser extends AbstractBlockParser {
 
     @Override
     public BlockContinue tryContinue(ParserState parserState) {
-        // gif is always one line
+        // gif/image is always one line
         return null;
     }
 
@@ -30,11 +34,12 @@ public class GifBlockParser extends AbstractBlockParser {
         public BlockStart tryStart(ParserState state, MatchedBlockParser matchedBlockParser) {
             String line = state.getLine().toString();
 
-            if (GifPlugin.currentGif != null && GifPlugin.currentGif.matchMarkdown(line)) {
-                return BlockStart.of(new GifBlockParser(GifPlugin.currentGif));
-            } else {
-                return BlockStart.none();
+            for (CommentMediaMetadata metadata: CommentMediaPlugin.metadata) {
+                if (metadata.matchesMarkdown(line)) {
+                    return BlockStart.of(new CommentMediaBlockParser(metadata));
+                }
             }
+            return BlockStart.none();
         }
     }
 }
