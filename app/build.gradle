@@ -9,8 +9,8 @@ android {
         namespace "ml.docilealligator.infinityforreddit"
         minSdk 21
         targetSdk 33
-        versionCode 133
-        versionName "1.0.0"
+        versionCode 134
+        versionName "1.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
