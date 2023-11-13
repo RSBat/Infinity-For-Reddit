@@ -165,15 +165,6 @@ abstract class NetworkModule {
     }
 
     @Provides
-    @Named("pushshift")
-    @Singleton
-    static Retrofit providePushshiftRetrofit(@Named("base") Retrofit retrofit) {
-        return retrofit.newBuilder()
-                .baseUrl(APIUtils.PUSHSHIFT_API_BASE_URI)
-                .build();
-    }
-
-    @Provides
     @Named("reveddit")
     @Singleton
     static Retrofit provideRevedditRetrofit(@Named("base") Retrofit retrofit) {

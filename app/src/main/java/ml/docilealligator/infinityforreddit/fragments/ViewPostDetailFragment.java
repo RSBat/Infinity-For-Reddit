@@ -90,7 +90,6 @@ import ml.docilealligator.infinityforreddit.bottomsheetfragments.FlairBottomShee
 import ml.docilealligator.infinityforreddit.bottomsheetfragments.PostCommentSortTypeBottomSheetFragment;
 import ml.docilealligator.infinityforreddit.comment.Comment;
 import ml.docilealligator.infinityforreddit.comment.FetchComment;
-import ml.docilealligator.infinityforreddit.comment.FetchRemovedComment;
 import ml.docilealligator.infinityforreddit.comment.FetchRemovedCommentReveddit;
 import ml.docilealligator.infinityforreddit.comment.ParseComment;
 import ml.docilealligator.infinityforreddit.customtheme.CustomThemeWrapper;
@@ -104,7 +103,6 @@ import ml.docilealligator.infinityforreddit.events.PostUpdateEventToPostDetailFr
 import ml.docilealligator.infinityforreddit.events.PostUpdateEventToPostList;
 import ml.docilealligator.infinityforreddit.message.ReadMessage;
 import ml.docilealligator.infinityforreddit.post.FetchPost;
-import ml.docilealligator.infinityforreddit.post.FetchRemovedPost;
 import ml.docilealligator.infinityforreddit.post.HidePost;
 import ml.docilealligator.infinityforreddit.post.ParsePost;
 import ml.docilealligator.infinityforreddit.post.Post;
@@ -147,9 +145,6 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
     @Inject
     @Named("no_oauth")
     Retrofit mRetrofit;
-    @Inject
-    @Named("pushshift")
-    Retrofit pushshiftRetrofit;
     @Inject
     @Named("reveddit")
     Retrofit revedditRetrofit;
@@ -1835,9 +1830,10 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
 
     public void showRemovedComment(Comment comment, int position) {
         Toast.makeText(activity, R.string.fetching_removed_comment, Toast.LENGTH_SHORT).show();
-        FetchRemovedComment.fetchRemovedComment(
-                mExecutor, new Handler(), pushshiftRetrofit, comment,
-                new FetchRemovedComment.FetchRemovedCommentListener() {
+
+        FetchRemovedCommentReveddit.fetchRemovedComment(mExecutor, new Handler(), revedditRetrofit,
+                comment, mPost.getPostTimeMillis(), mPost.getNComments(),
+                new FetchRemovedCommentReveddit.FetchRemovedCommentListener() {
                     @Override
                     public void fetchSuccess(Comment fetchedComment, Comment originalComment) {
                         mCommentsAdapter.editComment(fetchedComment, originalComment, position);
@@ -1845,20 +1841,7 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
 
                     @Override
                     public void fetchFailed() {
-                        // Reveddit fallback
-                        FetchRemovedCommentReveddit.fetchRemovedComment(mExecutor, new Handler(), revedditRetrofit,
-                                comment, mPost.getPostTimeMillis(), mPost.getNComments(),
-                                new FetchRemovedCommentReveddit.FetchRemovedCommentListener() {
-                                    @Override
-                                    public void fetchSuccess(Comment fetchedComment, Comment originalComment) {
-                                        mCommentsAdapter.editComment(fetchedComment, originalComment, position);
-                                    }
-
-                                    @Override
-                                    public void fetchFailed() {
-                                        Toast.makeText(activity, R.string.show_removed_comment_failed, Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                        Toast.makeText(activity, R.string.show_removed_comment_failed, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -1906,24 +1889,7 @@ public class ViewPostDetailFragment extends Fragment implements FragmentCommunic
 
     public void showRemovedPost() {
         Toast.makeText(activity, R.string.fetching_removed_post, Toast.LENGTH_SHORT).show();
-        FetchRemovedPost.fetchRemovedPost(
-                pushshiftRetrofit,
-                mPost,
-                new FetchRemovedPost.FetchRemovedPostListener() {
-                    @Override
-                    public void fetchSuccess(Post post) {
-                        mPost = post;
-                        tryMarkingPostAsRead();
-                        if (mPostAdapter != null) {
-                            mPostAdapter.updatePost(post);
-                        }
-                    }
-
-                    @Override
-                    public void fetchFailed() {
-                        Toast.makeText(activity, R.string.show_removed_post_failed, Toast.LENGTH_SHORT).show();
-                    }
-                });
+        Toast.makeText(activity, R.string.show_removed_post_failed, Toast.LENGTH_SHORT).show();
     }
 
     public boolean getIsNsfwSubreddit() {
