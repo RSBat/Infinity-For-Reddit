@@ -29,8 +29,12 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        benchmark {
+            initWith buildTypes.minifiedRelease
+            signingConfig signingConfigs.debug
+        }
         debug {
-            applicationIdSuffix '.debug'
+            applicationIdSuffix '.dev'
             versionNameSuffix ' (DEBUG)'
         }
     }
@@ -40,7 +44,8 @@ android {
     }
 
     lint {
-        disable 'MissingTranslation'
+        disable 'MissingTranslation', 'NonConstantResourceId'
+        baseline file("lint-baseline.xml")
     }
 
     bundle {
