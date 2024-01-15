@@ -112,6 +112,10 @@ public class MediaEntry extends MarkwonAdapter.Entry<CommentMediaBlock, MediaEnt
                     .addListener(requestListener)
                     .error(R.drawable.ic_error_outline_black_24dp)
                     .into(target);
+
+            binding.iv.setOnClickListener(v -> {
+                onClickListener.accept(Uri.parse(image.getUrl()));
+            });
         }
 
         void bindGif(GiphyGifMetadata gif) {
@@ -149,6 +153,10 @@ public class MediaEntry extends MarkwonAdapter.Entry<CommentMediaBlock, MediaEnt
                     .addListener(requestListener)
                     .error(R.drawable.ic_error_outline_black_24dp)
                     .into(target);
+
+            binding.iv.setOnClickListener(v -> {
+                onClickListener.accept(Uri.parse(gif.getGifUrl()));
+            });
         }
 
         void recycle() {
